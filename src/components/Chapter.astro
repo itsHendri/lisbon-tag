@@ -1,0 +1,101 @@
+---
+/**
+ * Full-bleed chapter break (the Quechua "Conquer new peaks" moment):
+ * a photo that settles as you scroll, a huge title and a place + coordinates line.
+ */
+import Photo from './Photo.astro';
+import type { Photo as PhotoT } from '../data/photos';
+import { formatCoords } from '../data/site';
+import type { Lang } from '../i18n';
+
+interface Props {
+  lang: Lang;
+  photo: PhotoT;
+  title: string;
+  /** Heading level, so each section keeps a sensible outline. */
+  as?: 'h2' | 'h3';
+  id?: string;
+  place?: string;
+  lat?: number;
+  lng?: number;
+}
+
+const { lang, photo, title, as: Tag = 'h2', id, place, lat, lng } = Astro.props;
+---
+
+<div class="chapter" data-zoom data-tone="dark">
+  <div class="chapter-media">
+    <Photo photo={photo} lang={lang} sizes="100vw" class="cover" widths={[640, 960, 1280, 1920, 2400]} />
+  </div>
+  <div class="chapter-scrim"></div>
+  <div class="chapter-content wrap">
+    <Tag id={id} class="display chapter-title" data-split>{title}</Tag>
+    {
+      place && (
+        <p class="chapter-place label" data-reveal>
+          <span>{place}</span>
+          {lat !== undefined && lng !== undefined && <span class="chapter-coords">{formatCoords(lat, lng)}</span>}
+        </p>
+      )
+    }
+  </div>
+</div>
+
+<style>
+  .chapter {
+    position: relative;
+    min-height: 88svh;
+    display: flex;
+    align-items: flex-end;
+    overflow: clip;
+    color: var(--limestone);
+    background: var(--navy-ink);
+    isolation: isolate;
+  }
+
+  .chapter-media {
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+  }
+
+  .chapter-media :global(img) {
+    will-change: transform;
+  }
+
+  .chapter-scrim {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(0deg, rgb(3 45 94 / 0.92) 0%, rgb(5 72 149 / 0.45) 45%, rgb(5 72 149 / 0.05) 80%);
+  }
+
+  .chapter-content {
+    padding-block: 8rem calc(var(--safe-b) + 6rem);
+  }
+
+  .chapter-title {
+    font-size: var(--display-xl);
+    max-width: 11ch;
+    text-shadow: 0 4px 40px rgb(2 31 66 / 0.35);
+  }
+
+  .chapter-place {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 1.25rem;
+    margin-top: 1.5rem;
+  }
+
+  .chapter-coords {
+    font-weight: 400;
+    opacity: 0.85;
+    font-variant-numeric: tabular-nums;
+  }
+
+  @media (min-width: 900px) {
+    .chapter {
+      min-height: 100svh;
+    }
+  }
+</style>

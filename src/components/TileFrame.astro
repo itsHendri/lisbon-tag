@@ -1,0 +1,56 @@
+---
+/**
+ * Dark panel inside an azulejo border, as on the Figma posts: a tile pattern
+ * around the edge, then a navy (or granite) card with a hand-drawn inset line.
+ * Every dark section on the page uses this.
+ */
+import { getImage } from 'astro:assets';
+import tileBlue from '../assets/brand/tile_blue.png';
+import tileBlack from '../assets/brand/tile_black.png';
+
+interface Props {
+  tone?: 'navy' | 'granite';
+  as?: 'section' | 'div';
+  id?: string;
+  class?: string;
+  'aria-labelledby'?: string;
+  'data-section'?: boolean;
+}
+
+const { tone = 'navy', as: Tag = 'div', class: className, ...rest } = Astro.props;
+const tile = await getImage({ src: tone === 'navy' ? tileBlue : tileBlack, width: 240, format: 'webp' });
+---
+
+<Tag class:list={['tile-frame tiles', className]} style={`--tile-url: url(${tile.src})`} {...rest}>
+  <div class:list={['tile-frame-card sketch', tone === 'navy' ? 'theme-navy' : 'theme-granite']} data-tone="dark">
+    <slot />
+  </div>
+</Tag>
+
+<style>
+  .tile-frame {
+    padding: clamp(1.25rem, 3.5vw, 2.25rem);
+    --tile-size: 72px;
+  }
+
+  .tile-frame-card {
+    background: var(--bg);
+    color: var(--fg);
+    border-radius: var(--radius);
+    outline: 4px solid var(--navy);
+    outline-offset: 0;
+    padding: var(--section-y) 0;
+    --sketch-inset: clamp(0.6rem, 1.6vw, 1rem);
+    --sketch-w: 2px;
+    --sketch-color: color-mix(in srgb, var(--limestone) 85%, transparent);
+  }
+
+  /* Keep content clear of the inset line. */
+  .tile-frame-card > :global(.wrap) {
+    padding-inline: calc(var(--gutter) + clamp(0.5rem, 2vw, 1.5rem));
+  }
+
+  .tile-frame-card.theme-granite {
+    outline-color: var(--granite);
+  }
+</style>

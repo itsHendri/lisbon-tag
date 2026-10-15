@@ -1,0 +1,105 @@
+---
+import { Image } from 'astro:assets';
+import Chapter from './Chapter.astro';
+import DetailsTable from './DetailsTable.astro';
+import TileFrame from './TileFrame.astro';
+import Icon from './Icon.astro';
+import { useT, withBase, type Lang } from '../i18n';
+import { photos } from '../data/photos';
+import { site } from '../data/site';
+import castleWhite from '../assets/brand/icon_castle_white.png';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = useT(lang);
+const th = site.thursday;
+---
+
+<section id="thursdays" class="thursdays" data-section aria-labelledby="thursdays-title">
+  <Chapter
+    lang={lang}
+    photo={photos.thursday}
+    title={t.thursdays.title}
+    id="thursdays-title"
+    place={t.thursdays.place}
+    lat={th.lat}
+    lng={th.lng}
+  />
+
+  <TileFrame>
+    <div class="wrap thursdays-grid">
+      <div class="thursdays-head" data-reveal>
+        <p class="display display-sm">{t.facts.level}</p>
+        <Image src={castleWhite} alt="" width={160} format="webp" class="thursdays-castle" />
+      </div>
+
+      <div class="thursdays-body">
+        <DetailsTable
+          rows={[
+            { label: t.thursdays.rows.place, value: th.venue },
+            { label: t.thursdays.rows.time, value: `${th.start}–${th.end}` },
+            { label: t.thursdays.rows.cost, value: t.facts.cost },
+            { label: t.thursdays.rows.bring, value: t.facts.bring },
+          ]}
+        />
+        <div class="btn-row" data-reveal>
+          <a class="btn" href={th.mapsUrl} target="_blank" rel="noopener">
+            <Icon name="pin" />
+            {t.thursdays.directions}
+          </a>
+          <a class="btn btn--ghost" href={withBase(`/thursdays-${lang}.ics`)} download>
+            <Icon name="calendar" />
+            {t.thursdays.calendar}
+          </a>
+        </div>
+      </div>
+    </div>
+  </TileFrame>
+</section>
+
+<style>
+  .thursdays {
+    background: var(--limestone);
+  }
+
+  .thursdays-grid {
+    display: grid;
+    gap: 2.5rem;
+  }
+
+  .thursdays-head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1.5rem;
+  }
+
+  .thursdays-head .display {
+    max-width: 9ch;
+  }
+
+  :global(.thursdays-castle) {
+    width: clamp(4.5rem, 14vw, 8rem);
+    height: auto;
+    flex: none;
+  }
+
+  .thursdays-body {
+    display: grid;
+    gap: 2rem;
+  }
+
+  @media (min-width: 900px) {
+    .thursdays-grid {
+      grid-template-columns: 5fr 7fr;
+      gap: 5rem;
+      align-items: start;
+    }
+    .thursdays-head {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+</style>

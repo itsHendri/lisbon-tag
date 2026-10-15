@@ -1,0 +1,207 @@
+---
+import { Image } from 'astro:assets';
+import { useT, type Lang } from '../i18n';
+import ball from '../assets/brand/icon_rugby_ball_white.png';
+
+// Rule icons from Phosphor (MIT, phosphoricons.com), bold weight.
+// One per rule, in the same order as `how.rules` in the copy files.
+import seven from '@phosphor-icons/core/assets/bold/users-three-bold.svg?raw';
+import tag from '@phosphor-icons/core/assets/bold/hand-grabbing-bold.svg?raw';
+import pass from '@phosphor-icons/core/assets/bold/timer-bold.svg?raw';
+import defence from '@phosphor-icons/core/assets/bold/ruler-bold.svg?raw';
+import turnover from '@phosphor-icons/core/assets/bold/swap-bold.svg?raw';
+import backwards from '@phosphor-icons/core/assets/bold/arrow-u-up-left-bold.svg?raw';
+import kick from '@phosphor-icons/core/assets/bold/sneaker-move-bold.svg?raw';
+import noContact from '@phosphor-icons/core/assets/bold/prohibit-bold.svg?raw';
+import tryLine from '@phosphor-icons/core/assets/bold/flag-checkered-bold.svg?raw';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = useT(lang);
+
+const icons = [seven, tag, pass, defence, turnover, backwards, kick, noContact, tryLine];
+---
+
+<section id="how" class="section theme-light how" data-section aria-labelledby="how-title">
+  <div class="wrap">
+    <header class="how-head">
+      <h2 id="how-title" class="display display-md" data-split>{t.how.title}</h2>
+      <p class="lede" data-reveal>{t.how.intro}</p>
+    </header>
+
+    <h3 class="display display-sm rules-title">{t.how.rulesTitle}</h3>
+    <ol class="rules-list" data-reveal-stagger>
+      {
+        t.how.rules.map((rule, i) => (
+          <li class="rule-card sketch">
+            <span class="rule-icon" aria-hidden="true" set:html={icons[i]} />
+            <span class="rule-title">{rule}</span>
+          </li>
+        ))
+      }
+    </ol>
+
+    <aside class="first theme-navy sketch" aria-labelledby="first-title" data-tone="dark" data-reveal>
+      <div class="first-head">
+        <Image src={ball} alt="" width={160} format="webp" class="first-ball" />
+        <h3 id="first-title" class="display display-sm">{t.how.first.title}</h3>
+      </div>
+      <ol class="first-steps">
+        {t.how.first.steps.map((s) => <li>{s}</li>)}
+      </ol>
+    </aside>
+  </div>
+</section>
+
+<style>
+  .how-head {
+    display: grid;
+    gap: 1.25rem;
+    margin-bottom: clamp(3rem, 6vw, 5rem);
+  }
+
+  /* ---------- Rules ---------- */
+  .rules-title {
+    margin-bottom: 1.5rem;
+  }
+
+  .rules-list {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
+
+  /* Two columns on phones: an odd last card takes the full row. */
+  @media (max-width: 899px) {
+    .rule-card:last-child:nth-child(odd) {
+      grid-column: 1 / -1;
+      min-height: 0;
+    }
+  }
+
+  @media (min-width: 900px) {
+    .rules-list {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+    }
+  }
+
+  .rule-card {
+    display: grid;
+    grid-template-rows: 1fr auto;
+    gap: 0.75rem;
+    min-height: 9rem;
+    padding: 1.1rem;
+    background: var(--limestone);
+    color: var(--navy);
+  }
+
+  .rule-icon {
+    align-self: center;
+    justify-self: start;
+    width: clamp(2.5rem, 7vw, 3.5rem);
+  }
+
+  /* Same hand-drawn wobble as the card strokes. */
+  .rule-icon :global(svg) {
+    width: 100%;
+    height: auto;
+    overflow: visible;
+    filter: url(#rough-sm);
+  }
+
+  .rule-title {
+    font-size: var(--text-lg);
+    font-weight: 900;
+    line-height: 1.15;
+  }
+
+  @media (min-width: 900px) {
+    .rule-card {
+      grid-template-columns: auto 1fr;
+      grid-template-rows: auto;
+      align-items: center;
+      min-height: 7.5rem;
+      padding: 1.5rem;
+      column-gap: 1.25rem;
+    }
+    .rule-icon {
+      align-self: center;
+    }
+    .rule-title {
+      font-size: var(--text-xl);
+    }
+  }
+
+  /* ---------- First time ---------- */
+  .first {
+    margin-top: clamp(3rem, 6vw, 5rem);
+    padding: clamp(2rem, 5vw, 3.5rem);
+    border-radius: var(--radius);
+    background: var(--bg);
+    color: var(--fg);
+    display: grid;
+    gap: 1.5rem;
+    --sketch-inset: 0.6rem;
+    --sketch-w: 2px;
+  }
+
+  .first-head {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  :global(.first-ball) {
+    width: 4.5rem;
+    height: auto;
+  }
+
+  .first-steps {
+    display: grid;
+    gap: 1rem;
+    padding: 0;
+    list-style: none;
+    counter-reset: step;
+  }
+
+  .first-steps li {
+    counter-increment: step;
+    display: grid;
+    grid-template-columns: 2.25rem 1fr;
+    gap: 0.75rem;
+    font-size: var(--text-lg);
+    line-height: 1.4;
+  }
+
+  .first-steps li::before {
+    content: counter(step);
+    display: grid;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: var(--radius);
+    background: var(--limestone);
+    color: var(--navy);
+    font-weight: 900;
+    font-size: var(--text-base);
+  }
+
+  @media (min-width: 900px) {
+    .first {
+      grid-template-columns: 1fr 2fr;
+      align-items: center;
+      gap: 3rem;
+    }
+    .first-steps {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .first-steps li {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

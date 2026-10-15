@@ -1,0 +1,183 @@
+---
+import { getImage } from 'astro:assets';
+import Icon from './Icon.astro';
+import { useT, withBase, type Lang } from '../i18n';
+import { photos } from '../data/photos';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = useT(lang);
+
+const posterSrc = photos.heroPoster.src;
+const poster = await getImage(
+  typeof posterSrc === 'string'
+    ? { src: posterSrc, inferSize: true, width: 1280, format: 'webp', quality: 60 }
+    : { src: posterSrc, width: 1280, format: 'webp', quality: 60 },
+);
+---
+
+<section id="home" class="hero theme-navy" data-section data-hero data-tone="dark" aria-labelledby="hero-title">
+  <div class="hero-media">
+    <!-- Placeholder loop (Pexels). Swap the files in public/video/ for the club's own. -->
+    <video class="cover" muted loop playsinline preload="metadata" poster={poster.src} data-hero-video aria-hidden="true">
+      <source src={withBase('/video/hero-loop-540.mp4')} type="video/mp4" media="(max-width: 767px)" />
+      <source src={withBase('/video/hero-loop.mp4')} type="video/mp4" />
+    </video>
+    <div class="hero-scrim"></div>
+  </div>
+
+  <div class="hero-content wrap" data-hero-content>
+    <h1 id="hero-title" class="display hero-title" data-hero-in>
+      <span>Lisbon Tag</span>
+      <span>Rugby</span>
+    </h1>
+    <span class="rule hero-rule" data-hero-in></span>
+    <div class="hero-foot" data-hero-in>
+      <p class="hero-sub">{t.hero.sub}</p>
+      <a class="btn" href="#join">
+        {t.hero.join}
+        <Icon name="arrow" />
+      </a>
+    </div>
+  </div>
+
+  <button class="hero-toggle" type="button" data-hero-toggle aria-pressed="false" data-label-pause={t.hero.pause} data-label-play={t.hero.play}>
+    <span class="hero-toggle-pause"><Icon name="pause" /></span>
+    <span class="hero-toggle-play"><Icon name="play" /></span>
+    <span class="sr-only" data-hero-toggle-label>{t.hero.pause}</span>
+  </button>
+</section>
+
+<script>
+  import { prefersReducedMotion } from '../scripts/scroll';
+
+  const video = document.querySelector<HTMLVideoElement>('[data-hero-video]');
+  const toggle = document.querySelector<HTMLButtonElement>('[data-hero-toggle]');
+  const toggleLabel = toggle?.querySelector<HTMLElement>('[data-hero-toggle-label]');
+
+  // Only the visitor (or reduced motion) pauses the loop. A blocked autoplay,
+  // e.g. in a background tab, just tries again when the page is visible.
+  let userPaused = prefersReducedMotion();
+  let onScreen = true;
+
+  function sync() {
+    if (!video || !toggle) return;
+    if (userPaused || !onScreen) video.pause();
+    else video.play().catch(() => {});
+    toggle.setAttribute('aria-pressed', String(userPaused));
+    toggle.classList.toggle('is-paused', userPaused);
+    if (toggleLabel) toggleLabel.textContent = userPaused ? toggle.dataset.labelPlay! : toggle.dataset.labelPause!;
+  }
+
+  toggle?.addEventListener('click', () => {
+    userPaused = !userPaused;
+    sync();
+  });
+
+  // Don't burn battery decoding video nobody can see.
+  if (video) {
+    new IntersectionObserver(([e]) => {
+      onScreen = e.isIntersecting;
+      sync();
+    }).observe(video);
+  }
+  document.addEventListener('visibilitychange', () => document.visibilityState === 'visible' && sync());
+  sync();
+</script>
+
+<style>
+  .hero {
+    position: relative;
+    min-height: 100svh;
+    display: flex;
+    align-items: flex-end;
+    overflow: clip;
+    background: var(--navy-ink);
+    color: var(--limestone);
+    isolation: isolate;
+  }
+
+  .hero-media {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+  }
+
+  .hero-scrim {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(180deg, rgb(2 31 66 / 0.45) 0%, rgb(2 31 66 / 0) 28%),
+      linear-gradient(0deg, rgb(3 45 94 / 0.95) 0%, rgb(5 72 149 / 0.55) 42%, rgb(5 72 149 / 0) 75%);
+  }
+
+  .hero-content {
+    padding-bottom: calc(var(--safe-b) + 6.5rem);
+    padding-top: 7rem;
+  }
+
+  .hero-title {
+    font-size: var(--display-xl);
+    display: flex;
+    flex-direction: column;
+    text-shadow: 0 4px 40px rgb(2 31 66 / 0.35);
+  }
+
+  .hero-rule {
+    margin-block: clamp(1.25rem, 3vw, 2rem);
+    max-width: 46rem;
+  }
+
+  .hero-foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.25rem 2rem;
+    max-width: 46rem;
+  }
+
+  .hero-sub {
+    font-size: var(--text-xl);
+    font-weight: 700;
+    line-height: 1.2;
+    max-width: 20ch;
+  }
+
+  .hero-toggle {
+    position: absolute;
+    top: calc(var(--safe-t) + 4.25rem);
+    right: max(var(--gutter), env(safe-area-inset-right));
+    display: grid;
+    place-items: center;
+    width: var(--chrome-h);
+    height: var(--chrome-h);
+    border-radius: 50%;
+    color: var(--limestone);
+    background: rgb(246 240 231 / 0.16);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+
+  .hero-toggle :global(svg) {
+    width: 0.95rem;
+    height: 0.95rem;
+  }
+
+  .hero-toggle-play,
+  .hero-toggle.is-paused .hero-toggle-pause {
+    display: none;
+  }
+
+  .hero-toggle.is-paused .hero-toggle-play {
+    display: block;
+  }
+
+  @media (min-width: 900px) {
+    .hero-content {
+      padding-bottom: 7.5rem;
+    }
+  }
+</style>

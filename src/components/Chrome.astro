@@ -1,0 +1,444 @@
+---
+/**
+ * The fixed UI that floats over every section (Quechua-style):
+ * castle top-left, language pill top-right, menu bottom-centre,
+ * how-to-play video card bottom-right, plus the menu sheet and video dialogs.
+ */
+import { Image, getImage } from 'astro:assets';
+import Icon from './Icon.astro';
+import { useT, homeHref, otherLang, sectionIds, type Lang } from '../i18n';
+import { site } from '../data/site';
+import castleMask from '../assets/brand/icon_castle_white.png';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = useT(lang);
+const other = otherLang(lang);
+const yt = site.howToPlay.youtubeId;
+const castle = await getImage({ src: castleMask, width: 128, format: 'png' });
+---
+
+<header class="chrome-top">
+  <a class="chrome-logo" href="#home" aria-label={t.nav.home} style={`--castle: url(${castle.src})`}></a>
+  <a
+    class="chrome-pill chrome-lang"
+    href={homeHref(other)}
+    hreflang={other === 'pt' ? 'pt-PT' : 'en'}
+    lang={other === 'pt' ? 'pt-PT' : 'en'}
+    data-lang-link
+    data-base={homeHref(other)}
+  >
+    <span aria-hidden="true">{lang.toUpperCase()}</span>
+    <span class="chrome-lang-sep" aria-hidden="true">/</span>
+    <span>{t.nav.otherLang}</span>
+    <span class="sr-only">{t.nav.otherLangLabel}</span>
+  </a>
+</header>
+
+<div class="chrome-bottom">
+  <button class="chrome-pill chrome-menu" type="button" aria-haspopup="dialog" aria-controls="sheet" data-sheet-open>
+    <span>{t.nav.menu}</span>
+    <Icon name="grid" />
+  </button>
+
+  <button class="chrome-film" type="button" aria-haspopup="dialog" aria-controls="film" data-film-open>
+    <span class="chrome-film-thumb">
+      <Image src={`https://i.ytimg.com/vi/${yt}/mqdefault.jpg`} inferSize alt="" width={192} format="webp" loading="eager" />
+      <span class="chrome-film-thumb-play"><Icon name="play" /></span>
+    </span>
+    <span class="chrome-film-text">
+      <span class="chrome-film-title">{t.nav.film}</span>
+      <span class="chrome-film-sub">{t.nav.filmSub}</span>
+    </span>
+    <span class="chrome-film-play"><Icon name="play" /></span>
+  </button>
+</div>
+
+<dialog id="sheet" class="sheet theme-navy" aria-label={t.nav.sections}>
+  <div class="sheet-head">
+    <span class="label">{t.nav.menu}</span>
+    <button class="sheet-close" type="button" data-sheet-close aria-label={t.nav.close}>
+      <Icon name="close" />
+    </button>
+  </div>
+  <nav aria-label={t.nav.sections}>
+    <ol class="sheet-list">
+      {
+        sectionIds.map((id, i) => (
+          <li>
+            <a href={`#${id}`} data-sheet-link data-section-link={id}>
+              <span class="sheet-num">{String(i + 1).padStart(2, '0')}</span>
+              <span class="sheet-name display">{t.sections[id]}</span>
+            </a>
+          </li>
+        ))
+      }
+    </ol>
+  </nav>
+</dialog>
+
+<dialog id="film" class="film" aria-label={t.nav.film}>
+  <button class="film-close" type="button" data-film-close aria-label={t.nav.closeFilm}>
+    <Icon name="close" />
+  </button>
+  <!-- The YouTube player is only created when the dialog opens (no cookies, no weight until then). -->
+  <div class="film-frame" data-film-frame data-youtube={yt} data-title={t.nav.film}></div>
+</dialog>
+
+<script>
+  import '../scripts/chrome';
+</script>
+
+<style>
+  .chrome-top,
+  .chrome-bottom {
+    position: fixed;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-inline: max(var(--gutter), env(safe-area-inset-left));
+    pointer-events: none;
+  }
+
+  .chrome-top {
+    top: calc(var(--safe-t) + 0.875rem);
+  }
+
+  .chrome-bottom {
+    bottom: calc(var(--safe-b) + 0.875rem);
+    justify-content: center;
+    align-items: flex-end;
+  }
+
+  .chrome-top > *,
+  .chrome-bottom > * {
+    pointer-events: auto;
+  }
+
+  /* ---------- Castle: no plate, its colour follows what's behind it ---------- */
+  .chrome-logo {
+    display: block;
+    width: 3.5rem;
+    height: var(--chrome-h);
+    color: var(--limestone);
+    background: currentColor;
+    -webkit-mask: var(--castle) center / contain no-repeat;
+    mask: var(--castle) center / contain no-repeat;
+    transition: color 0.3s;
+  }
+
+  :global(html[data-chrome-tone='light']) .chrome-logo {
+    color: var(--navy);
+  }
+
+  .chrome-logo:focus-visible {
+    outline: none;
+    filter: drop-shadow(0 0 2px currentColor);
+  }
+
+  /* ---------- Pills ---------- */
+  .chrome-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: var(--chrome-h);
+    padding: 0 1rem;
+    border-radius: var(--radius-pill);
+    background: color-mix(in srgb, var(--navy) 90%, transparent);
+    color: var(--limestone);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    font-size: var(--text-sm);
+    font-weight: 700;
+    text-decoration: none;
+    box-shadow:
+      inset 0 0 0 1px rgb(246 240 231 / 0.28),
+      0 6px 24px -8px rgb(2 31 66 / 0.45);
+    transition:
+      transform 0.25s var(--ease-out),
+      background-color 0.25s;
+  }
+
+  .chrome-pill:hover {
+    background: var(--navy);
+    transform: translateY(-1px);
+  }
+
+  .chrome-pill :global(svg) {
+    width: 1.1rem;
+    height: 1.1rem;
+  }
+
+  .chrome-lang {
+    letter-spacing: 0.08em;
+  }
+
+  .chrome-lang > span:first-child {
+    opacity: 0.55;
+  }
+
+  .chrome-lang-sep {
+    opacity: 0.35;
+  }
+
+  .chrome-menu {
+    min-width: 8rem;
+    justify-content: space-between;
+    gap: 1.25rem;
+    letter-spacing: 0.04em;
+  }
+
+  /* ---------- How-to-play video card (Quechua's "Discover full video") ---------- */
+  .chrome-film {
+    position: absolute;
+    right: max(var(--gutter), env(safe-area-inset-right));
+    bottom: 0;
+    display: flex;
+    align-items: stretch;
+    gap: 0.75rem;
+    padding: 0.375rem;
+    background: var(--limestone);
+    color: var(--navy);
+    border-radius: var(--radius);
+    box-shadow:
+      inset 0 0 0 2px var(--navy),
+      0 10px 30px -10px rgb(2 31 66 / 0.5);
+    text-align: left;
+    transition: transform 0.25s var(--ease-out);
+  }
+
+  .chrome-film:hover {
+    transform: translateY(-2px);
+  }
+
+  .chrome-film-thumb {
+    position: relative;
+    width: 6.5rem;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border-radius: var(--radius-sm);
+    background: var(--navy);
+  }
+
+  .chrome-film-thumb :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s var(--ease-out);
+  }
+
+  .chrome-film:hover .chrome-film-thumb :global(img) {
+    transform: scale(1.08);
+  }
+
+  .chrome-film-thumb-play {
+    display: none;
+  }
+
+  .chrome-film-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-block: 0.1rem;
+    padding-right: 0.25rem;
+  }
+
+  .chrome-film-title {
+    font-weight: 900;
+    font-size: var(--text-sm);
+    line-height: 1.1;
+    white-space: nowrap;
+  }
+
+  .chrome-film-sub {
+    font-size: var(--text-xs);
+    line-height: 1.1;
+    opacity: 0.75;
+    white-space: nowrap;
+  }
+
+  .chrome-film-play {
+    align-self: flex-end;
+    display: grid;
+    place-items: center;
+    width: 1.9rem;
+    height: 1.9rem;
+    border-radius: 50%;
+    background: var(--navy);
+    color: var(--limestone);
+  }
+
+  .chrome-film-play :global(svg),
+  .chrome-film-thumb-play :global(svg) {
+    width: 0.75rem;
+    height: 0.75rem;
+    transform: translateX(1px);
+  }
+
+  /* Phones: just the thumbnail with a play button on it. */
+  @media (max-width: 639px) {
+    .chrome-film {
+      padding: 0.25rem;
+    }
+    .chrome-film-text,
+    .chrome-film-play {
+      display: none;
+    }
+    .chrome-film-thumb {
+      width: 5rem;
+    }
+    .chrome-film-thumb-play {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      background: rgb(3 45 94 / 0.35);
+      color: var(--limestone);
+    }
+    .chrome-film-thumb-play :global(svg) {
+      width: 1rem;
+      height: 1rem;
+    }
+  }
+
+  /* ---------- Menu sheet ---------- */
+  .sheet {
+    margin: auto auto 0;
+    width: min(100%, 34rem);
+    max-width: 100%;
+    max-height: min(88svh, 44rem);
+    padding: 1.25rem var(--gutter) calc(var(--safe-b) + 1.5rem);
+    border: 0;
+    border-radius: 0;
+    background: var(--bg);
+    color: var(--fg);
+    overflow: auto;
+    overscroll-behavior: contain;
+  }
+
+  @media (min-width: 768px) {
+    .sheet {
+      margin: auto;
+      padding-bottom: 1.5rem;
+    }
+  }
+
+  .sheet::backdrop {
+    background: rgb(2 31 66 / 0.55);
+    backdrop-filter: blur(4px);
+  }
+
+  .sheet[open] {
+    animation: sheet-in 0.4s var(--ease-out);
+  }
+
+  @keyframes sheet-in {
+    from {
+      transform: translateY(40px);
+      opacity: 0;
+    }
+  }
+
+  .sheet-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+  }
+
+  .sheet-close,
+  .film-close {
+    display: grid;
+    place-items: center;
+    width: var(--chrome-h);
+    height: var(--chrome-h);
+    border-radius: var(--radius);
+    background: color-mix(in srgb, currentColor 14%, transparent);
+  }
+
+  .sheet-close :global(svg),
+  .film-close :global(svg) {
+    width: 1.2rem;
+    height: 1.2rem;
+  }
+
+  .sheet-list {
+    list-style: none;
+    padding: 0;
+  }
+
+  .sheet-list a {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    padding: 0.7rem 0;
+    text-decoration: none;
+    border-bottom: 1px solid color-mix(in srgb, currentColor 22%, transparent);
+  }
+
+  .sheet-list a[aria-current='true'] .sheet-name {
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 0.18em;
+  }
+
+  .sheet-num {
+    font-size: var(--text-xs);
+    font-weight: 700;
+    letter-spacing: var(--label-tracking);
+    opacity: 0.6;
+    min-width: 1.6rem;
+  }
+
+  .sheet-name {
+    font-size: clamp(1.75rem, 1.4rem + 1.6vw, 2.5rem);
+    line-height: 1.05;
+  }
+
+  /* ---------- Video ---------- */
+  .film {
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+    max-height: 100%;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: #000;
+    color: var(--limestone);
+  }
+
+  .film[open] {
+    display: grid;
+    place-items: center;
+  }
+
+  .film::backdrop {
+    background: #000;
+  }
+
+  .film-frame {
+    width: min(100%, calc(100svh * 16 / 9));
+    aspect-ratio: 16 / 9;
+    background: #000;
+  }
+
+  .film-frame :global(iframe) {
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+
+  .film-close {
+    position: absolute;
+    top: calc(var(--safe-t) + 0.875rem);
+    right: max(var(--gutter), env(safe-area-inset-right));
+    z-index: 1;
+    background: rgb(246 240 231 / 0.18);
+  }
+</style>

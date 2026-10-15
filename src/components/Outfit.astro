@@ -1,0 +1,84 @@
+---
+import Photo from './Photo.astro';
+import { useT, type Lang } from '../i18n';
+import { photos } from '../data/photos';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = useT(lang);
+const items = [
+  { photo: photos.sportswear, ...t.outfit.items.sportswear },
+  { photo: photos.boots, ...t.outfit.items.boots },
+  { photo: photos.essentials, ...t.outfit.items.essentials },
+];
+const sizes = '(min-width: 900px) 30vw, 92vw';
+---
+
+<section id="outfit" class="section theme-light outfit" data-section aria-labelledby="outfit-title">
+  <div class="wrap">
+    <header class="outfit-head">
+      <h2 id="outfit-title" class="display display-md" data-split>{t.outfit.title}</h2>
+      <p class="lede" data-reveal>{t.outfit.intro}</p>
+    </header>
+
+    <ul class="outfit-grid" data-reveal-stagger>
+      {
+        items.map((item) => (
+          <li class="item">
+            <div class="item-media frame sketch">
+              <Photo photo={item.photo} lang={lang} sizes={sizes} widths={[480, 800, 1100]} class="cover" />
+            </div>
+            <h3 class="item-title">{item.title}</h3>
+            <p>{item.body}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .outfit-head {
+    display: grid;
+    gap: 1.25rem;
+    margin-bottom: clamp(2.5rem, 5vw, 4rem);
+  }
+
+  .outfit-grid {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: clamp(2rem, 3vw, 2.5rem) 1.25rem;
+  }
+
+  @media (min-width: 900px) {
+    .outfit-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .item {
+    display: grid;
+    gap: 0.5rem;
+    align-content: start;
+  }
+
+  .item-media {
+    aspect-ratio: 4 / 3;
+    margin-bottom: 0.75rem;
+    --sketch-color: var(--navy);
+  }
+
+  .item-title {
+    font-size: var(--text-xl);
+    font-weight: 900;
+    line-height: 1.15;
+  }
+
+  .item p {
+    color: var(--fg-muted);
+    max-width: 36ch;
+  }
+</style>

@@ -1,0 +1,113 @@
+/*
+ * Lisbon Tag Rugby — design tokens.
+ * Brand colours come from the mini style guide (Navy, Limestone, Granite).
+ * Components bind to the roles (--bg, --fg, --accent…), never to a literal,
+ * so a section can flip theme with one class.
+ */
+
+@font-face {
+  font-family: 'Lisbon Tag';
+  src: url('../assets/fonts/lisbon-tag-core.woff2') format('woff2');
+  font-display: swap;
+  unicode-range: U+0020-007E, U+00A0, U+2013-2014, U+2018-201E, U+2022, U+2026;
+}
+
+/* Portuguese accents only, so English visitors never download it. */
+@font-face {
+  font-family: 'Lisbon Tag';
+  src: url('../assets/fonts/lisbon-tag-ext.woff2') format('woff2');
+  font-display: swap;
+  unicode-range: U+00AA, U+00BA, U+00C0-00C3, U+00C7, U+00C9-00CA, U+00CD, U+00D3-00D5, U+00DA, U+00DC,
+    U+00E0-00E3, U+00E7, U+00E9-00EA, U+00ED, U+00F3-00F5, U+00FA, U+00FC, U+20AC;
+}
+
+:root {
+  /* Brand */
+  --navy: #054895;
+  --navy-deep: #032d5e;
+  --navy-ink: #021f42;
+  --limestone: #f6f0e7;
+  --limestone-dim: #ebe2d4;
+  --granite: #1b1b1b;
+  --tile-white: #f4f7fb;
+
+  /* Roles (light / limestone is the default surface) */
+  --bg: var(--limestone);
+  --fg: var(--navy);
+  --fg-muted: color-mix(in srgb, var(--navy) 72%, var(--limestone));
+  --line: color-mix(in srgb, var(--navy) 85%, transparent);
+  --surface: var(--limestone-dim);
+  --accent: var(--navy);
+  --on-accent: var(--limestone);
+
+  /* Type */
+  --font-display: 'Lisbon Tag', 'Iowan Old Style', Georgia, serif;
+  --font-body: 'Lato', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: clamp(1rem, 0.96rem + 0.2vw, 1.125rem);
+  --text-lg: clamp(1.125rem, 1.05rem + 0.4vw, 1.375rem);
+  --text-xl: clamp(1.375rem, 1.2rem + 0.9vw, 2rem);
+  --text-statement: clamp(1.625rem, 1.2rem + 2.2vw, 3.25rem);
+  --display-sm: clamp(2.25rem, 1.6rem + 3.2vw, 4rem);
+  --display-md: clamp(3rem, 1.8rem + 6vw, 7rem);
+  --display-xl: clamp(3.75rem, 1rem + 13vw, 12.5rem);
+
+  --label-tracking: 0.14em;
+
+  /* Space */
+  --gutter: clamp(1rem, 0.6rem + 2vw, 2.5rem);
+  --section-y: clamp(4.5rem, 3rem + 7vw, 10rem);
+  --max: 82rem;
+  --max-text: 42rem;
+
+  /* Shape: the brand is square. Corners only soften enough to not look broken. */
+  --radius-sm: 1px;
+  --radius: 2px;
+  --radius-lg: 3px;
+  --radius-pill: 3px;
+  --stroke: 3px;
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur: 0.5s;
+
+  /* Chrome */
+  --chrome-h: 2.75rem;
+  --safe-b: env(safe-area-inset-bottom, 0px);
+  --safe-t: env(safe-area-inset-top, 0px);
+
+  /* Hand-drawn rule, as in the Figma posts. Used as a mask so it takes currentColor. */
+  --rule-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 6' preserveAspectRatio='none'%3E%3Cpath d='M0 3.2 C40 2.1 70 4.1 112 3 S190 2.2 236 3.4 S318 4.2 352 2.8 S392 3.3 400 3' stroke='black' stroke-width='2.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+}
+
+.theme-light {
+  --bg: var(--limestone);
+  --fg: var(--navy);
+  --fg-muted: color-mix(in srgb, var(--navy) 72%, var(--limestone));
+  --line: color-mix(in srgb, var(--navy) 85%, transparent);
+  --surface: var(--limestone-dim);
+  --accent: var(--navy);
+  --on-accent: var(--limestone);
+}
+
+.theme-navy {
+  --bg: var(--navy);
+  --fg: var(--limestone);
+  --fg-muted: color-mix(in srgb, var(--limestone) 80%, var(--navy));
+  --line: color-mix(in srgb, var(--limestone) 80%, transparent);
+  --surface: var(--navy-deep);
+  --accent: var(--limestone);
+  --on-accent: var(--navy);
+}
+
+.theme-granite {
+  --bg: var(--granite);
+  --fg: var(--limestone);
+  --fg-muted: color-mix(in srgb, var(--limestone) 72%, var(--granite));
+  --line: color-mix(in srgb, var(--limestone) 60%, transparent);
+  --surface: #262626;
+  --accent: var(--limestone);
+  --on-accent: var(--granite);
+}

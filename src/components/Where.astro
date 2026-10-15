@@ -1,0 +1,183 @@
+---
+import { Image, getImage } from 'astro:assets';
+import BeachTag from './BeachTag.astro';
+import Icon from './Icon.astro';
+import { useT, type Lang } from '../i18n';
+import { site, formatCoords } from '../data/site';
+import castle from '../assets/brand/icon_castle_white.png';
+import tile from '../assets/brand/tile_blue.png';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = useT(lang);
+const th = site.thursday;
+const tileBg = await getImage({ src: tile, width: 240, format: 'webp' });
+---
+
+<section id="where" class="section theme-light where" data-section aria-labelledby="where-title">
+  <div class="wrap where-grid">
+    <header class="where-head">
+      <h2 id="where-title" class="display display-md" data-split>{t.where.title}</h2>
+      <p class="where-venue">{th.venue}</p>
+      <p class="lede" data-reveal>{t.where.body}</p>
+      <p class="where-meta" data-reveal>
+        <span><Icon name="calendar" /> {t.facts.day}, {th.start}–{th.end}</span>
+        <span><Icon name="pin" /> {t.where.transport}</span>
+      </p>
+      <div class="btn-row" data-reveal>
+        <a class="btn" href={th.mapsUrl} target="_blank" rel="noopener">
+          <Icon name="pin" />
+          {t.where.openMaps}
+        </a>
+      </div>
+    </header>
+
+    <div class="map frame sketch" style={`--tile-url: url(${tileBg.src})`} data-map data-reveal>
+      <div class="map-facade tiles">
+        <div class="map-pin">
+          <Image src={castle} alt="" width={120} format="webp" />
+        </div>
+        <p class="map-coords">{formatCoords(th.lat, th.lng)}</p>
+        <button class="btn" type="button" data-map-load data-src={th.mapsEmbed} data-title={t.where.mapTitle}>
+          {t.where.showMap}
+        </button>
+        <p class="map-note">{t.where.mapNote}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap where-beach">
+    <BeachTag lang={lang} />
+  </div>
+</section>
+
+<script>
+  // Google Maps (and its cookies) only load when someone asks for the map.
+  document.querySelector<HTMLButtonElement>('[data-map-load]')?.addEventListener('click', (e) => {
+    const btn = e.currentTarget as HTMLButtonElement;
+    const map = btn.closest<HTMLElement>('[data-map]')!;
+    const iframe = document.createElement('iframe');
+    iframe.src = btn.dataset.src!;
+    iframe.title = btn.dataset.title!;
+    iframe.loading = 'lazy';
+    iframe.referrerPolicy = 'no-referrer-when-downgrade';
+    iframe.allowFullscreen = true;
+    iframe.className = 'map-frame';
+    map.replaceChildren(iframe);
+    iframe.focus();
+  });
+</script>
+
+<style>
+  .where-grid {
+    display: grid;
+    gap: clamp(2rem, 4vw, 3rem);
+  }
+
+  .where-head {
+    display: grid;
+    gap: 1.25rem;
+    justify-items: start;
+  }
+
+  .where-venue {
+    font-size: var(--text-xl);
+    font-weight: 900;
+    line-height: 1.2;
+  }
+
+  .where-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.5rem;
+    font-weight: 700;
+  }
+
+  .where-meta span {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .where-meta :global(svg) {
+    width: 1.15rem;
+    height: 1.15rem;
+  }
+
+  /* ---------- Map ---------- */
+  .map {
+    min-height: 22rem;
+    --sketch-color: var(--navy);
+  }
+
+  .map-facade {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-content: center;
+    justify-items: center;
+    gap: 1rem;
+    padding: 1.5rem;
+    text-align: center;
+    --tile-size: 88px;
+  }
+
+  .map-facade::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(closest-side, var(--limestone) 55%, rgb(246 240 231 / 0.7));
+  }
+
+  .map-facade > * {
+    position: relative;
+  }
+
+  .map-pin {
+    display: grid;
+    place-items: center;
+    width: 5.5rem;
+    height: 5.5rem;
+    border-radius: 50% 50% 50% 0;
+    transform: rotate(-45deg);
+    background: var(--navy);
+    box-shadow: 0 16px 30px -12px rgb(2 31 66 / 0.6);
+  }
+
+  .map-pin :global(img) {
+    width: 3.2rem;
+    transform: rotate(45deg);
+  }
+
+  .map-coords {
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .map-note {
+    font-size: var(--text-xs);
+    color: var(--fg-muted);
+  }
+
+  .map :global(.map-frame) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+
+  .where-beach {
+    margin-top: clamp(3rem, 6vw, 5rem);
+  }
+
+  @media (min-width: 960px) {
+    .where-grid {
+      grid-template-columns: 1fr 1.25fr;
+      align-items: center;
+    }
+  }
+</style>

@@ -1,0 +1,143 @@
+---
+import { Image } from 'astro:assets';
+import Icon from './Icon.astro';
+import TileFrame from './TileFrame.astro';
+import { useT, homeHref, withBase, langs, type Lang } from '../i18n';
+import { site } from '../data/site';
+import logoWhite from '../assets/brand/lisbon_tag_rugby_logo_white.png';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = useT(lang);
+const th = site.thursday;
+---
+
+<TileFrame as="section" id="join" class="join" aria-labelledby="join-title" data-section>
+  <div class="wrap join-inner">
+    <h2 id="join-title" class="display display-xl" data-split>{t.join.title}</h2>
+    <p class="lede" data-reveal>{t.join.body}</p>
+
+    <p class="join-when label" data-reveal>
+      <span>{t.facts.day} · {th.start}–{th.end}</span>
+      <span>{th.venue}</span>
+    </p>
+
+    <div class="btn-row join-actions" data-reveal>
+      <a class="btn" href={site.links.whatsapp} target="_blank" rel="noopener">
+        <Icon name="whatsapp" />
+        {t.join.whatsapp}
+      </a>
+      <a class="btn btn--ghost" href={site.links.instagram} target="_blank" rel="noopener">
+        <Icon name="instagram" />
+        {t.join.instagram}
+      </a>
+      <a class="btn btn--ghost" href={withBase(`/thursdays-${lang}.ics`)} download>
+        <Icon name="calendar" />
+        {t.join.calendar}
+      </a>
+    </div>
+  </div>
+
+  <footer class="wrap">
+    <div class="footer">
+      <Image src={logoWhite} alt={site.name} width={200} format="webp" class="footer-logo" />
+      <div class="footer-meta">
+        <p class="display footer-made">{t.footer.made}</p>
+        <nav class="footer-langs" aria-label="Language">
+          {
+            langs.map((l) => (
+              <a href={homeHref(l)} aria-current={l === lang ? 'page' : undefined} lang={l === 'pt' ? 'pt-PT' : 'en'}>
+                {l === 'en' ? 'English' : 'Português'}
+              </a>
+            ))
+          }
+        </nav>
+        <p class="footer-small">© {new Date().getFullYear()} {t.footer.rights} · {t.footer.credits}</p>
+      </div>
+    </div>
+  </footer>
+</TileFrame>
+
+<style>
+  /* Room under the footer for the fixed menu and video buttons. */
+  .join :global(.tile-frame-card) {
+    padding-bottom: calc(6rem + var(--safe-b));
+  }
+
+  .join-inner {
+    display: grid;
+    gap: 1.5rem;
+    justify-items: start;
+  }
+
+  .join-when {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 1.5rem;
+  }
+
+  .join-actions {
+    margin-top: 0.5rem;
+  }
+
+  .footer {
+    margin-top: clamp(4rem, 8vw, 7rem);
+    padding-top: 2rem;
+    border-top: 1px solid var(--line);
+    display: grid;
+    gap: 2rem;
+    align-items: end;
+  }
+
+  :global(.footer-logo) {
+    width: 7.5rem;
+    height: auto;
+  }
+
+  .footer-meta {
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  .footer-made {
+    font-size: var(--display-sm);
+  }
+
+  .footer-langs {
+    display: flex;
+    gap: 1.25rem;
+    font-weight: 700;
+  }
+
+  .footer-langs a {
+    min-height: 2.75rem;
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    opacity: 0.7;
+  }
+
+  .footer-langs a[aria-current='page'] {
+    opacity: 1;
+    text-decoration: underline;
+    text-underline-offset: 0.25em;
+  }
+
+  .footer-small {
+    font-size: var(--text-xs);
+    color: var(--fg-muted);
+  }
+
+  @media (min-width: 900px) {
+    .footer {
+      grid-template-columns: auto 1fr;
+      gap: 3rem;
+    }
+    .footer-meta {
+      justify-items: end;
+      text-align: right;
+    }
+  }
+</style>

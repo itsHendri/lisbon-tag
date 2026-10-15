@@ -1,0 +1,61 @@
+---
+/** Beach Tag Sundays: photo across the full width with the text over it. */
+import Photo from './Photo.astro';
+import { useT, type Lang } from '../i18n';
+import { photos } from '../data/photos';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = useT(lang);
+const b = t.where.beach;
+---
+
+<article class="beach sketch" data-tone="dark" data-zoom data-reveal>
+  <div class="beach-media">
+    <Photo photo={photos.beach} lang={lang} sizes="(min-width: 1312px) 1232px, 92vw" widths={[640, 960, 1400, 1920]} class="cover" />
+  </div>
+  <div class="beach-body">
+    <h3 class="display display-md">{b.title}</h3>
+    <p>{b.body}</p>
+  </div>
+</article>
+
+<style>
+  .beach {
+    position: relative;
+    isolation: isolate;
+    display: flex;
+    align-items: flex-end;
+    min-height: clamp(20rem, 42vw, 30rem);
+    overflow: hidden;
+    border-radius: var(--radius);
+    color: var(--limestone);
+    background: var(--navy-ink);
+    --sketch-inset: 0.6rem;
+    --sketch-w: 2px;
+    --sketch-color: color-mix(in srgb, var(--limestone) 85%, transparent);
+  }
+
+  .beach-media {
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+  }
+
+  .beach::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(0deg, rgb(3 45 94 / 0.92) 0%, rgb(5 72 149 / 0.5) 50%, rgb(5 72 149 / 0.05) 85%);
+  }
+
+  .beach-body {
+    display: grid;
+    gap: 0.9rem;
+    max-width: 40rem;
+    padding: clamp(1.75rem, 5vw, 3.5rem);
+  }
+</style>

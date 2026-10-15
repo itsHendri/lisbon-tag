@@ -1,0 +1,96 @@
+---
+import Photo from './Photo.astro';
+import Icon from './Icon.astro';
+import TileFrame from './TileFrame.astro';
+import { useT, type Lang } from '../i18n';
+import { photos } from '../data/photos';
+import { site } from '../data/site';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = useT(lang);
+---
+
+<TileFrame as="section" tone="granite" id="social" aria-labelledby="social-title" data-section>
+  <div class="wrap">
+    <header class="social-head">
+      <h2 id="social-title" class="display display-xl" data-split>{t.social.title}</h2>
+      <p class="lede" data-reveal>{t.social.body}</p>
+    </header>
+
+    <ul class="gallery" data-reveal-stagger>
+      {
+        photos.gallery.map((p, i) => (
+          <li class:list={['gallery-item frame', `g${i % 8}`]}>
+            <Photo photo={p} lang={lang} sizes="(min-width: 900px) 25vw, 50vw" widths={[400, 640, 960]} class="cover" />
+          </li>
+        ))
+      }
+    </ul>
+
+    <a class="btn social-cta" href={site.links.instagram} target="_blank" rel="noopener">
+      <Icon name="instagram" />
+      {t.social.cta}
+      <span class="social-handle">{site.links.instagramHandle}</span>
+    </a>
+  </div>
+</TileFrame>
+
+<style>
+  .social-head {
+    display: grid;
+    gap: 1.25rem;
+    margin-bottom: clamp(2.5rem, 5vw, 4rem);
+  }
+
+  .gallery {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows: clamp(7rem, 22vw, 12rem);
+    grid-auto-flow: dense;
+    gap: 0.6rem;
+  }
+
+  /* A rhythm of tall and wide frames, like a camera roll. */
+  .g0,
+  .g5 {
+    grid-row: span 2;
+  }
+  .g3,
+  .g7 {
+    grid-column: span 2;
+  }
+
+  @media (min-width: 900px) {
+    .gallery {
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.9rem;
+    }
+    .g3 {
+      grid-column: span 2;
+      grid-row: span 2;
+    }
+    .g7 {
+      grid-column: span 4;
+    }
+  }
+
+  .social-cta {
+    margin-top: 2.5rem;
+  }
+
+  .social-handle {
+    font-weight: 400;
+    opacity: 0.7;
+  }
+
+  @media (max-width: 539px) {
+    .social-handle {
+      display: none;
+    }
+  }
+</style>

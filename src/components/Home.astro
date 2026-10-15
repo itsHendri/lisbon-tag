@@ -1,0 +1,46 @@
+---
+import Base from '../layouts/Base.astro';
+import Chrome from './Chrome.astro';
+import Hero from './Hero.astro';
+import Intro from './Intro.astro';
+import Thursdays from './Thursdays.astro';
+import HowToPlay from './HowToPlay.astro';
+import Outfit from './Outfit.astro';
+import Kit from './Kit.astro';
+import Where from './Where.astro';
+import Social from './Social.astro';
+import Faq from './Faq.astro';
+import Join from './Join.astro';
+import type { Lang } from '../i18n';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+---
+
+<Base lang={lang}>
+  <Chrome lang={lang} />
+  <main>
+    <Hero lang={lang} />
+    <Intro lang={lang} />
+    <Thursdays lang={lang} />
+    <HowToPlay lang={lang} />
+    <Outfit lang={lang} />
+    <Kit lang={lang} />
+    <Where lang={lang} />
+    <Social lang={lang} />
+    <Faq lang={lang} />
+    <Join lang={lang} />
+  </main>
+</Base>
+
+<script>
+  import '../scripts/motion';
+</script>
+
+<style is:global>
+  [data-section]:focus {
+    outline: none;
+  }
+</style>

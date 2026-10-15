@@ -1,0 +1,94 @@
+---
+import '../styles/global.css';
+import { getImage } from 'astro:assets';
+import { useT, htmlLang, homeHref, langs, type Lang } from '../i18n';
+import { site } from '../data/site';
+import logoFramed from '../assets/brand/lisbon_tag_rugby_logo_framed.png';
+import castle from '../assets/brand/icon_castle_blue.png';
+import fontCore from '../assets/fonts/lisbon-tag-core.woff2?url';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useT(lang);
+const canonical = new URL(homeHref(lang), Astro.site);
+const og = await getImage({ src: logoFramed, width: 1200, height: 1200, format: 'png' });
+const icon = await getImage({ src: castle, width: 192, format: 'png' });
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'SportsOrganization',
+  name: site.name,
+  sport: 'Tag rugby',
+  url: canonical.href,
+  logo: new URL(og.src, Astro.site).href,
+  sameAs: [site.links.instagram],
+  location: {
+    '@type': 'Place',
+    name: site.thursday.venue,
+    geo: { '@type': 'GeoCoordinates', latitude: site.thursday.lat, longitude: site.thursday.lng },
+    address: { '@type': 'PostalAddress', addressLocality: 'Lisboa', addressCountry: 'PT' },
+  },
+  event: {
+    '@type': 'SportsEvent',
+    name: `${site.name}: ${t.facts.day}`,
+    eventSchedule: {
+      '@type': 'Schedule',
+      repeatFrequency: 'P1W',
+      byDay: 'https://schema.org/Thursday',
+      startTime: site.thursday.start,
+      endTime: site.thursday.end,
+      scheduleTimezone: 'Europe/Lisbon',
+    },
+    location: { '@type': 'Place', name: site.thursday.venue },
+    isAccessibleForFree: true,
+  },
+};
+---
+
+<!doctype html>
+<html lang={htmlLang[lang]}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{t.meta.title}</title>
+    <meta name="description" content={t.meta.description} />
+    <meta name="theme-color" content="#054895" />
+    <link rel="canonical" href={canonical} />
+    {langs.map((l) => <link rel="alternate" hreflang={htmlLang[l]} href={new URL(homeHref(l), Astro.site)} />)}
+    <link rel="alternate" hreflang="x-default" href={new URL(homeHref('en'), Astro.site)} />
+
+    <link rel="icon" type="image/png" href={icon.src} />
+    <link rel="apple-touch-icon" href={icon.src} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={t.meta.title} />
+    <meta property="og:description" content={t.meta.description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={new URL(og.src, Astro.site)} />
+    <meta property="og:locale" content={lang === 'en' ? 'en_GB' : 'pt_PT'} />
+    <meta name="twitter:card" content="summary" />
+
+    <link rel="preload" href={fontCore} as="font" type="font/woff2" crossorigin />
+
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </head>
+  <body>
+    <!-- Roughens .sketch strokes so they read as hand drawn, like the Figma frames. -->
+    <svg width="0" height="0" style="position: absolute" aria-hidden="true" focusable="false">
+      <filter id="rough" x="-5%" y="-5%" width="110%" height="110%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.045" numOctaves="2" seed="7" result="noise" />
+        <feDisplacementMap in="SourceGraphic" in2="noise" scale="3.5" xChannelSelector="R" yChannelSelector="G" />
+      </filter>
+      <!-- Finer grain for small marks such as the rule icons. -->
+      <filter id="rough-sm" x="-10%" y="-10%" width="120%" height="120%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.09" numOctaves="2" seed="3" result="noise" />
+        <feDisplacementMap in="SourceGraphic" in2="noise" scale="2.2" xChannelSelector="R" yChannelSelector="G" />
+      </filter>
+    </svg>
+    <a class="skip-link" href="#about">{t.nav.skip}</a>
+    <slot />
+  </body>
+</html>

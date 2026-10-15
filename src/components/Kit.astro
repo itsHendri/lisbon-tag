@@ -1,0 +1,148 @@
+---
+/**
+ * The club shirt, sold on Fourthwall. The two 3D renders sit side by side
+ * like the Figma size-chart post: back raised on the right, front lower left.
+ */
+import { Image } from 'astro:assets';
+import Icon from './Icon.astro';
+import TileFrame from './TileFrame.astro';
+import { useT, type Lang } from '../i18n';
+import { site } from '../data/site';
+import front from '../assets/kit/shirt-front-3d.png';
+import back from '../assets/kit/shirt-back-3d.png';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = useT(lang);
+const shirtSizes = '(min-width: 960px) 32vw, 66vw';
+---
+
+<TileFrame as="section" id="kit" class="kit" aria-labelledby="kit-title" data-section>
+  <div class="wrap kit-grid">
+    <div class="kit-shirts">
+      <div class="kit-shirt kit-shirt--back" data-parallax="0.08">
+        <Image src={back} alt={t.kit.backAlt} widths={[400, 700, 1000]} sizes={shirtSizes} format="webp" quality={80} />
+      </div>
+      <div class="kit-shirt kit-shirt--front" data-parallax="0.16">
+        <Image src={front} alt={t.kit.frontAlt} widths={[400, 700, 1000]} sizes={shirtSizes} format="webp" quality={80} />
+      </div>
+    </div>
+
+    <div class="kit-copy">
+      <h2 id="kit-title" class="display display-md" data-split>{t.kit.title}</h2>
+      <p class="lede" data-reveal>{t.kit.body}</p>
+
+      <ul class="kit-details" data-reveal>
+        {t.kit.details.map((d) => <li>{d}</li>)}
+      </ul>
+
+      <div class="kit-buy" data-reveal>
+        <p class="kit-price">
+          <span class="label">{t.kit.priceLabel}</span>
+          <span class="display">{site.kit.price}</span>
+        </p>
+        <div class="btn-row">
+          <a class="btn" href={site.kit.fourthwallUrl} target="_blank" rel="noopener">
+            <Icon name="bag" />
+            {t.kit.buy}
+            <Icon name="external" />
+          </a>
+          <a class="btn btn--ghost" href={site.links.whatsapp} target="_blank" rel="noopener">
+            <Icon name="whatsapp" />
+            {t.kit.ask}
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</TileFrame>
+
+<style>
+  .kit-grid {
+    display: grid;
+    gap: clamp(2rem, 5vw, 5rem);
+    align-items: center;
+  }
+
+  @media (min-width: 960px) {
+    .kit-grid {
+      grid-template-columns: 1.1fr 1fr;
+    }
+  }
+
+  /* Two shirts overlapping, front lower and to the left. */
+  .kit-shirts {
+    position: relative;
+    aspect-ratio: 1 / 0.86;
+    max-width: 46rem;
+    width: 100%;
+    margin-inline: auto;
+  }
+
+  .kit-shirt {
+    position: absolute;
+    width: 74%;
+  }
+
+  .kit-shirt :global(img) {
+    width: 100%;
+    height: auto;
+    filter: drop-shadow(0 28px 40px rgb(2 20 45 / 0.45));
+  }
+
+  .kit-shirt--back {
+    top: 0;
+    right: 0;
+  }
+
+  .kit-shirt--front {
+    bottom: 0;
+    left: 0;
+  }
+
+  .kit-copy {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .kit-details {
+    display: grid;
+    gap: 0.5rem;
+    padding: 0;
+    list-style: none;
+  }
+
+  .kit-details li {
+    display: flex;
+    gap: 0.75rem;
+    align-items: baseline;
+  }
+
+  .kit-details li::before {
+    content: '';
+    flex: none;
+    width: 0.5rem;
+    height: 0.5rem;
+    background: currentColor;
+    transform: rotate(45deg) translateY(-0.1rem);
+  }
+
+  .kit-buy {
+    display: grid;
+    gap: 1.25rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--line);
+  }
+
+  .kit-price {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+  }
+
+  .kit-price .display {
+    font-size: var(--display-sm);
+  }
+</style>

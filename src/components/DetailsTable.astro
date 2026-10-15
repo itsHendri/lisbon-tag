@@ -1,0 +1,60 @@
+---
+/** Label / value rows between hand-drawn rules, as on the Figma story posts. */
+interface Props {
+  rows: { label: string; value: string }[];
+  class?: string;
+}
+const { rows, class: className } = Astro.props;
+---
+
+<dl class:list={['details', className]}>
+  {
+    rows.map((r) => (
+      <div class="details-row">
+        <dt class="label">{r.label}</dt>
+        <dd>{r.value}</dd>
+      </div>
+    ))
+  }
+</dl>
+
+<style>
+  .details-row {
+    position: relative;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-block: clamp(0.95rem, 2vw, 1.4rem);
+  }
+
+  /* Hand-drawn rule under every row, and over the first. */
+  .details-row::after,
+  .details-row:first-child::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -3px;
+    height: 6px;
+    background: currentColor;
+    -webkit-mask: var(--rule-mask) center / 100% 100% no-repeat;
+    mask: var(--rule-mask) center / 100% 100% no-repeat;
+  }
+
+  .details-row:first-child::before {
+    top: -3px;
+    bottom: auto;
+  }
+
+  .details-row dt {
+    font-weight: 400;
+    flex: none;
+  }
+
+  .details-row dd {
+    font-size: var(--text-xl);
+    line-height: 1.2;
+    text-align: right;
+  }
+</style>
