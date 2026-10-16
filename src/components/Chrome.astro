@@ -1,12 +1,12 @@
 ---
 /**
- * The fixed UI that floats over every section (Quechua-style):
- * castle top-left, language pill top-right, menu bottom-centre,
- * how-to-play video card bottom-right, plus the menu sheet and video dialogs.
+ * The fixed UI that floats over every section:
+ * castle top-left, Menu top-right (sections + language inside),
+ * how-to-play video banner bottom-right, plus the menu and video dialogs.
  */
 import { Image, getImage } from 'astro:assets';
 import Icon from './Icon.astro';
-import { useT, homeHref, otherLang, sectionIds, type Lang } from '../i18n';
+import { useT, homeHref, langs, htmlLang, sectionIds, type Lang } from '../i18n';
 import { site } from '../data/site';
 import castleMask from '../assets/brand/icon_castle_white.png';
 
@@ -15,55 +15,41 @@ interface Props {
 }
 const { lang } = Astro.props;
 const t = useT(lang);
-const other = otherLang(lang);
 const yt = site.howToPlay.youtubeId;
 const castle = await getImage({ src: castleMask, width: 128, format: 'png' });
+const langNames = { en: 'English', pt: 'Português' } as const;
 ---
 
 <header class="chrome-top">
   <a class="chrome-logo" href="#home" aria-label={t.nav.home} style={`--castle: url(${castle.src})`}></a>
-  <a
-    class="chrome-pill chrome-lang"
-    href={homeHref(other)}
-    hreflang={other === 'pt' ? 'pt-PT' : 'en'}
-    lang={other === 'pt' ? 'pt-PT' : 'en'}
-    data-lang-link
-    data-base={homeHref(other)}
-  >
-    <span aria-hidden="true">{lang.toUpperCase()}</span>
-    <span class="chrome-lang-sep" aria-hidden="true">/</span>
-    <span>{t.nav.otherLang}</span>
-    <span class="sr-only">{t.nav.otherLangLabel}</span>
-  </a>
-</header>
-
-<div class="chrome-bottom">
-  <button class="chrome-pill chrome-menu" type="button" aria-haspopup="dialog" aria-controls="sheet" data-sheet-open>
+  <button class="chrome-menu" type="button" aria-haspopup="dialog" aria-controls="sheet" data-sheet-open>
     <span>{t.nav.menu}</span>
     <Icon name="grid" />
   </button>
+</header>
 
-  <button class="chrome-film" type="button" aria-haspopup="dialog" aria-controls="film" data-film-open>
-    <span class="chrome-film-thumb">
-      <Image src={`https://i.ytimg.com/vi/${yt}/mqdefault.jpg`} inferSize alt="" width={192} format="webp" loading="eager" />
-      <span class="chrome-film-thumb-play"><Icon name="play" /></span>
-    </span>
-    <span class="chrome-film-text">
-      <span class="chrome-film-title">{t.nav.film}</span>
-      <span class="chrome-film-sub">{t.nav.filmSub}</span>
-    </span>
+<button class="chrome-film" type="button" aria-haspopup="dialog" aria-controls="film" data-film-open>
+  <span class="chrome-film-thumb">
+    <Image src={`https://i.ytimg.com/vi/${yt}/mqdefault.jpg`} inferSize alt="" width={240} format="webp" loading="eager" />
     <span class="chrome-film-play"><Icon name="play" /></span>
-  </button>
-</div>
+  </span>
+  <span class="chrome-film-text">
+    <span class="chrome-film-title display">{t.nav.film}</span>
+    <span class="chrome-film-sub">{t.nav.filmSub}</span>
+  </span>
+</button>
 
-<dialog id="sheet" class="sheet theme-navy" aria-label={t.nav.sections}>
+<!-- Full-screen menu. data-lenis-prevent lets it scroll natively while the page is locked. -->
+<dialog id="sheet" class="sheet theme-navy" aria-label={t.nav.menu} data-lenis-prevent>
   <div class="sheet-head">
-    <span class="label">{t.nav.menu}</span>
-    <button class="sheet-close" type="button" data-sheet-close aria-label={t.nav.close}>
+    <span class="sheet-castle" style={`--castle: url(${castle.src})`} aria-hidden="true"></span>
+    <button class="sheet-close" type="button" data-sheet-close>
+      <span>{t.nav.close}</span>
       <Icon name="close" />
     </button>
   </div>
-  <nav aria-label={t.nav.sections}>
+
+  <nav class="sheet-nav" aria-label={t.nav.sections}>
     <ol class="sheet-list">
       {
         sectionIds.map((id, i) => (
@@ -77,6 +63,25 @@ const castle = await getImage({ src: castleMask, width: 128, format: 'png' });
       }
     </ol>
   </nav>
+
+  <div class="sheet-foot">
+    <p class="label">{t.nav.language}</p>
+    <div class="sheet-langs">
+      {
+        langs.map((l) =>
+          l === lang ? (
+            <span class="sheet-lang is-current" aria-current="page">
+              {langNames[l]}
+            </span>
+          ) : (
+            <a class="sheet-lang" href={homeHref(l)} hreflang={htmlLang[l]} lang={htmlLang[l]} data-lang-link data-base={homeHref(l)}>
+              {langNames[l]}
+            </a>
+          ),
+        )
+      }
+    </div>
+  </div>
 </dialog>
 
 <dialog id="film" class="film" aria-label={t.nav.film}>
@@ -92,9 +97,9 @@ const castle = await getImage({ src: castleMask, width: 128, format: 'png' });
 </script>
 
 <style>
-  .chrome-top,
-  .chrome-bottom {
+  .chrome-top {
     position: fixed;
+    top: calc(var(--safe-t) + 0.875rem);
     left: 0;
     right: 0;
     z-index: 50;
@@ -105,23 +110,13 @@ const castle = await getImage({ src: castleMask, width: 128, format: 'png' });
     pointer-events: none;
   }
 
-  .chrome-top {
-    top: calc(var(--safe-t) + 0.875rem);
-  }
-
-  .chrome-bottom {
-    bottom: calc(var(--safe-b) + 0.875rem);
-    justify-content: center;
-    align-items: flex-end;
-  }
-
-  .chrome-top > *,
-  .chrome-bottom > * {
+  .chrome-top > * {
     pointer-events: auto;
   }
 
   /* ---------- Castle: no plate, its colour follows what's behind it ---------- */
-  .chrome-logo {
+  .chrome-logo,
+  .sheet-castle {
     display: block;
     width: 3.5rem;
     height: var(--chrome-h);
@@ -141,11 +136,11 @@ const castle = await getImage({ src: castleMask, width: 128, format: 'png' });
     filter: drop-shadow(0 0 2px currentColor);
   }
 
-  /* ---------- Pills ---------- */
-  .chrome-pill {
+  /* ---------- Menu button ---------- */
+  .chrome-menu {
     display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 1rem;
     min-height: var(--chrome-h);
     padding: 0 1rem;
     border-radius: var(--radius-pill);
@@ -155,59 +150,38 @@ const castle = await getImage({ src: castleMask, width: 128, format: 'png' });
     -webkit-backdrop-filter: blur(10px);
     font-size: var(--text-sm);
     font-weight: 700;
-    text-decoration: none;
+    letter-spacing: 0.04em;
     box-shadow:
       inset 0 0 0 1px rgb(246 240 231 / 0.28),
       0 6px 24px -8px rgb(2 31 66 / 0.45);
-    transition:
-      transform 0.25s var(--ease-out),
-      background-color 0.25s;
+    transition: background-color 0.25s;
   }
 
-  .chrome-pill:hover {
+  .chrome-menu:hover {
     background: var(--navy);
-    transform: translateY(-1px);
   }
 
-  .chrome-pill :global(svg) {
+  .chrome-menu :global(svg) {
     width: 1.1rem;
     height: 1.1rem;
   }
 
-  .chrome-lang {
-    letter-spacing: 0.08em;
-  }
-
-  .chrome-lang > span:first-child {
-    opacity: 0.55;
-  }
-
-  .chrome-lang-sep {
-    opacity: 0.35;
-  }
-
-  .chrome-menu {
-    min-width: 8rem;
-    justify-content: space-between;
-    gap: 1.25rem;
-    letter-spacing: 0.04em;
-  }
-
-  /* ---------- How-to-play video card (Quechua's "Discover full video") ---------- */
+  /* ---------- How-to-play banner (Quechua's "Discover full video") ---------- */
   .chrome-film {
-    position: absolute;
+    position: fixed;
     right: max(var(--gutter), env(safe-area-inset-right));
-    bottom: 0;
+    bottom: calc(var(--safe-b) + 0.875rem);
+    z-index: 50;
     display: flex;
-    align-items: stretch;
-    gap: 0.75rem;
-    padding: 0.375rem;
+    align-items: center;
+    gap: 0.875rem;
+    padding: 0.4rem 1.1rem 0.4rem 0.4rem;
     background: var(--limestone);
     color: var(--navy);
     border-radius: var(--radius);
     box-shadow:
       inset 0 0 0 2px var(--navy),
-      0 10px 30px -10px rgb(2 31 66 / 0.5);
+      0 12px 32px -10px rgb(2 31 66 / 0.55);
     text-align: left;
     transition: transform 0.25s var(--ease-out);
   }
@@ -218,7 +192,8 @@ const castle = await getImage({ src: castleMask, width: 128, format: 'png' });
 
   .chrome-film-thumb {
     position: relative;
-    width: 6.5rem;
+    flex: none;
+    width: 6rem;
     aspect-ratio: 16 / 9;
     overflow: hidden;
     border-radius: var(--radius-sm);
@@ -236,135 +211,120 @@ const castle = await getImage({ src: castleMask, width: 128, format: 'png' });
     transform: scale(1.08);
   }
 
-  .chrome-film-thumb-play {
-    display: none;
+  .chrome-film-play {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    background: rgb(3 45 94 / 0.35);
+    color: var(--limestone);
+  }
+
+  .chrome-film-play :global(svg) {
+    width: 1.1rem;
+    height: 1.1rem;
+    transform: translateX(1px);
+    filter: drop-shadow(0 1px 3px rgb(0 0 0 / 0.4));
   }
 
   .chrome-film-text {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding-block: 0.1rem;
-    padding-right: 0.25rem;
+    display: grid;
+    gap: 0.2rem;
   }
 
   .chrome-film-title {
-    font-weight: 900;
-    font-size: var(--text-sm);
-    line-height: 1.1;
+    font-size: 1.35rem;
+    line-height: 1;
     white-space: nowrap;
   }
 
   .chrome-film-sub {
     font-size: var(--text-xs);
-    line-height: 1.1;
+    font-weight: 700;
+    line-height: 1.2;
     opacity: 0.75;
     white-space: nowrap;
   }
 
-  .chrome-film-play {
-    align-self: flex-end;
-    display: grid;
-    place-items: center;
-    width: 1.9rem;
-    height: 1.9rem;
-    border-radius: 50%;
-    background: var(--navy);
-    color: var(--limestone);
-  }
-
-  .chrome-film-play :global(svg),
-  .chrome-film-thumb-play :global(svg) {
-    width: 0.75rem;
-    height: 0.75rem;
-    transform: translateX(1px);
-  }
-
-  /* Phones: just the thumbnail with a play button on it. */
-  @media (max-width: 639px) {
-    .chrome-film {
-      padding: 0.25rem;
-    }
-    .chrome-film-text,
-    .chrome-film-play {
-      display: none;
-    }
+  @media (min-width: 768px) {
     .chrome-film-thumb {
-      width: 5rem;
+      width: 7.5rem;
     }
-    .chrome-film-thumb-play {
-      position: absolute;
-      inset: 0;
-      display: grid;
-      place-items: center;
-      background: rgb(3 45 94 / 0.35);
-      color: var(--limestone);
+    .chrome-film-title {
+      font-size: 1.6rem;
     }
-    .chrome-film-thumb-play :global(svg) {
-      width: 1rem;
-      height: 1rem;
+    .chrome-film-sub {
+      font-size: var(--text-sm);
     }
   }
 
-  /* ---------- Menu sheet ---------- */
+  /* ---------- Full-screen menu ---------- */
   .sheet {
-    margin: auto auto 0;
-    width: min(100%, 34rem);
-    max-width: 100%;
-    max-height: min(88svh, 44rem);
-    padding: 1.25rem var(--gutter) calc(var(--safe-b) + 1.5rem);
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    padding: calc(var(--safe-t) + 0.875rem) max(var(--gutter), env(safe-area-inset-right)) calc(var(--safe-b) + 2rem)
+      max(var(--gutter), env(safe-area-inset-left));
     border: 0;
-    border-radius: 0;
     background: var(--bg);
     color: var(--fg);
-    overflow: auto;
+    overflow-y: auto;
     overscroll-behavior: contain;
-  }
-
-  @media (min-width: 768px) {
-    .sheet {
-      margin: auto;
-      padding-bottom: 1.5rem;
-    }
-  }
-
-  .sheet::backdrop {
-    background: rgb(2 31 66 / 0.55);
-    backdrop-filter: blur(4px);
+    -webkit-overflow-scrolling: touch;
   }
 
   .sheet[open] {
-    animation: sheet-in 0.4s var(--ease-out);
+    display: flex;
+    flex-direction: column;
+    gap: clamp(1.5rem, 4vh, 3rem);
+    animation: sheet-in 0.35s var(--ease-out);
+  }
+
+  .sheet::backdrop {
+    background: var(--navy);
   }
 
   @keyframes sheet-in {
     from {
-      transform: translateY(40px);
       opacity: 0;
+      transform: translateY(-12px);
     }
   }
 
+  /* Same height and places as the header, so Close sits where Menu was. */
   .sheet-head {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 0.5rem;
+    flex: none;
   }
 
-  .sheet-close,
-  .film-close {
-    display: grid;
-    place-items: center;
-    width: var(--chrome-h);
-    height: var(--chrome-h);
-    border-radius: var(--radius);
-    background: color-mix(in srgb, currentColor 14%, transparent);
+  .sheet-close {
+    display: inline-flex;
+    align-items: center;
+    gap: 1rem;
+    min-height: var(--chrome-h);
+    padding: 0 1rem;
+    border-radius: var(--radius-pill);
+    font-size: var(--text-sm);
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    box-shadow: inset 0 0 0 1px rgb(246 240 231 / 0.45);
   }
 
-  .sheet-close :global(svg),
-  .film-close :global(svg) {
-    width: 1.2rem;
-    height: 1.2rem;
+  .sheet-close :global(svg) {
+    width: 1.1rem;
+    height: 1.1rem;
+  }
+
+  .sheet-nav {
+    max-width: 48rem;
+    width: 100%;
+    margin-inline: auto;
   }
 
   .sheet-list {
@@ -376,11 +336,12 @@ const castle = await getImage({ src: castleMask, width: 128, format: 'png' });
     display: flex;
     align-items: baseline;
     gap: 1rem;
-    padding: 0.7rem 0;
+    padding: 0.6rem 0;
     text-decoration: none;
     border-bottom: 1px solid color-mix(in srgb, currentColor 22%, transparent);
   }
 
+  .sheet-list a:hover .sheet-name,
   .sheet-list a[aria-current='true'] .sheet-name {
     text-decoration: underline;
     text-decoration-thickness: 2px;
@@ -396,8 +357,37 @@ const castle = await getImage({ src: castleMask, width: 128, format: 'png' });
   }
 
   .sheet-name {
-    font-size: clamp(1.75rem, 1.4rem + 1.6vw, 2.5rem);
+    font-size: clamp(2rem, 1.5rem + 2.4vw, 3.25rem);
     line-height: 1.05;
+  }
+
+  .sheet-foot {
+    max-width: 48rem;
+    width: 100%;
+    margin: auto auto 0;
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  .sheet-langs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+  }
+
+  .sheet-lang {
+    display: grid;
+    place-items: center;
+    min-height: 3rem;
+    border-radius: var(--radius-pill);
+    font-weight: 700;
+    text-decoration: none;
+    box-shadow: inset 0 0 0 2px var(--limestone);
+  }
+
+  .sheet-lang.is-current {
+    background: var(--limestone);
+    color: var(--navy);
   }
 
   /* ---------- Video ---------- */
@@ -439,6 +429,16 @@ const castle = await getImage({ src: castleMask, width: 128, format: 'png' });
     top: calc(var(--safe-t) + 0.875rem);
     right: max(var(--gutter), env(safe-area-inset-right));
     z-index: 1;
+    display: grid;
+    place-items: center;
+    width: var(--chrome-h);
+    height: var(--chrome-h);
+    border-radius: var(--radius);
     background: rgb(246 240 231 / 0.18);
+  }
+
+  .film-close :global(svg) {
+    width: 1.2rem;
+    height: 1.2rem;
   }
 </style>

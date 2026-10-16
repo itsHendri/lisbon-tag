@@ -234,23 +234,44 @@ p {
   gap: 0.75rem;
 }
 
+/* Phones: every call to action spans the full width, stacked. */
+@media (max-width: 639px) {
+  .btn {
+    width: 100%;
+  }
+  .btn-row {
+    flex-direction: column;
+    width: 100%;
+  }
+}
+
 /* ---------- Hand-drawn stroke ----------
  * The Figma frames use a textured stroke so they look drawn by hand.
- * `.sketch` draws a border on a pseudo-element and roughens it with the
- * #rough SVG filter defined once in Base.astro. --sketch-inset moves the
- * line inside the box (the dark posts' inset frame).
+ * `.sketch` paints four hand-drawn edges (--edge-* in tokens.css) as masks
+ * over a pseudo-element, so it renders the same in every browser, Safari
+ * included. --sketch-inset moves the frame inside the box (the dark posts'
+ * inset line); --sketch-w is the line weight.
  */
 .sketch {
   position: relative;
 }
 
 .sketch::before {
+  --band: calc(var(--sketch-w, var(--stroke)) * 2);
   content: '';
   position: absolute;
   inset: var(--sketch-inset, 0);
-  border: var(--sketch-w, var(--stroke)) solid var(--sketch-color, currentColor);
-  border-radius: var(--radius-sm);
-  filter: url(#rough);
+  background: var(--sketch-color, currentColor);
+  -webkit-mask:
+    var(--edge-top) top / 100% var(--band) no-repeat,
+    var(--edge-bottom) bottom / 100% var(--band) no-repeat,
+    var(--edge-left) left / var(--band) 100% no-repeat,
+    var(--edge-right) right / var(--band) 100% no-repeat;
+  mask:
+    var(--edge-top) top / 100% var(--band) no-repeat,
+    var(--edge-bottom) bottom / 100% var(--band) no-repeat,
+    var(--edge-left) left / var(--band) 100% no-repeat,
+    var(--edge-right) right / var(--band) 100% no-repeat;
   pointer-events: none;
   z-index: 1;
 }

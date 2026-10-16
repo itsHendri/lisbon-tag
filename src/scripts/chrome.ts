@@ -31,7 +31,7 @@ function updateTone() {
   const r = logo.getBoundingClientRect();
   const under = document
     .elementsFromPoint(r.left + r.width / 2, r.top + r.height / 2)
-    .find((el) => !el.closest('.chrome-top, .chrome-bottom'));
+    .find((el) => !el.closest('.chrome-top, .chrome-film'));
   const dark = under?.closest('[data-tone]')?.getAttribute('data-tone') === 'dark';
   document.documentElement.dataset.chromeTone = dark ? 'dark' : 'light';
 }

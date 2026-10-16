@@ -49,9 +49,9 @@
   --text-base: clamp(1rem, 0.96rem + 0.2vw, 1.125rem);
   --text-lg: clamp(1.125rem, 1.05rem + 0.4vw, 1.375rem);
   --text-xl: clamp(1.375rem, 1.2rem + 0.9vw, 2rem);
-  --text-statement: clamp(1.625rem, 1.2rem + 2.2vw, 3.25rem);
-  --display-sm: clamp(2.25rem, 1.6rem + 3.2vw, 4rem);
-  --display-md: clamp(3rem, 1.8rem + 6vw, 7rem);
+  --text-statement: clamp(1.5rem, 1.15rem + 1.8vw, 2.75rem);
+  --display-sm: clamp(2rem, 1.5rem + 2.4vw, 3.25rem);
+  --display-md: clamp(2.75rem, 1.6rem + 5vw, 5.5rem);
   --display-xl: clamp(3.75rem, 1rem + 13vw, 12.5rem);
 
   --label-tracking: 0.14em;
@@ -77,6 +77,12 @@
   --chrome-h: 2.75rem;
   --safe-b: env(safe-area-inset-bottom, 0px);
   --safe-t: env(safe-area-inset-top, 0px);
+
+  /* Hand-drawn frame edges (filled, uneven thickness). Used as masks by .sketch. */
+  --edge-top: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 6' preserveAspectRatio='none'%3E%3Cpath d='M0.0 1.17 L18.2 1.15 L36.4 1.25 L54.5 1.30 L72.7 1.52 L90.9 1.44 L109.1 1.77 L127.3 1.58 L145.5 2.06 L163.6 2.01 L181.8 1.83 L200.0 1.87 L218.2 1.94 L236.4 1.99 L254.5 2.07 L272.7 1.89 L290.9 1.78 L309.1 1.51 L327.3 1.67 L345.5 1.44 L363.6 1.16 L381.8 1.02 L400.0 1.12 L400.0 4.10 L381.8 4.10 L363.6 3.98 L345.5 4.09 L327.3 4.41 L309.1 4.60 L290.9 4.50 L272.7 4.63 L254.5 4.74 L236.4 4.78 L218.2 4.65 L200.0 4.72 L181.8 4.83 L163.6 4.62 L145.5 4.74 L127.3 4.76 L109.1 4.52 L90.9 4.16 L72.7 4.04 L54.5 4.15 L36.4 3.89 L18.2 3.97 L0.0 4.12Z'/%3E%3C/svg%3E");
+  --edge-bottom: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 6' preserveAspectRatio='none'%3E%3Cpath d='M0.0 1.40 L18.2 0.99 L36.4 1.12 L54.5 1.06 L72.7 1.29 L90.9 1.43 L109.1 1.44 L127.3 1.73 L145.5 2.00 L163.6 1.82 L181.8 2.08 L200.0 2.09 L218.2 1.92 L236.4 1.81 L254.5 1.78 L272.7 1.39 L290.9 1.49 L309.1 1.25 L327.3 1.06 L345.5 1.08 L363.6 1.05 L381.8 1.09 L400.0 1.28 L400.0 4.20 L381.8 3.87 L363.6 3.82 L345.5 4.08 L327.3 3.86 L309.1 4.13 L290.9 4.24 L272.7 4.34 L254.5 4.44 L236.4 4.69 L218.2 4.88 L200.0 5.03 L181.8 4.91 L163.6 4.91 L145.5 4.65 L127.3 4.57 L109.1 4.49 L90.9 4.06 L72.7 4.00 L54.5 3.88 L36.4 3.97 L18.2 4.00 L0.0 4.18Z'/%3E%3C/svg%3E");
+  --edge-left: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 6 400' preserveAspectRatio='none'%3E%3Cpath d='M1.15 0.0 L1.57 18.2 L1.58 36.4 L1.66 54.5 L1.69 72.7 L1.99 90.9 L1.97 109.1 L2.03 127.3 L2.22 145.5 L1.81 163.6 L1.80 181.8 L1.84 200.0 L1.64 218.2 L1.51 236.4 L1.36 254.5 L1.21 272.7 L1.24 290.9 L0.98 309.1 L0.98 327.3 L1.09 345.5 L1.42 363.6 L1.34 381.8 L1.67 400.0 L4.40 400.0 L4.34 381.8 L4.29 363.6 L4.17 345.5 L3.91 327.3 L3.98 309.1 L4.14 290.9 L3.85 272.7 L4.03 254.5 L4.09 236.4 L4.47 218.2 L4.69 200.0 L4.62 181.8 L4.61 163.6 L4.97 145.5 L5.03 127.3 L4.91 109.1 L4.66 90.9 L4.72 72.7 L4.52 54.5 L4.42 36.4 L4.37 18.2 L4.16 0.0Z'/%3E%3C/svg%3E");
+  --edge-right: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 6 400' preserveAspectRatio='none'%3E%3Cpath d='M1.42 0.0 L1.58 18.2 L1.39 36.4 L1.19 54.5 L1.21 72.7 L1.22 90.9 L1.13 109.1 L1.05 127.3 L1.13 145.5 L1.40 163.6 L1.57 181.8 L1.72 200.0 L1.58 218.2 L1.89 236.4 L1.97 254.5 L2.14 272.7 L2.22 290.9 L1.98 309.1 L2.08 327.3 L2.15 345.5 L1.85 363.6 L1.90 381.8 L1.79 400.0 L4.53 400.0 L4.60 381.8 L4.59 363.6 L4.94 345.5 L4.71 327.3 L4.90 309.1 L4.65 290.9 L4.85 272.7 L4.55 254.5 L4.45 236.4 L4.58 218.2 L4.51 200.0 L4.07 181.8 L3.97 163.6 L4.12 145.5 L4.08 127.3 L3.82 109.1 L4.09 90.9 L4.09 72.7 L4.13 54.5 L4.13 36.4 L4.25 18.2 L4.20 0.0Z'/%3E%3C/svg%3E");
 
   /* Hand-drawn rule, as in the Figma posts. Used as a mask so it takes currentColor. */
   --rule-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 6' preserveAspectRatio='none'%3E%3Cpath d='M0 3.2 C40 2.1 70 4.1 112 3 S190 2.2 236 3.4 S318 4.2 352 2.8 S392 3.3 400 3' stroke='black' stroke-width='2.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");

@@ -17,10 +17,9 @@ export const pt: Dict = {
     menu: 'Menu',
     sections: 'Secções',
     close: 'Fechar',
-    otherLang: 'EN',
-    otherLangLabel: 'View in English',
-    film: 'Como jogar',
-    filmSub: 'Ver o vídeo',
+    language: 'Idioma',
+    film: 'Como se joga tag',
+    filmSub: 'As regras em 4 minutos',
     closeFilm: 'Fechar o vídeo',
   },
 

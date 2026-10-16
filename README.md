@@ -20,7 +20,7 @@ npm run deploy     # build + Cloudflare Pages (needs wrangler login)
 | All wording, Portuguese | `src/i18n/pt.ts` (same shape; TypeScript complains if a key is missing) |
 | Photos | `src/data/photos.ts` |
 | Hero loop video | `public/video/hero-loop.mp4` (desktop) and `hero-loop-540.mp4` (phones) |
-| "How to play" video (card bottom-right) | `site.howToPlay.youtubeId` in `src/data/site.ts` |
+| "How to play tag" video (banner bottom-right) | `site.howToPlay.youtubeId` in `src/data/site.ts` |
 | Rule icons | `src/components/HowToPlay.astro` ([Phosphor](https://phosphoricons.com), MIT, bold weight) |
 
 Search the project for `TODO` to find every placeholder still waiting for a real detail.
@@ -69,7 +69,7 @@ pyftsubset "Lisbon Tag.ttf" --text="àáâãçéêíóôõúüÀÁÂÃÇÉÊÍÓ
 - `src/scripts/motion.ts` contains every scroll animation, applied through `data-` attributes (`data-reveal`, `data-split`, `data-parallax`, `data-zoom`). With *Reduce motion* turned on, it does nothing and the page is still complete: no content is hidden waiting for an animation.
 - `src/styles/tokens.css` holds the colours, type and spacing. Sections switch theme with `.theme-light`, `.theme-navy` or `.theme-granite`.
 - Every dark section sits in `TileFrame.astro`: an azulejo border with a navy (or granite) card inside, like the Figma posts.
-- `.sketch` (in `global.css`) draws the hand-drawn stroke on cards and frames. It roughens a plain border with the `#rough` SVG filter defined in `Base.astro`.
+- `.sketch` (in `global.css`) draws the hand-drawn stroke on cards and frames: four hand-drawn edges (`--edge-*` in `tokens.css`) used as masks, so it renders the same in Safari. The rule icons get their wobble from the `#rough-icon` SVG filter in `Base.astro`, applied inside each icon.
 - The castle top-left changes colour with what's behind it. Mark anything dark with `data-tone="dark"`.
 - `/thursdays-en.ics` and `/thursdays-pt.ics` are weekly calendar events generated from `site.ts`.
 

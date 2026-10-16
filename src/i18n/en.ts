@@ -15,10 +15,9 @@ export const en = {
     menu: 'Menu',
     sections: 'Sections',
     close: 'Close',
-    otherLang: 'PT',
-    otherLangLabel: 'Ver em português',
-    film: 'How to play',
-    filmSub: 'Watch the video',
+    language: 'Language',
+    film: 'How to play tag',
+    filmSub: 'The rules in 4 minutes',
     closeFilm: 'Close video',
   },
 

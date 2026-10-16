@@ -21,7 +21,10 @@ interface Props {
 const { lang } = Astro.props;
 const t = useT(lang);
 
-const icons = [seven, tag, pass, defence, turnover, backwards, kick, noContact, tryLine];
+// Wrap each icon's shapes in the #rough-icon filter (Base.astro) so the edges
+// wobble like the hand-drawn card strokes.
+const rough = (svg: string) => svg.replace(/(<svg[^>]*>)/, '$1<g filter="url(#rough-icon)">').replace('</svg>', '</g></svg>');
+const icons = [seven, tag, pass, defence, turnover, backwards, kick, noContact, tryLine].map(rough);
 ---
 
 <section id="how" class="section theme-light how" data-section aria-labelledby="how-title">
@@ -106,12 +109,10 @@ const icons = [seven, tag, pass, defence, turnover, backwards, kick, noContact, 
     width: clamp(2.5rem, 7vw, 3.5rem);
   }
 
-  /* Same hand-drawn wobble as the card strokes. */
   .rule-icon :global(svg) {
     width: 100%;
     height: auto;
     overflow: visible;
-    filter: url(#rough-sm);
   }
 
   .rule-title {
@@ -151,13 +152,14 @@ const icons = [seven, tag, pass, defence, turnover, backwards, kick, noContact, 
   }
 
   .first-head {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
+    display: grid;
+    justify-items: center;
+    gap: 0.75rem;
+    text-align: center;
   }
 
   :global(.first-ball) {
-    width: 4.5rem;
+    width: 5rem;
     height: auto;
   }
 
@@ -191,17 +193,19 @@ const icons = [seven, tag, pass, defence, turnover, backwards, kick, noContact, 
     font-size: var(--text-base);
   }
 
+  .first {
+    gap: 2rem;
+  }
+
   @media (min-width: 900px) {
-    .first {
-      grid-template-columns: 1fr 2fr;
-      align-items: center;
-      gap: 3rem;
-    }
     .first-steps {
       grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
     }
     .first-steps li {
       grid-template-columns: 1fr;
+      justify-items: center;
+      text-align: center;
     }
   }
 </style>
