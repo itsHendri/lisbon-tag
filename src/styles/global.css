@@ -247,11 +247,36 @@ p {
 
 /* ---------- Hand-drawn stroke ----------
  * The Figma frames use a textured stroke so they look drawn by hand.
- * `.sketch` paints four hand-drawn edges (--edge-* in tokens.css) as masks
- * over a pseudo-element, so it renders the same in every browser, Safari
- * included. --sketch-inset moves the frame inside the box (the dark posts'
- * inset line); --sketch-w is the line weight.
+ * scripts/sketch.ts adds an SVG outline roughened by the #rough filter to
+ * every `.sketch` (works in Safari). The ::before mask outline below is the
+ * fallback when that script hasn't run. --sketch-inset moves the frame inside
+ * the box (the dark posts' inset line); --sketch-w is the line weight.
  */
+.sketch-svg {
+  --w: var(--sketch-w, var(--stroke));
+  --in: var(--sketch-inset, 0px);
+  /* The stroke straddles the rectangle's edge, so pull it in by half its width. */
+  position: absolute;
+  top: calc(var(--in) + var(--w) / 2);
+  left: calc(var(--in) + var(--w) / 2);
+  width: calc(100% - 2 * var(--in) - var(--w));
+  height: calc(100% - 2 * var(--in) - var(--w));
+  overflow: visible;
+  pointer-events: none;
+  z-index: 1;
+  color: var(--sketch-color, currentColor);
+}
+
+.sketch-svg rect {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: var(--w);
+}
+
+.sketch.has-sketch-svg::before {
+  display: none;
+}
+
 .sketch {
   position: relative;
 }
