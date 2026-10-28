@@ -1,16 +1,19 @@
 ---
+import { getImage } from 'astro:assets';
 import Photo from './Photo.astro';
 import Icon from './Icon.astro';
 import TileFrame from './TileFrame.astro';
 import { useT, type Lang } from '../i18n';
 import { photos } from '../data/photos';
 import { site } from '../data/site';
+import tileBlue from '../assets/brand/tile_blue.png';
 
 interface Props {
   lang: Lang;
 }
 const { lang } = Astro.props;
 const t = useT(lang);
+const tile = await getImage({ src: tileBlue, width: 240, format: 'webp' });
 ---
 
 <TileFrame as="section" tone="granite" id="social" aria-labelledby="social-title" data-section>
@@ -28,13 +31,17 @@ const t = useT(lang);
           </li>
         ))
       }
+      <!-- Instagram is the last tile in the grid, framed in azulejos like the dark panels. -->
+      <li class="gallery-item gallery-insta tiles" style={`--tile-url: url(${tile.src})`}>
+        <a class="insta-card sketch" data-tone="dark" href={site.links.instagram} target="_blank" rel="noopener">
+          <Icon name="instagram" />
+          <span class="insta-text">
+            <span class="insta-cta">{t.social.cta}</span>
+            <span class="insta-handle">{site.links.instagramHandle}</span>
+          </span>
+        </a>
+      </li>
     </ul>
-
-    <a class="btn social-cta" href={site.links.instagram} target="_blank" rel="noopener">
-      <Icon name="instagram" />
-      {t.social.cta}
-      <span class="social-handle">{site.links.instagramHandle}</span>
-    </a>
   </div>
 </TileFrame>
 
@@ -65,6 +72,12 @@ const t = useT(lang);
     grid-column: span 2;
   }
 
+  .gallery-insta {
+    grid-column: span 2;
+    padding: clamp(0.75rem, 1.4vw, 1.1rem);
+    --tile-size: 64px;
+  }
+
   @media (min-width: 900px) {
     .gallery {
       grid-template-columns: repeat(4, 1fr);
@@ -74,23 +87,58 @@ const t = useT(lang);
       grid-column: span 2;
       grid-row: span 2;
     }
+    /* The last photo and the Instagram tile share the bottom row. */
     .g7 {
-      grid-column: span 4;
+      grid-column: span 3;
+      grid-row: span 2;
+    }
+    .gallery-insta {
+      grid-column: span 1;
+      grid-row: span 2;
     }
   }
 
-  .social-cta {
-    margin-top: 2.5rem;
+  .insta-card {
+    height: 100%;
+    min-height: 9rem;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: clamp(1.25rem, 2.4vw, 1.75rem);
+    background: var(--navy);
+    --sketch-inset: 0.5rem;
+    --sketch-w: 2px;
+    --sketch-color: color-mix(in srgb, var(--limestone) 85%, transparent);
+    color: var(--limestone);
+    outline: 3px solid var(--navy);
+    text-decoration: none;
+    transition: background-color 0.25s;
   }
 
-  .social-handle {
-    font-weight: 400;
-    opacity: 0.7;
+  .insta-card:hover {
+    background: var(--navy-deep);
   }
 
-  @media (max-width: 539px) {
-    .social-handle {
-      display: none;
-    }
+  .insta-card > :global(svg:not(.sketch-svg)) {
+    width: 2.25rem;
+    height: 2.25rem;
+  }
+
+  .insta-text {
+    display: grid;
+    gap: 0.35rem;
+  }
+
+  .insta-cta {
+    font-family: var(--font-display);
+    font-size: var(--display-xs);
+    line-height: 1;
+  }
+
+  .insta-handle {
+    font-weight: 700;
+    font-size: var(--text-sm);
   }
 </style>

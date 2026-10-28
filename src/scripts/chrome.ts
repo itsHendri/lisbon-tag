@@ -95,7 +95,21 @@ for (const d of [sheet, film]) {
   });
 }
 
-document.querySelector('[data-sheet-open]')?.addEventListener('click', () => openDialog(sheet));
+// The menu's map loads the first time the menu opens, not with the page.
+const sheetMap = sheet.querySelector<HTMLElement>('[data-sheet-map]');
+function loadSheetMap() {
+  if (!sheetMap || sheetMap.querySelector('iframe')) return;
+  const iframe = document.createElement('iframe');
+  iframe.src = sheetMap.dataset.src!;
+  iframe.title = sheetMap.dataset.title!;
+  iframe.referrerPolicy = 'no-referrer-when-downgrade';
+  sheetMap.prepend(iframe);
+}
+
+document.querySelector('[data-sheet-open]')?.addEventListener('click', () => {
+  openDialog(sheet);
+  loadSheetMap();
+});
 document.querySelector('[data-sheet-close]')?.addEventListener('click', () => closeDialog(sheet));
 
 document.querySelectorAll('[data-film-open]').forEach((b) => b.addEventListener('click', openFilm));

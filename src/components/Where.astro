@@ -28,9 +28,8 @@ const th = site.thursday;
       blend layers over a greyscale map: dark becomes navy, light becomes
       limestone. They let clicks through, so the map still pans and zooms.
     -->
-    <div class="map frame sketch" data-reveal>
+    <div class="map map-tinted frame sketch" data-reveal>
       <iframe
-        class="map-frame"
         src={th.mapsEmbed}
         title={t.where.mapTitle}
         loading="lazy"
@@ -85,35 +84,7 @@ const th = site.thursday;
   /* ---------- Map ---------- */
   .map {
     min-height: 24rem;
-    isolation: isolate;
     --sketch-color: var(--navy);
-  }
-
-  .map-frame {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    border: 0;
-    filter: grayscale(1) contrast(1.15) brightness(1.05);
-  }
-
-  .map-tint {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-  }
-
-  /* Lifts the blacks to navy... */
-  .map-tint--dark {
-    background: var(--navy);
-    mix-blend-mode: lighten;
-  }
-
-  /* ...and warms the whites to limestone. */
-  .map-tint--light {
-    background: var(--limestone);
-    mix-blend-mode: multiply;
   }
 
   .where-beach {

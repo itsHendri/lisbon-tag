@@ -51,7 +51,17 @@ const icons = [seven, tag, pass, defence, turnover, backwards, kick, noContact, 
         <h3 id="first-title" class="display display-sm">{t.how.first.title}</h3>
       </div>
       <ol class="first-steps">
-        {t.how.first.steps.map((s) => <li>{s}</li>)}
+        {
+          t.how.first.steps.map((s, i) => (
+            <li>
+              <span class="rule" aria-hidden="true" />
+              <span class="first-num display" aria-hidden="true">
+                {i + 1}
+              </span>
+              <p>{s}</p>
+            </li>
+          ))
+        }
       </ol>
     </aside>
   </div>
@@ -133,74 +143,83 @@ const icons = [seven, tag, pass, defence, turnover, backwards, kick, noContact, 
     }
   }
 
-  /* ---------- First time ---------- */
+  /* ---------- First time: three numbered columns under a hand-drawn rule ---------- */
   .first {
     margin-top: clamp(3rem, 6vw, 5rem);
-    padding: clamp(2rem, 5vw, 3.5rem);
+    padding: clamp(2rem, 5vw, 3.5rem) clamp(1.5rem, 5vw, 4rem);
     border-radius: var(--radius);
     background: var(--bg);
     color: var(--fg);
     display: grid;
-    gap: 1.5rem;
+    gap: clamp(2rem, 4vw, 2.75rem);
     --sketch-inset: 0.6rem;
     --sketch-w: 2px;
   }
 
   .first-head {
-    display: grid;
-    justify-items: center;
-    gap: 0.75rem;
-    text-align: center;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
   }
 
   :global(.first-ball) {
-    width: 5rem;
+    width: clamp(3.25rem, 6vw, 4.5rem);
     height: auto;
+    flex: none;
   }
 
   .first-steps {
     display: grid;
-    gap: 1rem;
+    gap: 2rem;
     padding: 0;
     list-style: none;
-    counter-reset: step;
   }
 
   .first-steps li {
-    counter-increment: step;
     display: grid;
-    grid-template-columns: 2.25rem 1fr;
-    gap: 0.75rem;
+    gap: 1rem;
+    align-content: start;
+  }
+
+  .first-num {
+    font-size: clamp(3.5rem, 2.5rem + 4vw, 5.5rem);
+    line-height: 0.8;
+  }
+
+  .first-steps p {
     font-size: var(--text-lg);
-    line-height: 1.4;
-  }
-
-  .first-steps li::before {
-    content: counter(step);
-    display: grid;
-    place-items: center;
-    width: 2.25rem;
-    height: 2.25rem;
-    border-radius: var(--radius);
-    background: var(--limestone);
-    color: var(--navy);
-    font-weight: 900;
-    font-size: var(--text-base);
-  }
-
-  .first {
-    gap: 2rem;
+    line-height: 1.45;
+    max-width: 30ch;
   }
 
   @media (min-width: 900px) {
     .first-steps {
       grid-template-columns: repeat(3, 1fr);
-      gap: 2rem;
+      gap: 0;
     }
     .first-steps li {
-      grid-template-columns: 1fr;
-      justify-items: center;
-      text-align: center;
+      padding-inline: 2rem;
+      border-left: 1px solid color-mix(in srgb, currentColor 35%, transparent);
+    }
+    .first-steps li:first-child {
+      padding-left: 0;
+      border-left: 0;
+    }
+    .first-steps li:last-child {
+      padding-right: 0;
+    }
+    /* The rule runs across all three columns, so it sits above the gutters too. */
+    .first-steps .rule {
+      margin-inline: -2rem;
+      width: calc(100% + 4rem);
+    }
+    .first-steps li:first-child .rule {
+      margin-left: 0;
+      width: calc(100% + 2rem);
+    }
+    .first-steps li:last-child .rule {
+      margin-right: 0;
+      width: calc(100% + 2rem);
     }
   }
 </style>

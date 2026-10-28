@@ -2,12 +2,12 @@
 /**
  * The fixed UI that floats over every section:
  * castle top-left, the how-to-play video pill in the middle, Menu top-right
- * (sections, the video again, and the language switch inside), plus the menu
- * and video dialogs.
+ * (a side panel with the language switch, the video, the sections and a small
+ * map), plus the video dialog.
  */
 import { getImage } from 'astro:assets';
 import Icon from './Icon.astro';
-import { useT, homeHref, langs, htmlLang, sectionIds, type Lang } from '../i18n';
+import { useT, homeHref, langs, htmlLang, type Lang, type SectionId } from '../i18n';
 import { site } from '../data/site';
 import castleMask from '../assets/brand/icon_castle_white.png';
 
@@ -19,7 +19,10 @@ const t = useT(lang);
 const yt = site.howToPlay.youtubeId;
 const castle = await getImage({ src: castleMask, width: 128, format: 'png' });
 const thumb = await getImage({ src: `https://i.ytimg.com/vi/${yt}/mqdefault.jpg`, inferSize: true, width: 240, format: 'webp' });
-const langNames = { en: 'English', pt: 'Português' } as const;
+// The menu only lists the sections people jump to; the map card covers "where".
+const menuIds: SectionId[] = ['thursdays', 'how', 'outfit', 'kit', 'social', 'faq'];
+const th = site.thursday;
+const join = site.links.whatsapp ?? site.links.instagram;
 ---
 
 <header class="chrome-top">
@@ -45,59 +48,75 @@ const langNames = { en: 'English', pt: 'Português' } as const;
   </button>
 </header>
 
-<!-- Full-screen menu. data-lenis-prevent lets it scroll natively while the page is locked. -->
+<!-- Menu: a side panel on wider screens, full screen on phones. data-lenis-prevent lets it scroll natively. -->
 <dialog id="sheet" class="sheet theme-navy" aria-label={t.nav.menu} data-lenis-prevent>
   <div class="sheet-head">
-    <span class="sheet-castle" style={`--castle: url(${castle.src})`} aria-hidden="true"></span>
+    <div class="sheet-langs" role="group" aria-label={t.nav.language}>
+      {
+        langs.map((l) =>
+          l === lang ? (
+            <span class="sheet-lang is-current" aria-current="page" lang={htmlLang[l]}>
+              {l.toUpperCase()}
+            </span>
+          ) : (
+            <a class="sheet-lang" href={homeHref(l)} hreflang={htmlLang[l]} lang={htmlLang[l]} data-lang-link data-base={homeHref(l)}>
+              {l.toUpperCase()}
+            </a>
+          ),
+        )
+      }
+    </div>
     <button class="sheet-close" type="button" data-sheet-close>
       <span>{t.nav.close}</span>
       <Icon name="close" />
     </button>
   </div>
 
+  <button class="sheet-film" type="button" aria-haspopup="dialog" aria-controls="film" data-film-open>
+    <span class="sheet-film-thumb">
+      <img src={thumb.src} alt="" width="240" height="135" />
+      <span class="chrome-film-play"><Icon name="play" /></span>
+    </span>
+    <span class="chrome-film-text">
+      <span class="chrome-film-title">{t.nav.film}</span>
+      <span class="chrome-film-sub">{t.nav.filmSub}</span>
+    </span>
+  </button>
+
   <nav class="sheet-nav" aria-label={t.nav.sections}>
-    <button class="sheet-film" type="button" aria-haspopup="dialog" aria-controls="film" data-film-open>
-      <span class="sheet-film-thumb">
-        <img src={thumb.src} alt="" width="240" height="135" />
-        <span class="chrome-film-play"><Icon name="play" /></span>
-      </span>
-      <span class="chrome-film-text">
-        <span class="chrome-film-title display">{t.nav.film}</span>
-        <span class="chrome-film-sub">{t.nav.filmSub}</span>
-      </span>
-    </button>
-    <ol class="sheet-list">
+    <ul class="sheet-list">
       {
-        sectionIds.map((id, i) => (
+        menuIds.map((id) => (
           <li>
             <a href={`#${id}`} data-sheet-link data-section-link={id}>
-              <span class="sheet-num">{String(i + 1).padStart(2, '0')}</span>
-              <span class="sheet-name display">{t.sections[id]}</span>
+              {t.sections[id]}
             </a>
           </li>
         ))
       }
-    </ol>
+    </ul>
   </nav>
 
-  <div class="sheet-foot">
-    <p class="label">{t.nav.language}</p>
-    <div class="sheet-langs">
-      {
-        langs.map((l) =>
-          l === lang ? (
-            <span class="sheet-lang is-current" aria-current="page">
-              {langNames[l]}
-            </span>
-          ) : (
-            <a class="sheet-lang" href={homeHref(l)} hreflang={htmlLang[l]} lang={htmlLang[l]} data-lang-link data-base={homeHref(l)}>
-              {langNames[l]}
-            </a>
-          ),
-        )
-      }
+  <!-- The map only loads the first time the menu opens. -->
+  <div class="sheet-map">
+    <a class="sheet-map-head" href="#where" data-sheet-link>
+      <span>{t.where.title}</span>
+      <Icon name="arrow" />
+    </a>
+    <div class="sheet-map-frame map-tinted" data-sheet-map data-src={th.mapsEmbed} data-title={t.where.mapTitle}>
+      <span class="map-tint map-tint--dark" aria-hidden="true"></span>
+      <span class="map-tint map-tint--light" aria-hidden="true"></span>
     </div>
+    <a class="sheet-map-foot" href={th.mapsUrl} target="_blank" rel="noopener">
+      <span>{th.venue}</span>
+      <span class="sheet-map-dir">{t.thursdays.directions} <Icon name="external" /></span>
+    </a>
   </div>
+
+  <a class="btn sheet-join" href={join} target="_blank" rel="noopener">
+    <Icon name={site.links.whatsapp ? 'whatsapp' : 'instagram'} />
+    {site.links.whatsapp ? t.join.whatsapp : t.join.instagramPrimary}
+  </a>
 </dialog>
 
 <dialog id="film" class="film" aria-label={t.nav.film}>
@@ -131,8 +150,7 @@ const langNames = { en: 'English', pt: 'Português' } as const;
   }
 
   /* ---------- Castle: no plate, its colour follows what's behind it ---------- */
-  .chrome-logo,
-  .sheet-castle {
+  .chrome-logo {
     display: block;
     width: 3.5rem;
     height: var(--chrome-h);
@@ -292,8 +310,9 @@ const langNames = { en: 'English', pt: 'Português' } as const;
   }
 
   .chrome-film-title {
-    font-size: var(--display-xs);
-    line-height: 1;
+    font-size: var(--text-lg);
+    font-weight: 900;
+    line-height: 1.1;
     white-space: nowrap;
   }
 
@@ -304,16 +323,16 @@ const langNames = { en: 'English', pt: 'Português' } as const;
     white-space: nowrap;
   }
 
-  /* ---------- Full-screen menu ---------- */
+  /* ---------- Menu panel ---------- */
   .sheet {
     position: fixed;
-    inset: 0;
+    inset: 0 0 0 auto;
     width: 100%;
     height: 100%;
     max-width: none;
     max-height: none;
     margin: 0;
-    padding: calc(var(--safe-t) + 0.875rem) max(var(--gutter), env(safe-area-inset-right)) calc(var(--safe-b) + 2rem)
+    padding: calc(var(--safe-t) + 0.875rem) max(var(--gutter), env(safe-area-inset-right)) calc(var(--safe-b) + 1.5rem)
       max(var(--gutter), env(safe-area-inset-left));
     border: 0;
     background: var(--bg);
@@ -326,26 +345,35 @@ const langNames = { en: 'English', pt: 'Português' } as const;
   .sheet[open] {
     display: flex;
     flex-direction: column;
-    gap: clamp(1.5rem, 4vh, 3rem);
+    gap: 1.5rem;
     animation: sheet-in 0.35s var(--ease-out);
   }
 
   .sheet::backdrop {
-    background: var(--navy);
+    background: color-mix(in srgb, var(--navy-ink) 60%, transparent);
   }
 
   @keyframes sheet-in {
     from {
       opacity: 0;
-      transform: translateY(-12px);
+      transform: translateX(24px);
     }
   }
 
-  /* Same height and places as the header, so Close sits where Menu was. */
+  @media (min-width: 768px) {
+    .sheet {
+      width: min(30rem, 100%);
+      padding-inline: 2.25rem;
+      box-shadow: -20px 0 60px var(--ink-a);
+    }
+  }
+
+  /* Same height as the header, so Close sits where Menu was. */
   .sheet-head {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 1rem;
     flex: none;
   }
 
@@ -367,39 +395,34 @@ const langNames = { en: 'English', pt: 'Português' } as const;
     height: 1.1rem;
   }
 
-  .sheet-nav {
-    max-width: 48rem;
-    width: 100%;
-    margin-inline: auto;
-  }
-
-  .sheet-list {
-    list-style: none;
-    padding: 0;
-  }
-
-  .sheet-list a {
+  .sheet-langs {
     display: flex;
-    align-items: baseline;
-    gap: 1rem;
-    padding: 0.6rem 0;
-    text-decoration: none;
-    border-bottom: 1px solid color-mix(in srgb, currentColor 22%, transparent);
+    gap: 3px;
+    padding: 3px;
+    border-radius: var(--radius-pill);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--limestone) 45%, transparent);
   }
 
-  .sheet-list a:hover .sheet-name,
-  .sheet-list a[aria-current='true'] .sheet-name {
-    text-decoration: underline;
-    text-decoration-thickness: 2px;
-    text-underline-offset: 0.18em;
-  }
-
-  .sheet-num {
-    font-size: var(--text-xs);
+  .sheet-lang {
+    display: grid;
+    place-items: center;
+    min-width: 2.75rem;
+    min-height: calc(var(--chrome-h) - 6px);
+    border-radius: var(--radius-sm);
+    font-size: var(--text-sm);
     font-weight: 700;
-    letter-spacing: var(--label-tracking);
-    opacity: 0.6;
-    min-width: 1.6rem;
+    letter-spacing: 0.06em;
+    text-decoration: none;
+  }
+
+  .sheet-lang.is-current {
+    background: var(--limestone);
+    color: var(--navy);
+    font-weight: 900;
+  }
+
+  .sheet-lang:not(.is-current):hover {
+    background: color-mix(in srgb, var(--limestone) 14%, transparent);
   }
 
   .sheet-film {
@@ -407,7 +430,6 @@ const langNames = { en: 'English', pt: 'Português' } as const;
     align-items: center;
     gap: 1rem;
     width: 100%;
-    margin-bottom: 1rem;
     padding: 0.5rem;
     border-radius: var(--radius);
     box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--limestone) 45%, transparent);
@@ -429,38 +451,82 @@ const langNames = { en: 'English', pt: 'Português' } as const;
     object-fit: cover;
   }
 
-  .sheet-name {
-    font-size: var(--display-sm);
-    line-height: 1.05;
+  .sheet-list {
+    list-style: none;
+    padding: 0;
   }
 
-  .sheet-foot {
-    max-width: 48rem;
-    width: 100%;
-    margin: auto auto 0;
-    display: grid;
-    gap: 0.75rem;
+  .sheet-list a {
+    display: block;
+    padding: 0.7rem 0;
+    font-size: var(--text-xl);
+    font-weight: 900;
+    line-height: 1.15;
+    text-decoration: none;
+    border-bottom: 1px solid color-mix(in srgb, currentColor 22%, transparent);
   }
 
-  .sheet-langs {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.75rem;
+  .sheet-list a:hover,
+  .sheet-list a[aria-current='true'] {
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 0.18em;
   }
 
-  .sheet-lang {
+  /* ---------- Map card ---------- */
+  .sheet-map {
     display: grid;
-    place-items: center;
-    min-height: 3rem;
-    border-radius: var(--radius-pill);
+    gap: 0.6rem;
+  }
+
+  .sheet-map-head,
+  .sheet-map-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    min-height: 2.75rem;
     font-weight: 700;
     text-decoration: none;
-    box-shadow: inset 0 0 0 2px var(--limestone);
   }
 
-  .sheet-lang.is-current {
-    background: var(--limestone);
-    color: var(--navy);
+  .sheet-map-head {
+    font-size: var(--text-lg);
+    font-weight: 900;
+  }
+
+  .sheet-map-foot {
+    font-size: var(--text-sm);
+  }
+
+  .sheet-map-dir {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+    white-space: nowrap;
+  }
+
+  .sheet-map-head :global(svg),
+  .sheet-map-dir :global(svg) {
+    width: 1em;
+    height: 1em;
+  }
+
+  .sheet-map-frame {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border-radius: var(--radius);
+    background: var(--limestone-dim);
+    outline: 2px solid color-mix(in srgb, var(--limestone) 60%, transparent);
+  }
+
+  .sheet-join {
+    flex: none;
+    width: 100%;
+    margin-top: auto;
   }
 
   /* ---------- Video ---------- */
