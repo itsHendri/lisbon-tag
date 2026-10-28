@@ -154,7 +154,7 @@ export const pt: Dict = {
       },
       {
         q: 'Preciso de me inscrever?',
-        a: 'Não, é só aparecer. Manda-nos mensagem no Instagram para entrares no grupo de WhatsApp: é lá que partilhamos mudanças de última hora e um ou outro cancelamento.',
+        a: 'Não, é só aparecer. Mas entra no nosso grupo de WhatsApp (o botão está no fim da página): é lá que partilhamos mudanças de última hora e um ou outro cancelamento.',
       },
       {
         q: 'Quanto custa?',

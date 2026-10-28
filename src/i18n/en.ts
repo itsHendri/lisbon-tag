@@ -156,7 +156,7 @@ export const en = {
       },
       {
         q: 'Do I need to sign up?',
-        a: 'No, just show up. Message us on Instagram to join our WhatsApp group: that is where we share last-minute changes and the occasional cancellation.',
+        a: 'No, just show up. Do join our WhatsApp group (the button is at the bottom of the page): that is where we share last-minute changes and the occasional cancellation.',
       },
       {
         // TODO: confirm.

@@ -25,9 +25,9 @@ export const site = {
   },
 
   links: {
-    // TODO: community WhatsApp group invite link. While it's null the WhatsApp
-    // buttons are hidden and Instagram is the way to get in touch.
-    whatsapp: null as string | null,
+    // Community WhatsApp group invite. Set it to null to hide the WhatsApp
+    // buttons and make Instagram the way to get in touch.
+    whatsapp: 'https://chat.whatsapp.com/Frk6E5ynkac4GsV9DxysBk' as string | null,
     instagram: 'https://www.instagram.com/lisbontagrugby/',
     instagramHandle: '@lisbontagrugby',
   },
