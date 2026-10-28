@@ -33,7 +33,7 @@ export const site = {
   },
 
   kit: {
-    fourthwallUrl: 'https://hendri-shop.fourthwall.com/en-eur/products/lisbon-tag-shirt',
+    fourthwallUrl: 'https://lisbon-tag-rugby-shop.fourthwall.com/en-eur/products/lisbon-tag-shirt',
   },
 
   howToPlay: {
