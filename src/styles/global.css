@@ -215,13 +215,24 @@ p {
   border-color: currentColor;
 }
 
+/* Outline buttons get the hand-drawn stroke instead of a ruled border. */
+.btn--ghost.has-sketch-svg {
+  border-color: transparent;
+}
+
+/* Sketch settings inherit, so a button inside an inset panel would inherit its inset. */
+.btn.sketch {
+  --sketch-inset: 0px;
+  --sketch-w: 2px;
+}
+
 .btn--ghost:hover {
   background: var(--accent);
   color: var(--on-accent);
   border-color: var(--accent);
 }
 
-.btn svg {
+.btn svg:not(.sketch-svg) {
   width: 1.15em;
   height: 1.15em;
   flex: none;
@@ -311,42 +322,6 @@ p {
   overflow: hidden;
   border-radius: var(--radius);
   background: var(--surface);
-}
-
-/* ---------- Brand-tinted Google map ----------
- * Google's embed can't be restyled, so: a greyscale map under two blend
- * layers, navy lifting the darks and limestone warming the lights. The layers
- * let clicks through, so the map still pans and zooms.
- */
-.map-tinted {
-  position: relative;
-  isolation: isolate;
-}
-
-.map-tinted iframe {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  border: 0;
-  filter: grayscale(1) contrast(1.15) brightness(1.05);
-}
-
-.map-tint {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-}
-
-.map-tint--dark {
-  background: var(--navy);
-  mix-blend-mode: lighten;
-}
-
-.map-tint--light {
-  background: var(--limestone);
-  mix-blend-mode: multiply;
 }
 
 /* ---------- Azulejo tile background ---------- */

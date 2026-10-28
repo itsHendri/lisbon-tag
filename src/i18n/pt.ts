@@ -46,7 +46,6 @@ export const pt: Dict = {
 
   hero: {
     sub: 'Todas as quintas. Principiantes bem-vindos.',
-    calendar: 'Adicionar ao calendário',
   },
 
   about: {
@@ -84,10 +83,11 @@ export const pt: Dict = {
     ],
     first: {
       title: 'Nunca jogaste?',
+      intro: 'A tua primeira quinta, em três passos.',
       steps: [
-        'Chega dez minutos mais cedo e diz olá. Emprestamos-te um cinto.',
-        'Vem com roupa de desporto confortável e ténis ou chuteiras.',
-        'Joga. Explicamos à medida que avançamos, e ninguém se importa com um passe para a frente na primeira noite.',
+        { label: 'Passo 1', meta: '', title: 'Aparece', body: 'Chega dez minutos mais cedo e diz olá. Emprestamos-te um cinto.' },
+        { label: 'Passo 2', meta: 'Roupa', title: 'Veste-te para correr', body: 'Vem com roupa de desporto confortável e ténis ou chuteiras.' },
+        { label: 'Passo 3', meta: '', title: 'Joga', body: 'Explicamos à medida que avançamos, e ninguém se importa com um passe para a frente na primeira noite.' },
       ],
     },
   },
@@ -123,7 +123,11 @@ export const pt: Dict = {
     title: 'Onde jogamos',
     body: 'Procura o grupo de azulejos azuis e brancos.',
     transport: 'Elétrico 15E ou comboio da linha de Cascais até Belém',
-    mapTitle: 'Mapa do local onde jogamos às quintas',
+    mapAlt: 'Mapa de Belém desenhado à mão. O Jardim Vasco da Gama fica entre a Rua de Belém e a linha do comboio, junto ao rio.',
+    mapRoad: 'Rua de Belém',
+    mapStation: 'Estação de Belém',
+    mapRiver: 'Rio Tejo',
+    mapCredit: '© contribuidores do OpenStreetMap',
     beach: {
       title: 'Domingos de Beach Tag',
       body: 'Algumas vezes por época levamos o jogo para a areia da Praia de Carcavelos, a 20 minutos de comboio do Cais do Sodré. As datas saem primeiro no WhatsApp e no Instagram.',
@@ -173,7 +177,6 @@ export const pt: Dict = {
     instagram: 'Seguir no Instagram',
     instagramPrimary: 'Manda-nos mensagem no Instagram',
     instagramNote: 'Manda-nos mensagem no Instagram e adicionamos-te ao grupo de WhatsApp da comunidade.',
-    calendar: 'Adicionar ao calendário',
   },
 
   footer: {
@@ -182,6 +185,8 @@ export const pt: Dict = {
   },
 
   calendar: {
+    google: 'Google Calendar',
+    ics: 'Apple, Outlook e outros (.ics)',
     summary: 'Lisbon Tag Rugby',
     description: 'Tag rugby todas as quintas. Principiantes bem-vindos. Traz água e ténis.',
   },

@@ -91,7 +91,7 @@ if (!prefersReducedMotion()) {
     );
   });
 
-  /* Chapter images settle into place */
+  /* Full-bleed images (the Beach Tag banner) settle into place */
   gsap.utils.toArray<HTMLElement>('[data-zoom]').forEach((wrap) => {
     const media = wrap.querySelector('img, video');
     if (!media) return;

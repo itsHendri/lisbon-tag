@@ -1,11 +1,10 @@
 ---
 import { Image } from 'astro:assets';
-import Chapter from './Chapter.astro';
 import DetailsTable from './DetailsTable.astro';
 import TileFrame from './TileFrame.astro';
 import Icon from './Icon.astro';
-import { useT, withBase, type Lang } from '../i18n';
-import { photos } from '../data/photos';
+import CalendarButton from './CalendarButton.astro';
+import { useT, type Lang } from '../i18n';
 import { site } from '../data/site';
 import castleWhite from '../assets/brand/icon_castle_white.png';
 
@@ -18,14 +17,8 @@ const th = site.thursday;
 ---
 
 <section id="thursdays" class="thursdays" data-section aria-labelledby="thursdays-title">
-  <Chapter
-    lang={lang}
-    photo={photos.thursday}
-    title={t.thursdays.title}
-    id="thursdays-title"
-  />
-
   <TileFrame>
+    <h2 id="thursdays-title" class="sr-only">{t.thursdays.title}</h2>
     <div class="wrap thursdays-grid">
       <div class="thursdays-head" data-reveal>
         <p class="display display-sm">{t.facts.level}</p>
@@ -43,10 +36,7 @@ const th = site.thursday;
         />
         <!-- Same width as the table; directions is the main action, so it sits right (top on phones). -->
         <div class="thursdays-actions" data-reveal>
-          <a class="btn btn--ghost" href={withBase(`/thursdays-${lang}.ics`)} download>
-            <Icon name="calendar" />
-            {t.thursdays.calendar}
-          </a>
+          <CalendarButton lang={lang} ghost />
           <a class="btn" href={th.mapsUrl} target="_blank" rel="noopener">
             <Icon name="pin" />
             {t.thursdays.directions}
@@ -95,7 +85,8 @@ const th = site.thursday;
     gap: 0.75rem;
   }
 
-  .thursdays-actions .btn {
+  .thursdays-actions .btn,
+  .thursdays-actions :global(.cal .btn) {
     width: 100%;
   }
 

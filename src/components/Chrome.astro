@@ -7,6 +7,7 @@
  */
 import { getImage } from 'astro:assets';
 import Icon from './Icon.astro';
+import MapArt from './MapArt.astro';
 import { useT, homeHref, langs, htmlLang, type Lang, type SectionId } from '../i18n';
 import { site } from '../data/site';
 import castleMask from '../assets/brand/icon_castle_white.png';
@@ -20,7 +21,7 @@ const yt = site.howToPlay.youtubeId;
 const castle = await getImage({ src: castleMask, width: 128, format: 'png' });
 const thumb = await getImage({ src: `https://i.ytimg.com/vi/${yt}/mqdefault.jpg`, inferSize: true, width: 240, format: 'webp' });
 // The menu only lists the sections people jump to; the map card covers "where".
-const menuIds: SectionId[] = ['thursdays', 'how', 'outfit', 'kit', 'social', 'faq'];
+const menuIds: SectionId[] = ['how', 'outfit', 'social', 'faq'];
 const th = site.thursday;
 const join = site.links.whatsapp ?? site.links.instagram;
 ---
@@ -72,7 +73,7 @@ const join = site.links.whatsapp ?? site.links.instagram;
     </button>
   </div>
 
-  <button class="sheet-film" type="button" aria-haspopup="dialog" aria-controls="film" data-film-open>
+  <button class="sheet-film sketch" type="button" aria-haspopup="dialog" aria-controls="film" data-film-open>
     <span class="sheet-film-thumb">
       <img src={thumb.src} alt="" width="240" height="135" />
       <span class="chrome-film-play"><Icon name="play" /></span>
@@ -97,16 +98,14 @@ const join = site.links.whatsapp ?? site.links.instagram;
     </ul>
   </nav>
 
-  <!-- The map only loads the first time the menu opens. -->
   <div class="sheet-map">
     <a class="sheet-map-head" href="#where" data-sheet-link>
       <span>{t.where.title}</span>
       <Icon name="arrow" />
     </a>
-    <div class="sheet-map-frame map-tinted" data-sheet-map data-src={th.mapsEmbed} data-title={t.where.mapTitle}>
-      <span class="map-tint map-tint--dark" aria-hidden="true"></span>
-      <span class="map-tint map-tint--light" aria-hidden="true"></span>
-    </div>
+    <a class="sheet-map-frame sketch" href="#where" data-sheet-link tabindex="-1" aria-hidden="true">
+      <MapArt lang={lang} compact />
+    </a>
     <a class="sheet-map-foot" href={th.mapsUrl} target="_blank" rel="noopener">
       <span>{th.venue}</span>
       <span class="sheet-map-dir">{t.thursdays.directions} <Icon name="external" /></span>
@@ -349,6 +348,10 @@ const join = site.links.whatsapp ?? site.links.instagram;
     animation: sheet-in 0.35s var(--ease-out);
   }
 
+  .sheet.no-anim {
+    animation: none;
+  }
+
   .sheet::backdrop {
     background: color-mix(in srgb, var(--navy-ink) 60%, transparent);
   }
@@ -432,8 +435,9 @@ const join = site.links.whatsapp ?? site.links.instagram;
     width: 100%;
     padding: 0.5rem;
     border-radius: var(--radius);
-    box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--limestone) 45%, transparent);
     text-align: left;
+    --sketch-w: 2px;
+    --sketch-color: color-mix(in srgb, var(--limestone) 70%, transparent);
   }
 
   .sheet-film-thumb {
@@ -457,13 +461,27 @@ const join = site.links.whatsapp ?? site.links.instagram;
   }
 
   .sheet-list a {
+    position: relative;
     display: block;
     padding: 0.7rem 0;
     font-size: var(--text-xl);
     font-weight: 900;
     line-height: 1.15;
     text-decoration: none;
-    border-bottom: 1px solid color-mix(in srgb, currentColor 22%, transparent);
+  }
+
+  /* Hand-drawn rule under each section, like the FAQ. */
+  .sheet-list a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -3px;
+    height: 6px;
+    background: currentColor;
+    opacity: 0.45;
+    -webkit-mask: var(--rule-mask) center / 100% 100% no-repeat;
+    mask: var(--rule-mask) center / 100% 100% no-repeat;
   }
 
   .sheet-list a:hover,
@@ -516,11 +534,13 @@ const join = site.links.whatsapp ?? site.links.instagram;
 
   .sheet-map-frame {
     position: relative;
-    aspect-ratio: 16 / 9;
+    display: block;
+    aspect-ratio: 3 / 2;
     overflow: hidden;
     border-radius: var(--radius);
-    background: var(--limestone-dim);
-    outline: 2px solid color-mix(in srgb, var(--limestone) 60%, transparent);
+    background: var(--limestone);
+    --sketch-color: var(--limestone);
+    --sketch-w: 2px;
   }
 
   .sheet-join {

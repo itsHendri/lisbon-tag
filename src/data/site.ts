@@ -13,8 +13,6 @@ export const site = {
     lat: 38.6964753,
     lng: -9.2022543,
     mapsUrl: 'https://share.google/HlnjTt3IXVK4JJ5hd',
-    // Works without an API key; searching the club's name drops the pin on its listing.
-    mapsEmbed: 'https://www.google.com/maps?q=Lisbon+Tag+Rugby&ll=38.6964753,-9.2022543&z=16&output=embed',
     // Kick-off (24h, Lisbon time). It shifts with the seasons, so the site only
     // ever shows this one time; change it here and it updates everywhere.
     start: '18:30',

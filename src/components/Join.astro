@@ -1,8 +1,9 @@
 ---
 import { Image } from 'astro:assets';
 import Icon from './Icon.astro';
+import CalendarButton from './CalendarButton.astro';
 import TileFrame from './TileFrame.astro';
-import { useT, homeHref, withBase, langs, type Lang } from '../i18n';
+import { useT, homeHref, langs, type Lang } from '../i18n';
 import { site } from '../data/site';
 import logoWhite from '../assets/brand/lisbon_tag_rugby_logo_white.png';
 
@@ -29,7 +30,7 @@ const whatsapp = site.links.whatsapp;
               <Icon name="whatsapp" />
               {t.join.whatsapp}
             </a>
-            <a class="btn btn--ghost" href={site.links.instagram} target="_blank" rel="noopener">
+            <a class="btn btn--ghost sketch" href={site.links.instagram} target="_blank" rel="noopener">
               <Icon name="instagram" />
               {t.join.instagram}
             </a>
@@ -41,14 +42,12 @@ const whatsapp = site.links.whatsapp;
           </a>
         )
       }
-      <a class="btn btn--ghost" href={withBase(`/thursdays-${lang}.ics`)} download>
-        <Icon name="calendar" />
-        {t.join.calendar}
-      </a>
+      <CalendarButton lang={lang} ghost />
     </div>
   </div>
 
-  <footer class="wrap">
+  <!-- The language links land on this footer in the other language, so you stay put. -->
+  <footer id="footer" class="wrap">
     <div class="footer">
       <Image src={logoWhite} alt={site.name} width={200} format="webp" class="footer-logo" />
       <div class="footer-meta">
@@ -56,7 +55,10 @@ const whatsapp = site.links.whatsapp;
         <nav class="footer-langs" aria-label="Language">
           {
             langs.map((l) => (
-              <a href={homeHref(l)} aria-current={l === lang ? 'page' : undefined} lang={l === 'pt' ? 'pt-PT' : 'en'}>
+              <a
+                href={l === lang ? '#footer' : `${homeHref(l)}#footer`}
+                aria-current={l === lang ? 'page' : undefined}
+                lang={l === 'pt' ? 'pt-PT' : 'en'}>
                 {l === 'en' ? 'English' : 'Português'}
               </a>
             ))
@@ -89,12 +91,26 @@ const whatsapp = site.links.whatsapp;
   }
 
   .footer {
+    position: relative;
     margin-top: clamp(4rem, 8vw, 7rem);
     padding-top: 2rem;
-    border-top: 1px solid var(--line);
     display: grid;
     gap: 2rem;
     align-items: end;
+  }
+
+  /* Hand-drawn rule above the footer. */
+  .footer::before {
+    content: '';
+    position: absolute;
+    top: -3px;
+    left: 0;
+    right: 0;
+    height: 6px;
+    background: currentColor;
+    opacity: 0.6;
+    -webkit-mask: var(--rule-mask) center / 100% 100% no-repeat;
+    mask: var(--rule-mask) center / 100% 100% no-repeat;
   }
 
   :global(.footer-logo) {

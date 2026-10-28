@@ -47,7 +47,9 @@ Search the project for `TODO` to find every placeholder still waiting for a real
 
 ### The map
 
-`site.thursday.mapsUrl` is what "Get directions" opens: use the share link of your existing Google Maps place. For `mapsEmbed`, use Google Maps → Share → *Embed a map* and copy the `src` from the iframe code. Google's embed can't be restyled, so `Where.astro` greys it out and lays two blend layers on top (navy for the darks, limestone for the lights) to match the site; clicks pass through, so it still pans and zooms.
+`site.thursday.mapsUrl` is what "Get directions" opens: use the share link of your existing Google Maps place.
+
+The map itself is drawn from OpenStreetMap data with rough.js, so it matches the hand-drawn strokes. `node scripts/build-map.mjs` downloads the streets around the park and rewrites `src/assets/map/belem.svg` and `src/data/map.json` (where the pin goes). Run it again only if the venue changes; the name of the park it highlights is at the top of the script. Map data © OpenStreetMap contributors, credited on the map.
 
 ### How-to-play video
 

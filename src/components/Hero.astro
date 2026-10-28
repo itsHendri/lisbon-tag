@@ -3,9 +3,9 @@
  * Hero: a slow crossfade through club photos (photos.hero) until there's a
  * club video. With reduced motion it stays on the first photo.
  */
-import Icon from './Icon.astro';
+import CalendarButton from './CalendarButton.astro';
 import Photo from './Photo.astro';
-import { useT, withBase, type Lang } from '../i18n';
+import { useT, type Lang } from '../i18n';
 import { photos } from '../data/photos';
 
 interface Props {
@@ -35,10 +35,7 @@ const t = useT(lang);
     <span class="rule hero-rule" data-hero-in></span>
     <div class="hero-foot" data-hero-in>
       <p class="hero-sub">{t.hero.sub}</p>
-      <a class="btn" href={withBase(`/thursdays-${lang}.ics`)} download>
-        <Icon name="calendar" />
-        {t.hero.calendar}
-      </a>
+      <CalendarButton lang={lang} />
     </div>
   </div>
 </section>

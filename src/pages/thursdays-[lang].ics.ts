@@ -4,18 +4,11 @@
  */
 import type { APIRoute, GetStaticPaths } from 'astro';
 import { site } from '../data/site';
+import { nextThursday, hhmmss } from '../data/calendar';
 import { homeHref, langs, useT, type Lang } from '../i18n';
 
 export const getStaticPaths = (() => langs.map((lang) => ({ params: { lang } }))) satisfies GetStaticPaths;
 
-/** The first Thursday on or after the build date, as YYYYMMDD. */
-function nextThursday() {
-  const d = new Date();
-  d.setUTCDate(d.getUTCDate() + ((4 - d.getUTCDay() + 7) % 7));
-  return d.toISOString().slice(0, 10).replaceAll('-', '');
-}
-
-const hhmm = (t: string) => t.replace(':', '') + '00';
 // Lines are folded well under the 75-octet limit (accents are multi-byte); commas and semicolons escaped.
 const esc = (s: string) => s.replace(/\\/g, '\\\\').replace(/([,;])/g, '\\$1').replace(/\n/g, '\\n');
 const fold = (line: string) => line.match(/.{1,60}/g)!.join('\r\n ');
@@ -52,7 +45,7 @@ export const GET: APIRoute = ({ params, site: siteUrl }) => {
     'BEGIN:VEVENT',
     `UID:thursdays-${lang}@lisbontagrugby`,
     `DTSTAMP:${new Date().toISOString().replace(/[-:]/g, '').slice(0, 15)}Z`,
-    `DTSTART;TZID=Europe/Lisbon:${day}T${hhmm(th.start)}`,
+    `DTSTART;TZID=Europe/Lisbon:${day}T${hhmmss(th.start)}`,
     `DURATION:PT${th.durationHours}H`,
     'RRULE:FREQ=WEEKLY;BYDAY=TH',
     `SUMMARY:${esc(t.calendar.summary)}`,

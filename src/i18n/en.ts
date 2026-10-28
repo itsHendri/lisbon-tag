@@ -44,7 +44,6 @@ export const en = {
 
   hero: {
     sub: 'Every Thursday. Beginners welcome.',
-    calendar: 'Add to calendar',
   },
 
   about: {
@@ -84,10 +83,12 @@ export const en = {
     ],
     first: {
       title: 'Never played?',
+      intro: 'Your first Thursday, in three steps.',
+      // `meta` for steps 1 and 3 is the arrival and kick-off time, worked out from site.ts.
       steps: [
-        'Arrive ten minutes early and say olá. We will lend you a belt.',
-        'Wear comfortable sportswear and trainers or boots.',
-        'Play. We explain as we go, and nobody minds a forward pass on your first night.',
+        { label: 'Step 1', meta: '', title: 'Turn up', body: 'Arrive ten minutes early and say olá. We will lend you a belt.' },
+        { label: 'Step 2', meta: 'Kit', title: 'Dress to run', body: 'Wear comfortable sportswear and trainers or boots.' },
+        { label: 'Step 3', meta: '', title: 'Play', body: 'We explain as we go, and nobody minds a forward pass on your first night.' },
       ],
     },
   },
@@ -123,7 +124,11 @@ export const en = {
     title: 'Where we play',
     body: 'Look for the group in blue and white tiles.',
     transport: 'Tram 15E or the Cascais line train to Belém',
-    mapTitle: 'Map of where we play on Thursdays',
+    mapAlt: 'Hand-drawn map of Belém. Jardim Vasco da Gama sits between Rua de Belém and the railway, by the river.',
+    mapRoad: 'Rua de Belém',
+    mapStation: 'Belém station',
+    mapRiver: 'Rio Tejo',
+    mapCredit: '© OpenStreetMap contributors',
     beach: {
       title: 'Beach Tag Sundays',
       body: 'A few times a season we take it to the sand at Praia de Carcavelos, 20 minutes by train from Cais do Sodré. Dates go up on WhatsApp and Instagram first.',
@@ -175,7 +180,6 @@ export const en = {
     // Shown while there's no WhatsApp link: Instagram becomes the main action.
     instagramPrimary: 'Message us on Instagram',
     instagramNote: 'Message us on Instagram and we’ll add you to the community WhatsApp group.',
-    calendar: 'Add to calendar',
   },
 
   footer: {
@@ -184,6 +188,8 @@ export const en = {
   },
 
   calendar: {
+    google: 'Google Calendar',
+    ics: 'Apple, Outlook and others (.ics)',
     summary: 'Lisbon Tag Rugby',
     description: 'Tag rugby every Thursday. Beginners welcome. Bring water and trainers.',
   },

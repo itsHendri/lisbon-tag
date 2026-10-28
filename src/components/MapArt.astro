@@ -1,0 +1,172 @@
+---
+/**
+ * The hand-drawn map of Belém (scripts/build-map.mjs draws it from
+ * OpenStreetMap) with the castle pinned on Jardim Vasco da Gama.
+ *
+ * It fills a 3:2 frame. Add `crop` for a taller frame: the drawing keeps its
+ * shape, centred on the park, and the edges are cut off instead of squashed.
+ * The labels sit on the drawing, so they move with it.
+ */
+import { getImage } from 'astro:assets';
+import { useT, type Lang } from '../i18n';
+import { site } from '../data/site';
+import map from '../data/map.json';
+import mapSrc from '../assets/map/belem.svg?url';
+import castleWhite from '../assets/brand/icon_castle_white.png';
+
+interface Props {
+  lang: Lang;
+  /** Small version for the menu: pin only, no street names. */
+  compact?: boolean;
+  /** Centre on the park and crop the sides on phones (frames taller than 3:2). */
+  crop?: boolean;
+}
+const { lang, compact = false, crop = false } = Astro.props;
+const t = useT(lang);
+const castle = await getImage({ src: castleWhite, width: 96, format: 'webp' });
+// The label hangs just under the park, so the park itself stays visible.
+const venueBottom = map.venue.y + (map.venue.y - map.venueTop.y);
+---
+
+<div class:list={['map-art', compact && 'map-art--compact', crop && 'map-art--crop']} style={`--vx: ${map.venue.x}%; --vy: ${map.venue.y}%`}>
+  <img src={mapSrc} alt={t.where.mapAlt} width={map.width} height={map.height} loading="lazy" decoding="async" />
+  {
+    !compact && (
+      <>
+        <span class="map-label map-label--road" style="left: 66%; top: 31.5%" aria-hidden="true">
+          {t.where.mapRoad}
+        </span>
+        <span class="map-label map-label--station" style="left: 82%; top: 58.5%" aria-hidden="true">
+          {t.where.mapStation}
+        </span>
+        <span class="map-label map-label--river display" style="left: 64%; top: 80%" aria-hidden="true">
+          {t.where.mapRiver}
+        </span>
+      </>
+    )
+  }
+  <span class="map-pin" style={`left: ${map.venueTop.x}%; top: ${map.venueTop.y}%`} aria-hidden="true">
+    <img src={castle.src} alt="" width="48" height="48" />
+  </span>
+  <span class="map-venue" style={`left: ${map.venue.x}%; top: ${venueBottom}%`} aria-hidden="true">
+    <span class="map-venue-name">{site.thursday.venue.split(',')[0]}</span>
+    {!compact && <span class="map-venue-time">{t.facts.day} · {site.thursday.start}</span>}
+  </span>
+</div>
+
+<style>
+  .map-art {
+    position: absolute;
+    inset: 0;
+    color: var(--navy);
+    font-family: var(--font-body);
+  }
+
+  @media (max-width: 639px) {
+    .map-art--crop {
+      inset: 0 auto;
+      left: 50%;
+      height: 100%;
+      aspect-ratio: 3 / 2;
+      transform: translateX(calc(var(--vx) * -1));
+    }
+  }
+
+  .map-art > img {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .map-label {
+    position: absolute;
+    translate: -50% -50%;
+    padding: 0.1rem 0.4rem;
+    background: var(--limestone);
+    font-size: var(--text-xs);
+    font-weight: 900;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .map-label--station {
+    letter-spacing: 0.04em;
+  }
+
+  /* The cropped phone view cuts through both; the pin and river say enough. */
+  @media (max-width: 639px) {
+    .map-art--crop .map-label--road,
+    .map-art--crop .map-label--station {
+      display: none;
+    }
+  }
+
+  .map-label--river {
+    padding: 0.25rem 0.8rem;
+    background: var(--navy);
+    color: var(--limestone);
+    font-size: clamp(1.5rem, 1rem + 2vw, 3rem);
+    letter-spacing: 0;
+    text-transform: none;
+  }
+
+  /* A square castle tile with a point, standing on the park. */
+  .map-pin {
+    position: absolute;
+    translate: -50% calc(-100% - 0.5rem);
+    display: grid;
+    place-items: center;
+    width: clamp(2.75rem, 2rem + 2vw, 3.75rem);
+    aspect-ratio: 1;
+    background: var(--navy);
+    outline: 3px solid var(--limestone);
+    box-shadow: var(--shadow-md);
+  }
+
+  .map-pin::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: -0.45rem;
+    width: 0.9rem;
+    height: 0.9rem;
+    background: var(--navy);
+    translate: -50% 0;
+    rotate: 45deg;
+  }
+
+  .map-pin img {
+    position: relative;
+    z-index: 1;
+    width: 66%;
+    height: auto;
+  }
+
+  .map-venue {
+    position: absolute;
+    translate: -50% 0.4rem;
+    display: grid;
+    justify-items: center;
+    padding: 0.35rem 0.7rem;
+    background: var(--limestone);
+    color: var(--navy);
+    text-align: center;
+    white-space: nowrap;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .map-venue-name {
+    font-weight: 900;
+    font-size: var(--text-sm);
+  }
+
+  .map-venue-time {
+    font-weight: 700;
+    font-size: var(--text-xs);
+  }
+
+  .map-art--compact .map-pin {
+    width: 2.5rem;
+  }
+</style>

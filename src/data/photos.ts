@@ -10,7 +10,6 @@ import type { ImageMetadata } from 'astro';
 import type { Lang } from '../i18n';
 
 import p01 from '../assets/photos/p01.jpg';
-import p02 from '../assets/photos/p02.jpg';
 import p03 from '../assets/photos/p03.jpg';
 import p04 from '../assets/photos/p04.jpg';
 import p05 from '../assets/photos/p05.jpg';
@@ -83,13 +82,6 @@ export const photos = {
   intro4: {
     src: p26,
     alt: { en: 'Two players from behind in Lisbon Tag shirts on the beach', pt: 'Dois jogadores de costas com a camisola Lisbon Tag na praia' },
-  },
-
-  // Chapter
-  thursday: {
-    src: p02,
-    alt: { en: 'The group together on the grass', pt: 'O grupo junto no relvado' },
-    position: '50% 60%',
   },
 
   // Outfit

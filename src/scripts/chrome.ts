@@ -1,12 +1,12 @@
 import { lockScroll, scrollToId } from './scroll';
 
 /* ---------- Which section is on screen ---------- */
-const langLink = document.querySelector<HTMLAnchorElement>('[data-lang-link]');
+const langLinks = document.querySelectorAll<HTMLAnchorElement>('[data-lang-link]');
 const sheetLinks = document.querySelectorAll<HTMLAnchorElement>('[data-section-link]');
 
 function setCurrent(id: string) {
-  // The language switch lands on the same section in the other language.
-  if (langLink) langLink.href = `${langLink.dataset.base}${id === 'home' ? '' : `#${id}`}`;
+  // The language switches (menu and footer) land on the same section in the other language.
+  langLinks.forEach((a) => (a.href = `${a.dataset.base}${id === 'home' ? '' : `#${id}`}`));
   sheetLinks.forEach((a) => a.setAttribute('aria-current', String(a.dataset.sectionLink === id)));
 }
 
@@ -95,21 +95,26 @@ for (const d of [sheet, film]) {
   });
 }
 
-// The menu's map loads the first time the menu opens, not with the page.
-const sheetMap = sheet.querySelector<HTMLElement>('[data-sheet-map]');
-function loadSheetMap() {
-  if (!sheetMap || sheetMap.querySelector('iframe')) return;
-  const iframe = document.createElement('iframe');
-  iframe.src = sheetMap.dataset.src!;
-  iframe.title = sheetMap.dataset.title!;
-  iframe.referrerPolicy = 'no-referrer-when-downgrade';
-  sheetMap.prepend(iframe);
-}
+// Switching language from the menu reopens the menu on the other page, so it
+// feels like the menu stayed open.
+const REOPEN = 'lt-menu-open';
+sheet.querySelectorAll('[data-lang-link]').forEach((a) =>
+  a.addEventListener('click', () => {
+    try {
+      sessionStorage.setItem(REOPEN, '1');
+    } catch {}
+  }),
+);
+try {
+  if (sessionStorage.getItem(REOPEN)) {
+    sessionStorage.removeItem(REOPEN);
+    sheet.classList.add('no-anim');
+    openDialog(sheet);
+    sheet.addEventListener('close', () => sheet.classList.remove('no-anim'), { once: true });
+  }
+} catch {}
 
-document.querySelector('[data-sheet-open]')?.addEventListener('click', () => {
-  openDialog(sheet);
-  loadSheetMap();
-});
+document.querySelector('[data-sheet-open]')?.addEventListener('click', () => openDialog(sheet));
 document.querySelector('[data-sheet-close]')?.addEventListener('click', () => closeDialog(sheet));
 
 document.querySelectorAll('[data-film-open]').forEach((b) => b.addEventListener('click', openFilm));

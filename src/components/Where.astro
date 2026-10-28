@@ -1,6 +1,7 @@
 ---
 import BeachTag from './BeachTag.astro';
 import Icon from './Icon.astro';
+import MapArt from './MapArt.astro';
 import { useT, type Lang } from '../i18n';
 import { site } from '../data/site';
 
@@ -23,20 +24,14 @@ const th = site.thursday;
       </p>
     </header>
 
-    <!--
-      Google's embed can't be restyled from outside, so the brand look is two
-      blend layers over a greyscale map: dark becomes navy, light becomes
-      limestone. They let clicks through, so the map still pans and zooms.
-    -->
-    <div class="map map-tinted frame sketch" data-reveal>
-      <iframe
-        src={th.mapsEmbed}
-        title={t.where.mapTitle}
-        loading="lazy"
-        referrerpolicy="no-referrer-when-downgrade"
-        allowfullscreen></iframe>
-      <span class="map-tint map-tint--dark" aria-hidden="true"></span>
-      <span class="map-tint map-tint--light" aria-hidden="true"></span>
+    <!-- Hand-drawn map; directions go to the club's Google Maps listing. -->
+    <div class="map frame sketch" data-reveal>
+      <MapArt lang={lang} crop />
+      <a class="btn map-directions" href={th.mapsUrl} target="_blank" rel="noopener">
+        <Icon name="pin" />
+        {t.thursdays.directions}
+      </a>
+      <p class="map-credit">{t.where.mapCredit}</p>
     </div>
   </div>
 
@@ -83,8 +78,33 @@ const th = site.thursday;
 
   /* ---------- Map ---------- */
   .map {
-    min-height: 24rem;
+    position: relative;
+    aspect-ratio: 4 / 5;
+    background: var(--limestone);
     --sketch-color: var(--navy);
+  }
+
+  @media (min-width: 640px) {
+    .map {
+      aspect-ratio: 3 / 2;
+    }
+  }
+
+  .map-directions {
+    position: absolute;
+    z-index: 2;
+    top: 1rem;
+    right: 1rem;
+    width: auto;
+  }
+
+  .map-credit {
+    position: absolute;
+    z-index: 2;
+    right: 0.75rem;
+    bottom: 0.5rem;
+    font-size: 0.6875rem;
+    color: var(--limestone);
   }
 
   .where-beach {
@@ -95,9 +115,6 @@ const th = site.thursday;
     .where-grid {
       grid-template-columns: 1fr 1.25fr;
       align-items: center;
-    }
-    .map {
-      min-height: 30rem;
     }
   }
 </style>
