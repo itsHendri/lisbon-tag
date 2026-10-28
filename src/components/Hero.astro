@@ -1,11 +1,11 @@
 ---
 /**
  * Hero: a slow crossfade through club photos (photos.hero) until there's a
- * club video. Pausable; with reduced motion it stays on the first photo.
+ * club video. With reduced motion it stays on the first photo.
  */
 import Icon from './Icon.astro';
 import Photo from './Photo.astro';
-import { useT, type Lang } from '../i18n';
+import { useT, withBase, type Lang } from '../i18n';
 import { photos } from '../data/photos';
 
 interface Props {
@@ -35,33 +35,24 @@ const t = useT(lang);
     <span class="rule hero-rule" data-hero-in></span>
     <div class="hero-foot" data-hero-in>
       <p class="hero-sub">{t.hero.sub}</p>
-      <a class="btn" href="#thursdays">
-        {t.hero.join}
-        <Icon name="arrow" />
+      <a class="btn" href={withBase(`/thursdays-${lang}.ics`)} download>
+        <Icon name="calendar" />
+        {t.hero.calendar}
       </a>
     </div>
-
   </div>
-
-  <button class="hero-toggle" type="button" data-hero-toggle aria-pressed="false" data-label-pause={t.hero.pause} data-label-play={t.hero.play}>
-    <span class="hero-toggle-pause"><Icon name="pause" /></span>
-    <span class="hero-toggle-play"><Icon name="play" /></span>
-    <span class="sr-only" data-hero-toggle-label>{t.hero.pause}</span>
-  </button>
 </section>
 
 <script>
   import { prefersReducedMotion } from '../scripts/scroll';
 
   const slides = [...document.querySelectorAll<HTMLElement>('.hero-slide')];
-  const toggle = document.querySelector<HTMLButtonElement>('[data-hero-toggle]');
-  const toggleLabel = toggle?.querySelector<HTMLElement>('[data-hero-toggle-label]');
   const HOLD = 6000;
 
   let index = 0;
   let timer: number | undefined;
-  // Only the visitor (or reduced motion) pauses it; it also rests while off screen.
-  let userPaused = prefersReducedMotion();
+  // Still with reduced motion; it also rests while off screen or in a background tab.
+  const still = prefersReducedMotion();
   let onScreen = true;
 
   function show(next: number) {
@@ -72,19 +63,10 @@ const t = useT(lang);
 
   function sync() {
     window.clearInterval(timer);
-    const running = !userPaused && onScreen && document.visibilityState === 'visible' && slides.length > 1;
+    const running = !still && onScreen && document.visibilityState === 'visible' && slides.length > 1;
     if (running) timer = window.setInterval(() => show(index + 1), HOLD);
     document.querySelector('[data-hero-slides]')?.classList.toggle('is-paused', !running);
-    if (!toggle) return;
-    toggle.setAttribute('aria-pressed', String(userPaused));
-    toggle.classList.toggle('is-paused', userPaused);
-    if (toggleLabel) toggleLabel.textContent = userPaused ? toggle.dataset.labelPlay! : toggle.dataset.labelPause!;
   }
-
-  toggle?.addEventListener('click', () => {
-    userPaused = !userPaused;
-    sync();
-  });
 
   const hero = document.querySelector('[data-hero]');
   if (hero) {
@@ -184,35 +166,6 @@ const t = useT(lang);
     font-weight: 700;
     line-height: 1.2;
     max-width: 20ch;
-  }
-
-  .hero-toggle {
-    position: absolute;
-    top: calc(var(--safe-t) + 4.25rem);
-    right: max(var(--gutter), env(safe-area-inset-right));
-    display: grid;
-    place-items: center;
-    width: var(--chrome-h);
-    height: var(--chrome-h);
-    border-radius: var(--radius);
-    color: var(--limestone);
-    background: color-mix(in srgb, var(--limestone) 16%, transparent);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-  }
-
-  .hero-toggle :global(svg) {
-    width: 0.95rem;
-    height: 0.95rem;
-  }
-
-  .hero-toggle-play,
-  .hero-toggle.is-paused .hero-toggle-pause {
-    display: none;
-  }
-
-  .hero-toggle.is-paused .hero-toggle-play {
-    display: block;
   }
 
   @media (min-width: 900px) {

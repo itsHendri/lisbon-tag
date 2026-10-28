@@ -44,6 +44,13 @@ function queueTone() {
 
 addEventListener('scroll', queueTone, { passive: true });
 
+/* ---------- The how-to-play pill steps aside once you scroll (desktop CSS) ---------- */
+function updateScrolled() {
+  document.documentElement.toggleAttribute('data-scrolled', scrollY > 80);
+}
+addEventListener('scroll', updateScrolled, { passive: true });
+updateScrolled();
+
 /* ---------- In-page links go through Lenis when it runs ---------- */
 document.addEventListener('click', (e) => {
   const a = (e.target as HTMLElement).closest<HTMLAnchorElement>('a[href^="#"]');

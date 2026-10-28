@@ -30,6 +30,7 @@ import p23 from '../assets/photos/p23.jpg';
 import p25 from '../assets/photos/p25.jpg';
 import p26 from '../assets/photos/p26.jpg';
 import p29 from '../assets/photos/p29.jpg';
+import trainers from '../assets/photos/p22-trainers.jpg';
 
 export type Photo = {
   src: string | ImageMetadata;
@@ -37,10 +38,6 @@ export type Photo = {
   /** CSS object-position, for crops on narrow screens. */
   position?: string;
 };
-
-// Unsplash placeholder (free licence) for the one shot we don't have yet.
-// Remove `images.unsplash.com` from astro.config.mjs once it's replaced.
-const u = (id: string) => `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=2400&q=80`;
 
 export const photos = {
   // Hero slideshow, in order. The first one is also the still for reduced motion.
@@ -100,9 +97,10 @@ export const photos = {
     src: p17,
     alt: { en: 'Players in sportswear and club shirts on the beach', pt: 'Jogadores de roupa desportiva e camisolas do clube na praia' },
   },
+  // A crop of p22 until there's a proper boots shot.
   boots: {
-    src: u('1511886929837-354d827aae26'),
-    alt: { en: 'Football boots resting on a ball', pt: 'Chuteiras encostadas a uma bola' },
+    src: trainers,
+    alt: { en: 'Trainers on the grass at a Thursday session', pt: 'Ténis na relva numa sessão de quinta' },
   },
   essentials: {
     src: p13,

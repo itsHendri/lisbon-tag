@@ -44,22 +44,18 @@ export const en = {
 
   hero: {
     sub: 'Every Thursday. Beginners welcome.',
-    join: 'How to join',
-    pause: 'Pause the photo slideshow',
-    play: 'Play the photo slideshow',
+    calendar: 'Add to calendar',
   },
 
   about: {
     // Not shown: names the section for screen readers.
     heading: 'Who we are',
-    statement:
-      'A mixed bunch of locals, expats and passers-through who meet every Thursday to play tag rugby, have a laugh and, usually, a drink after.',
+    statement: 'Locals, expats and passers-through playing tag rugby every Thursday, usually with a drink after.',
     body: 'No tackles, no experience needed, no pressure. Some of us played rugby for years, some had never held the ball before their first Thursday. Tag is fast, social and easy to pick up: come once and you will know half the team by the end of the night.',
   },
 
   thursdays: {
     title: 'Tag Rugby Thursdays',
-    place: 'Belém, Lisbon',
     rows: {
       place: 'Place',
       time: 'Kick-off',
@@ -74,7 +70,6 @@ export const en = {
     title: 'How tag works',
     intro:
       'Tag is rugby without the tackles. Everyone wears a belt with two tags, one on each hip. Instead of bringing the ball carrier down, you pull one off. That is the tackle.',
-    rulesTitle: 'The rules',
     // Titles only: each one has an icon in HowToPlay.astro, in this order.
     rules: [
       'Seven a side',
@@ -119,10 +114,7 @@ export const en = {
   kit: {
     title: 'The Lisbon Tag shirt',
     body: 'Our playing shirt is a love letter to the city: azulejo tiles like the ones on Lisbon’s walls, our name on the chest, and the castle and waves down the side. It is the shirt you see on Thursdays and on the beach.',
-    // TODO: confirm product details.
-    details: ['Light, sleeveless, made to play in', 'Full tile print, front and back', 'Ordered and shipped through Fourthwall'],
-    buy: 'Buy on Fourthwall',
-    ask: 'Ask about sizing',
+    buy: 'Buy now',
     frontAlt: 'Front of the Lisbon Tag shirt: blue and white azulejo tiles, “Lisbon Tag” and a crest on the chest',
     backAlt: 'Back of the Lisbon Tag shirt: azulejo tiles with “Lisbon Tag” across the shoulders',
   },
@@ -131,8 +123,6 @@ export const en = {
     title: 'Where we play',
     body: 'Look for the group in blue and white tiles.',
     transport: 'Tram 15E or the Cascais line train to Belém',
-    showMap: 'Show map',
-    openMaps: 'Open in Google Maps',
     mapTitle: 'Map of where we play on Thursdays',
     beach: {
       title: 'Beach Tag Sundays',
@@ -189,8 +179,7 @@ export const en = {
   },
 
   footer: {
-    made: 'Feito em Lisboa',
-    credits: 'Boots photo from Unsplash.',
+    made: 'Made in Lisbon',
     rights: 'Lisbon Tag Rugby',
   },
 

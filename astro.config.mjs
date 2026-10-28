@@ -15,6 +15,6 @@ export default defineConfig({
   image: {
     // Unsplash placeholders. Remove once every photo in src/data/photos.ts is local.
     // i.ytimg.com: the how-to-play video thumbnail.
-    domains: ['images.unsplash.com', 'i.ytimg.com'],
+    domains: ['i.ytimg.com'],
   },
 });

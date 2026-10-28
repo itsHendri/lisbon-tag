@@ -40,8 +40,6 @@ Search the project for `TODO` to find every placeholder still waiting for a real
 
 3. Astro resizes it and converts it to WebP at build time. Add `position: '50% 30%'` if the crop needs nudging.
 
-Once no `images.unsplash.com` URLs are left, remove `image.domains` from `astro.config.mjs`.
-
 ### Videos
 
 - **Hero:** a slow crossfade through the `hero` photos (pausable, still with reduced motion). When there's a club video, it can replace the slideshow in `src/components/Hero.astro`; keep it short (6–15 s), muted, H.264, under 4 MB at 720p.
@@ -49,7 +47,7 @@ Once no `images.unsplash.com` URLs are left, remove `image.domains` from `astro.
 
 ### The map
 
-`site.thursday.mapsUrl` is what "Open in Google Maps" and "Get directions" open: use the share link of your existing Google Maps place. For `mapsEmbed`, use Google Maps → Share → *Embed a map* and copy the `src` from the iframe code. The map only loads when someone taps "Show map", so Google's cookies stay off the page until then.
+`site.thursday.mapsUrl` is what "Get directions" opens: use the share link of your existing Google Maps place. For `mapsEmbed`, use Google Maps → Share → *Embed a map* and copy the `src` from the iframe code. Google's embed can't be restyled, so `Where.astro` greys it out and lays two blend layers on top (navy for the darks, limestone for the lights) to match the site; clicks pass through, so it still pans and zooms.
 
 ### How-to-play video
 
@@ -79,4 +77,3 @@ pyftsubset "Lisbon Tag.ttf" --text="àáâãçéêíóôõúüÀÁÂÃÇÉÊÍÓ
 - The castle top-left changes colour with what's behind it. Mark anything dark with `data-tone="dark"`.
 - `/thursdays-en.ics` and `/thursdays-pt.ics` are weekly calendar events generated from `site.ts`.
 
-Placeholder photos from [Unsplash](https://unsplash.com), placeholder video from [Pexels](https://www.pexels.com).

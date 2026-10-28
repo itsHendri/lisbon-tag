@@ -250,6 +250,16 @@ const langNames = { en: 'English', pt: 'Português' } as const;
   @media (min-width: 768px) {
     .film-pill {
       margin-inline: auto;
+      transition:
+        opacity 0.3s,
+        transform 0.4s var(--ease-out),
+        visibility 0.4s;
+    }
+    /* On bigger screens it's only in the way once you're reading; it stays in the menu. */
+    :global(html[data-scrolled]) .film-pill {
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-140%);
     }
     .film-pill-long {
       display: inline;

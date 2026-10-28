@@ -41,9 +41,3 @@ export const site = {
     youtubeId: 'v7e8Y8g3sGY',
   },
 } as const;
-
-/** "38,7223° N, 9,1393° W" — comma decimals, the way Portugal writes them. */
-export function formatCoords(lat: number, lng: number) {
-  const f = (n: number) => Math.abs(n).toFixed(4).replace('.', ',');
-  return `${f(lat)}° ${lat >= 0 ? 'N' : 'S'}, ${f(lng)}° ${lng >= 0 ? 'E' : 'W'}`;
-}

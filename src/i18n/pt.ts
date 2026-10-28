@@ -46,21 +46,17 @@ export const pt: Dict = {
 
   hero: {
     sub: 'Todas as quintas. Principiantes bem-vindos.',
-    join: 'Como participar',
-    pause: 'Pausar a apresentação de fotos',
-    play: 'Reproduzir a apresentação de fotos',
+    calendar: 'Adicionar ao calendário',
   },
 
   about: {
     heading: 'Quem somos',
-    statement:
-      'Uma mistura de locais, estrangeiros e gente de passagem que se junta todas as quintas para jogar tag rugby, rir um bocado e, quase sempre, beber um copo no fim.',
+    statement: 'Locais, estrangeiros e gente de passagem a jogar tag rugby todas as quintas, quase sempre com um copo no fim.',
     body: 'Sem placagens, sem experiência necessária, sem pressão. Alguns de nós jogaram rugby durante anos, outros nunca tinham pegado numa bola antes da primeira quinta. O tag é rápido, social e fácil de aprender: vem uma vez e no fim da noite já conheces meia equipa.',
   },
 
   thursdays: {
     title: 'Tag Rugby às Quintas',
-    place: 'Belém, Lisboa',
     rows: {
       place: 'Local',
       time: 'Início',
@@ -75,7 +71,6 @@ export const pt: Dict = {
     title: 'Como funciona o tag',
     intro:
       'O tag é rugby sem placagens. Toda a gente usa um cinto com duas fitas, uma em cada anca. Em vez de derrubar o portador da bola, tiras-lhe uma fita. É essa a placagem.',
-    rulesTitle: 'As regras',
     rules: [
       'Sete contra sete',
       'Tag = placagem',
@@ -119,9 +114,7 @@ export const pt: Dict = {
   kit: {
     title: 'A camisola Lisbon Tag',
     body: 'A nossa camisola é uma carta de amor à cidade: azulejos como os das paredes de Lisboa, o nosso nome ao peito, e o castelo e as ondas de lado. É a camisola que vês às quintas e na praia.',
-    details: ['Leve, sem mangas, feita para jogar', 'Estampado de azulejos à frente e atrás', 'Encomenda e envio pela Fourthwall'],
-    buy: 'Comprar na Fourthwall',
-    ask: 'Perguntar tamanhos',
+    buy: 'Comprar agora',
     frontAlt: 'Frente da camisola Lisbon Tag: azulejos azuis e brancos, “Lisbon Tag” e um brasão ao peito',
     backAlt: 'Costas da camisola Lisbon Tag: azulejos com “Lisbon Tag” nos ombros',
   },
@@ -130,8 +123,6 @@ export const pt: Dict = {
     title: 'Onde jogamos',
     body: 'Procura o grupo de azulejos azuis e brancos.',
     transport: 'Elétrico 15E ou comboio da linha de Cascais até Belém',
-    showMap: 'Mostrar mapa',
-    openMaps: 'Abrir no Google Maps',
     mapTitle: 'Mapa do local onde jogamos às quintas',
     beach: {
       title: 'Domingos de Beach Tag',
@@ -187,7 +178,6 @@ export const pt: Dict = {
 
   footer: {
     made: 'Feito em Lisboa',
-    credits: 'Foto das chuteiras do Unsplash.',
     rights: 'Lisbon Tag Rugby',
   },
 

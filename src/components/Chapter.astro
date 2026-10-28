@@ -1,11 +1,10 @@
 ---
 /**
  * Full-bleed chapter break (the Quechua "Conquer new peaks" moment):
- * a photo that settles as you scroll, a huge title and a place + coordinates line.
+ * a photo that settles as you scroll and a huge title.
  */
 import Photo from './Photo.astro';
 import type { Photo as PhotoT } from '../data/photos';
-import { formatCoords } from '../data/site';
 import type { Lang } from '../i18n';
 
 interface Props {
@@ -15,12 +14,9 @@ interface Props {
   /** Heading level, so each section keeps a sensible outline. */
   as?: 'h2' | 'h3';
   id?: string;
-  place?: string;
-  lat?: number;
-  lng?: number;
 }
 
-const { lang, photo, title, as: Tag = 'h2', id, place, lat, lng } = Astro.props;
+const { lang, photo, title, as: Tag = 'h2', id } = Astro.props;
 ---
 
 <div class="chapter" data-zoom data-tone="dark">
@@ -30,14 +26,6 @@ const { lang, photo, title, as: Tag = 'h2', id, place, lat, lng } = Astro.props;
   <div class="chapter-scrim"></div>
   <div class="chapter-content wrap">
     <Tag id={id} class="display chapter-title" data-split>{title}</Tag>
-    {
-      place && (
-        <p class="chapter-place label" data-reveal>
-          <span>{place}</span>
-          {lat !== undefined && lng !== undefined && <span class="chapter-coords">{formatCoords(lat, lng)}</span>}
-        </p>
-      )
-    }
   </div>
 </div>
 
@@ -78,19 +66,6 @@ const { lang, photo, title, as: Tag = 'h2', id, place, lat, lng } = Astro.props;
     font-size: var(--display-xl);
     max-width: 11ch;
     text-shadow: 0 4px 40px color-mix(in srgb, var(--navy-ink) 35%, transparent);
-  }
-
-  .chapter-place {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.25rem 1.25rem;
-    margin-top: 1.5rem;
-  }
-
-  .chapter-coords {
-    font-weight: 400;
-    opacity: 0.85;
-    font-variant-numeric: tabular-nums;
   }
 
   @media (min-width: 900px) {

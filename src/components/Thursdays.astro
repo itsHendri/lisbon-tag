@@ -23,9 +23,6 @@ const th = site.thursday;
     photo={photos.thursday}
     title={t.thursdays.title}
     id="thursdays-title"
-    place={t.thursdays.place}
-    lat={th.lat}
-    lng={th.lng}
   />
 
   <TileFrame>
@@ -44,14 +41,15 @@ const th = site.thursday;
             { label: t.thursdays.rows.bring, value: t.facts.bring },
           ]}
         />
-        <div class="btn-row" data-reveal>
-          <a class="btn" href={th.mapsUrl} target="_blank" rel="noopener">
-            <Icon name="pin" />
-            {t.thursdays.directions}
-          </a>
+        <!-- Same width as the table; directions is the main action, so it sits right (top on phones). -->
+        <div class="thursdays-actions" data-reveal>
           <a class="btn btn--ghost" href={withBase(`/thursdays-${lang}.ics`)} download>
             <Icon name="calendar" />
             {t.thursdays.calendar}
+          </a>
+          <a class="btn" href={th.mapsUrl} target="_blank" rel="noopener">
+            <Icon name="pin" />
+            {t.thursdays.directions}
           </a>
         </div>
       </div>
@@ -89,6 +87,23 @@ const th = site.thursday;
   .thursdays-body {
     display: grid;
     gap: 2rem;
+  }
+
+  .thursdays-actions {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 0.75rem;
+  }
+
+  .thursdays-actions .btn {
+    width: 100%;
+  }
+
+  @media (min-width: 640px) {
+    .thursdays-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
   }
 
   @media (min-width: 900px) {
