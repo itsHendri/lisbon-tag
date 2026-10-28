@@ -43,8 +43,6 @@ function queueTone() {
 }
 
 addEventListener('scroll', queueTone, { passive: true });
-addEventListener('resize', queueTone);
-updateTone();
 
 /* ---------- In-page links go through Lenis when it runs ---------- */
 document.addEventListener('click', (e) => {
@@ -93,7 +91,11 @@ for (const d of [sheet, film]) {
 document.querySelector('[data-sheet-open]')?.addEventListener('click', () => openDialog(sheet));
 document.querySelector('[data-sheet-close]')?.addEventListener('click', () => closeDialog(sheet));
 
-document.querySelector('[data-film-open]')?.addEventListener('click', () => {
+document.querySelectorAll('[data-film-open]').forEach((b) => b.addEventListener('click', openFilm));
+
+function openFilm() {
+  // Opened from inside the menu: swap one dialog for the other.
+  closeDialog(sheet);
   const iframe = document.createElement('iframe');
   iframe.src = `https://www.youtube-nocookie.com/embed/${filmFrame.dataset.youtube}?autoplay=1&rel=0&playsinline=1&modestbranding=1`;
   iframe.title = filmFrame.dataset.title ?? '';
@@ -103,5 +105,5 @@ document.querySelector('[data-film-open]')?.addEventListener('click', () => {
   iframe.referrerPolicy = 'strict-origin-when-cross-origin';
   filmFrame.replaceChildren(iframe);
   openDialog(film);
-});
+}
 document.querySelector('[data-film-close]')?.addEventListener('click', () => closeDialog(film));

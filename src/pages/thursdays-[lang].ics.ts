@@ -53,7 +53,7 @@ export const GET: APIRoute = ({ params, site: siteUrl }) => {
     `UID:thursdays-${lang}@lisbontagrugby`,
     `DTSTAMP:${new Date().toISOString().replace(/[-:]/g, '').slice(0, 15)}Z`,
     `DTSTART;TZID=Europe/Lisbon:${day}T${hhmm(th.start)}`,
-    `DTEND;TZID=Europe/Lisbon:${day}T${hhmm(th.end)}`,
+    `DURATION:PT${th.durationHours}H`,
     'RRULE:FREQ=WEEKLY;BYDAY=TH',
     `SUMMARY:${esc(t.calendar.summary)}`,
     `DESCRIPTION:${esc(`${t.calendar.description}\n${url}`)}`,

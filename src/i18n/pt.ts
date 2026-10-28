@@ -20,6 +20,7 @@ export const pt: Dict = {
     language: 'Idioma',
     film: 'Como se joga tag',
     filmSub: 'As regras em 4 minutos',
+    filmShort: 'Como jogar',
     closeFilm: 'Fechar o vídeo',
   },
 
@@ -46,8 +47,8 @@ export const pt: Dict = {
   hero: {
     sub: 'Todas as quintas. Principiantes bem-vindos.',
     join: 'Como participar',
-    pause: 'Pausar o vídeo de fundo',
-    play: 'Reproduzir o vídeo de fundo',
+    pause: 'Pausar a apresentação de fotos',
+    play: 'Reproduzir a apresentação de fotos',
   },
 
   about: {
@@ -62,7 +63,7 @@ export const pt: Dict = {
     place: 'Belém, Lisboa',
     rows: {
       place: 'Local',
-      time: 'Hora',
+      time: 'Início',
       cost: 'Preço',
       bring: 'Traz',
     },
@@ -118,20 +119,18 @@ export const pt: Dict = {
   kit: {
     title: 'A camisola Lisbon Tag',
     body: 'A nossa camisola é uma carta de amor à cidade: azulejos como os das paredes de Lisboa, o nosso nome ao peito, e o castelo e as ondas de lado. É a camisola que vês às quintas e na praia.',
-    priceLabel: 'Preço',
     details: ['Leve, sem mangas, feita para jogar', 'Estampado de azulejos à frente e atrás', 'Encomenda e envio pela Fourthwall'],
     buy: 'Comprar na Fourthwall',
-    ask: 'Dúvidas sobre tamanhos? Fala connosco',
+    ask: 'Perguntar tamanhos',
     frontAlt: 'Frente da camisola Lisbon Tag: azulejos azuis e brancos, “Lisbon Tag” e um brasão ao peito',
     backAlt: 'Costas da camisola Lisbon Tag: azulejos com “Lisbon Tag” nos ombros',
   },
 
   where: {
     title: 'Onde jogamos',
-    body: 'Todas as quintas em Lisboa. Procura o grupo de azulejos azuis e brancos.',
+    body: 'Procura o grupo de azulejos azuis e brancos.',
     transport: 'Elétrico 15E ou comboio da linha de Cascais até Belém',
     showMap: 'Mostrar mapa',
-    mapNote: 'Carrega o Google Maps',
     openMaps: 'Abrir no Google Maps',
     mapTitle: 'Mapa do local onde jogamos às quintas',
     beach: {
@@ -155,7 +154,7 @@ export const pt: Dict = {
       },
       {
         q: 'Preciso de me inscrever?',
-        a: 'Não, é só aparecer. Entrar no grupo de WhatsApp ajuda: é lá que partilhamos mudanças de última hora e um ou outro cancelamento.',
+        a: 'Não, é só aparecer. Manda-nos mensagem no Instagram para entrares no grupo de WhatsApp: é lá que partilhamos mudanças de última hora e um ou outro cancelamento.',
       },
       {
         q: 'Quanto custa?',
@@ -181,12 +180,14 @@ export const pt: Dict = {
     body: 'Sem inscrição, sem experiência necessária. Chega dez minutos mais cedo e diz olá.',
     whatsapp: 'Entrar no grupo de WhatsApp',
     instagram: 'Seguir no Instagram',
-    calendar: 'Pôr as quintas no calendário',
+    instagramPrimary: 'Manda-nos mensagem no Instagram',
+    instagramNote: 'Manda-nos mensagem no Instagram e adicionamos-te ao grupo de WhatsApp da comunidade.',
+    calendar: 'Adicionar ao calendário',
   },
 
   footer: {
     made: 'Feito em Lisboa',
-    credits: 'Vídeo provisório do Pexels, foto das chuteiras do Unsplash.',
+    credits: 'Foto das chuteiras do Unsplash.',
     rights: 'Lisbon Tag Rugby',
   },
 

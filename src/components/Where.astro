@@ -23,15 +23,8 @@ const tileBg = await getImage({ src: tile, width: 240, format: 'webp' });
       <p class="where-venue">{th.venue}</p>
       <p class="lede" data-reveal>{t.where.body}</p>
       <p class="where-meta" data-reveal>
-        <span><Icon name="calendar" /> {t.facts.day}, {th.start}–{th.end}</span>
         <span><Icon name="pin" /> {t.where.transport}</span>
       </p>
-      <div class="btn-row" data-reveal>
-        <a class="btn" href={th.mapsUrl} target="_blank" rel="noopener">
-          <Icon name="pin" />
-          {t.where.openMaps}
-        </a>
-      </div>
     </header>
 
     <div class="map frame sketch" style={`--tile-url: url(${tileBg.src})`} data-map data-reveal>
@@ -43,7 +36,10 @@ const tileBg = await getImage({ src: tile, width: 240, format: 'webp' });
         <button class="btn" type="button" data-map-load data-src={th.mapsEmbed} data-title={t.where.mapTitle}>
           {t.where.showMap}
         </button>
-        <p class="map-note">{t.where.mapNote}</p>
+        <a class="map-open" href={th.mapsUrl} target="_blank" rel="noopener">
+          {t.where.openMaps}
+          <Icon name="external" />
+        </a>
       </div>
     </div>
   </div>
@@ -128,27 +124,41 @@ const tileBg = await getImage({ src: tile, width: 240, format: 'webp' });
     content: '';
     position: absolute;
     inset: 0;
-    background: radial-gradient(closest-side, var(--limestone) 55%, rgb(246 240 231 / 0.7));
+    background: radial-gradient(closest-side, var(--limestone) 55%, color-mix(in srgb, var(--limestone) 70%, transparent));
   }
 
   .map-facade > * {
     position: relative;
   }
 
+  /* A square tile with a point underneath: the brand is square. */
   .map-pin {
+    position: relative;
     display: grid;
     place-items: center;
-    width: 5.5rem;
-    height: 5.5rem;
-    border-radius: 50% 50% 50% 0;
-    transform: rotate(-45deg);
+    width: 5rem;
+    height: 5rem;
+    margin-bottom: 0.5rem;
+    border-radius: var(--radius);
     background: var(--navy);
-    box-shadow: 0 16px 30px -12px rgb(2 31 66 / 0.6);
+    box-shadow: var(--shadow-md);
+  }
+
+  .map-pin::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: -0.55rem;
+    width: 1.1rem;
+    height: 1.1rem;
+    background: var(--navy);
+    transform: translateX(-50%) rotate(45deg);
   }
 
   .map-pin :global(img) {
+    position: relative;
+    z-index: 1;
     width: 3.2rem;
-    transform: rotate(45deg);
   }
 
   .map-coords {
@@ -157,9 +167,19 @@ const tileBg = await getImage({ src: tile, width: 240, format: 'webp' });
     font-variant-numeric: tabular-nums;
   }
 
-  .map-note {
-    font-size: var(--text-xs);
-    color: var(--fg-muted);
+  .map-open {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    min-height: 2.75rem;
+    font-weight: 700;
+    font-size: var(--text-sm);
+    text-underline-offset: 0.2em;
+  }
+
+  .map-open :global(svg) {
+    width: 1em;
+    height: 1em;
   }
 
   .map :global(.map-frame) {

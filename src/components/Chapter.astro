@@ -67,7 +67,7 @@ const { lang, photo, title, as: Tag = 'h2', id, place, lat, lng } = Astro.props;
     position: absolute;
     inset: 0;
     z-index: -1;
-    background: linear-gradient(0deg, rgb(3 45 94 / 0.92) 0%, rgb(5 72 149 / 0.45) 45%, rgb(5 72 149 / 0.05) 80%);
+    background: var(--scrim-photo);
   }
 
   .chapter-content {
@@ -77,7 +77,7 @@ const { lang, photo, title, as: Tag = 'h2', id, place, lat, lng } = Astro.props;
   .chapter-title {
     font-size: var(--display-xl);
     max-width: 11ch;
-    text-shadow: 0 4px 40px rgb(2 31 66 / 0.35);
+    text-shadow: 0 4px 40px color-mix(in srgb, var(--navy-ink) 35%, transparent);
   }
 
   .chapter-place {

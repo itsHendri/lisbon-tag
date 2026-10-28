@@ -1,7 +1,11 @@
 ---
-import { getImage } from 'astro:assets';
+/**
+ * Hero: a slow crossfade through club photos (photos.hero) until there's a
+ * club video. Pausable; with reduced motion it stays on the first photo.
+ */
 import Icon from './Icon.astro';
-import { useT, withBase, type Lang } from '../i18n';
+import Photo from './Photo.astro';
+import { useT, type Lang } from '../i18n';
 import { photos } from '../data/photos';
 
 interface Props {
@@ -9,22 +13,17 @@ interface Props {
 }
 const { lang } = Astro.props;
 const t = useT(lang);
-
-const posterSrc = photos.heroPoster.src;
-const poster = await getImage(
-  typeof posterSrc === 'string'
-    ? { src: posterSrc, inferSize: true, width: 1280, format: 'webp', quality: 60 }
-    : { src: posterSrc, width: 1280, format: 'webp', quality: 60 },
-);
 ---
 
 <section id="home" class="hero theme-navy" data-section data-hero data-tone="dark" aria-labelledby="hero-title">
-  <div class="hero-media">
-    <!-- Placeholder loop (Pexels). Swap the files in public/video/ for the club's own. -->
-    <video class="cover" muted loop playsinline preload="metadata" poster={poster.src} data-hero-video aria-hidden="true">
-      <source src={withBase('/video/hero-loop-540.mp4')} type="video/mp4" media="(max-width: 767px)" />
-      <source src={withBase('/video/hero-loop.mp4')} type="video/mp4" />
-    </video>
+  <div class="hero-media" data-hero-slides>
+    {
+      photos.hero.map((p, i) => (
+        <div class:list={['hero-slide', i === 0 && 'is-active']} aria-hidden={i === 0 ? undefined : 'true'}>
+          <Photo photo={p} lang={lang} sizes="100vw" widths={[640, 960, 1280, 1920]} class="cover" priority={i === 0} />
+        </div>
+      ))
+    }
     <div class="hero-scrim"></div>
   </div>
 
@@ -36,11 +35,12 @@ const poster = await getImage(
     <span class="rule hero-rule" data-hero-in></span>
     <div class="hero-foot" data-hero-in>
       <p class="hero-sub">{t.hero.sub}</p>
-      <a class="btn" href="#join">
+      <a class="btn" href="#thursdays">
         {t.hero.join}
         <Icon name="arrow" />
       </a>
     </div>
+
   </div>
 
   <button class="hero-toggle" type="button" data-hero-toggle aria-pressed="false" data-label-pause={t.hero.pause} data-label-play={t.hero.play}>
@@ -53,19 +53,29 @@ const poster = await getImage(
 <script>
   import { prefersReducedMotion } from '../scripts/scroll';
 
-  const video = document.querySelector<HTMLVideoElement>('[data-hero-video]');
+  const slides = [...document.querySelectorAll<HTMLElement>('.hero-slide')];
   const toggle = document.querySelector<HTMLButtonElement>('[data-hero-toggle]');
   const toggleLabel = toggle?.querySelector<HTMLElement>('[data-hero-toggle-label]');
+  const HOLD = 6000;
 
-  // Only the visitor (or reduced motion) pauses the loop. A blocked autoplay,
-  // e.g. in a background tab, just tries again when the page is visible.
+  let index = 0;
+  let timer: number | undefined;
+  // Only the visitor (or reduced motion) pauses it; it also rests while off screen.
   let userPaused = prefersReducedMotion();
   let onScreen = true;
 
+  function show(next: number) {
+    slides[index].classList.remove('is-active');
+    index = next % slides.length;
+    slides[index].classList.add('is-active');
+  }
+
   function sync() {
-    if (!video || !toggle) return;
-    if (userPaused || !onScreen) video.pause();
-    else video.play().catch(() => {});
+    window.clearInterval(timer);
+    const running = !userPaused && onScreen && document.visibilityState === 'visible' && slides.length > 1;
+    if (running) timer = window.setInterval(() => show(index + 1), HOLD);
+    document.querySelector('[data-hero-slides]')?.classList.toggle('is-paused', !running);
+    if (!toggle) return;
     toggle.setAttribute('aria-pressed', String(userPaused));
     toggle.classList.toggle('is-paused', userPaused);
     if (toggleLabel) toggleLabel.textContent = userPaused ? toggle.dataset.labelPlay! : toggle.dataset.labelPause!;
@@ -76,14 +86,14 @@ const poster = await getImage(
     sync();
   });
 
-  // Don't burn battery decoding video nobody can see.
-  if (video) {
+  const hero = document.querySelector('[data-hero]');
+  if (hero) {
     new IntersectionObserver(([e]) => {
       onScreen = e.isIntersecting;
       sync();
-    }).observe(video);
+    }).observe(hero);
   }
-  document.addEventListener('visibilitychange', () => document.visibilityState === 'visible' && sync());
+  document.addEventListener('visibilitychange', sync);
   sync();
 </script>
 
@@ -105,16 +115,46 @@ const poster = await getImage(
     z-index: -1;
   }
 
+  /* Crossfade, with a slow push-in on the photo that's showing. */
+  .hero-slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 1.6s ease-in-out;
+  }
+
+  .hero-slide.is-active {
+    opacity: 1;
+  }
+
+  .hero-slide :global(img) {
+    transform: scale(1.08);
+    transition: transform 7.5s linear;
+  }
+
+  .hero-slide.is-active :global(img) {
+    transform: scale(1);
+  }
+
+  .hero-media.is-paused .hero-slide :global(img) {
+    transition: none;
+  }
+
   .hero-scrim {
     position: absolute;
     inset: 0;
     background:
-      linear-gradient(180deg, rgb(2 31 66 / 0.45) 0%, rgb(2 31 66 / 0) 28%),
-      linear-gradient(0deg, rgb(3 45 94 / 0.95) 0%, rgb(5 72 149 / 0.55) 42%, rgb(5 72 149 / 0) 75%);
+      var(--scrim-top),
+      linear-gradient(
+        0deg,
+        color-mix(in srgb, var(--navy-deep) 95%, transparent) 0%,
+        color-mix(in srgb, var(--navy) 55%, transparent) 42%,
+        transparent 75%
+      );
   }
 
   .hero-content {
-    padding-bottom: calc(var(--safe-b) + 6.5rem);
+    padding-bottom: calc(var(--safe-b) + 3rem);
     padding-top: 7rem;
   }
 
@@ -122,7 +162,7 @@ const poster = await getImage(
     font-size: var(--display-xl);
     display: flex;
     flex-direction: column;
-    text-shadow: 0 4px 40px rgb(2 31 66 / 0.35);
+    text-shadow: 0 4px 40px var(--ink-a);
   }
 
   .hero-rule {
@@ -154,9 +194,9 @@ const poster = await getImage(
     place-items: center;
     width: var(--chrome-h);
     height: var(--chrome-h);
-    border-radius: 50%;
+    border-radius: var(--radius);
     color: var(--limestone);
-    background: rgb(246 240 231 / 0.16);
+    background: color-mix(in srgb, var(--limestone) 16%, transparent);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
   }
@@ -177,7 +217,7 @@ const poster = await getImage(
 
   @media (min-width: 900px) {
     .hero-content {
-      padding-bottom: 7.5rem;
+      padding-bottom: 5rem;
     }
   }
 </style>

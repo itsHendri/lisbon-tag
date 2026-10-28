@@ -34,7 +34,7 @@
   /* Roles (light / limestone is the default surface) */
   --bg: var(--limestone);
   --fg: var(--navy);
-  --fg-muted: color-mix(in srgb, var(--navy) 72%, var(--limestone));
+  --fg-muted: color-mix(in srgb, var(--navy) 85%, var(--limestone));
   --line: color-mix(in srgb, var(--navy) 85%, transparent);
   --surface: var(--limestone-dim);
   --accent: var(--navy);
@@ -50,6 +50,7 @@
   --text-lg: clamp(1.125rem, 1.05rem + 0.4vw, 1.375rem);
   --text-xl: clamp(1.375rem, 1.2rem + 0.9vw, 2rem);
   --text-statement: clamp(1.5rem, 1.15rem + 1.8vw, 2.75rem);
+  --display-xs: clamp(1.35rem, 1.2rem + 0.5vw, 1.65rem);
   --display-sm: clamp(2rem, 1.5rem + 2.4vw, 3.25rem);
   --display-md: clamp(2.75rem, 1.6rem + 5vw, 5.5rem);
   --display-xl: clamp(3.75rem, 1rem + 13vw, 12.5rem);
@@ -73,6 +74,19 @@
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --dur: 0.5s;
 
+  /* Depth and photo scrims, so components don't hard-code colours */
+  --ink-a: color-mix(in srgb, var(--navy-ink) 45%, transparent);
+  --shadow-sm: 0 6px 24px -8px var(--ink-a);
+  --shadow-md: 0 12px 32px -10px color-mix(in srgb, var(--navy-ink) 55%, transparent);
+  --shadow-lg: 0 20px 50px -24px var(--ink-a);
+  --scrim-photo: linear-gradient(
+    0deg,
+    color-mix(in srgb, var(--navy-deep) 92%, transparent) 0%,
+    color-mix(in srgb, var(--navy) 45%, transparent) 45%,
+    color-mix(in srgb, var(--navy) 5%, transparent) 80%
+  );
+  --scrim-top: linear-gradient(180deg, color-mix(in srgb, var(--navy-ink) 45%, transparent) 0%, transparent 28%);
+
   /* Chrome */
   --chrome-h: 2.75rem;
   --safe-b: env(safe-area-inset-bottom, 0px);
@@ -91,7 +105,7 @@
 .theme-light {
   --bg: var(--limestone);
   --fg: var(--navy);
-  --fg-muted: color-mix(in srgb, var(--navy) 72%, var(--limestone));
+  --fg-muted: color-mix(in srgb, var(--navy) 85%, var(--limestone));
   --line: color-mix(in srgb, var(--navy) 85%, transparent);
   --surface: var(--limestone-dim);
   --accent: var(--navy);

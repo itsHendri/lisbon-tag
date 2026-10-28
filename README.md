@@ -19,8 +19,10 @@ npm run deploy     # build + Cloudflare Pages (needs wrangler login)
 | All wording, English | `src/i18n/en.ts` |
 | All wording, Portuguese | `src/i18n/pt.ts` (same shape; TypeScript complains if a key is missing) |
 | Photos | `src/data/photos.ts` |
-| Hero loop video | `public/video/hero-loop.mp4` (desktop) and `hero-loop-540.mp4` (phones) |
-| "How to play tag" video (banner bottom-right) | `site.howToPlay.youtubeId` in `src/data/site.ts` |
+| Hero slideshow photos | `hero` list in `src/data/photos.ts` |
+| "How to play tag" video | `site.howToPlay.youtubeId` in `src/data/site.ts` |
+| WhatsApp group link | `site.links.whatsapp` in `src/data/site.ts`. While it's `null` the WhatsApp buttons are hidden and Instagram is the contact |
+| Kick-off time | `site.thursday.start` (one time only; the calendar file assumes `durationHours`) |
 | Rule icons | `src/components/HowToPlay.astro` ([Phosphor](https://phosphoricons.com), MIT, bold weight) |
 
 Search the project for `TODO` to find every placeholder still waiting for a real detail.
@@ -40,14 +42,18 @@ Search the project for `TODO` to find every placeholder still waiting for a real
 
 Once no `images.unsplash.com` URLs are left, remove `image.domains` from `astro.config.mjs`.
 
-### Swapping the videos
+### Videos
 
-- **Hero loop:** keep it short (6–15 s), muted, H.264 MP4, ideally under 4 MB at 720p and under 2 MB at 540p. Replace both files and keep the names.
+- **Hero:** a slow crossfade through the `hero` photos (pausable, still with reduced motion). When there's a club video, it can replace the slideshow in `src/components/Hero.astro`; keep it short (6–15 s), muted, H.264, under 4 MB at 720p.
 - **How-to-play video:** any YouTube video. Put its id (the part after `watch?v=`) in `site.howToPlay.youtubeId`; the thumbnail on the card updates at the next build. The player only loads when someone opens it, through youtube-nocookie.
 
 ### The map
 
 `site.thursday.mapsUrl` is what "Open in Google Maps" and "Get directions" open: use the share link of your existing Google Maps place. For `mapsEmbed`, use Google Maps → Share → *Embed a map* and copy the `src` from the iframe code. The map only loads when someone taps "Show map", so Google's cookies stay off the page until then.
+
+### How-to-play video
+
+The pill in the header (between the castle and Menu) and the first row of the menu both open the video in a full-screen player. It's a YouTube embed that loads only when opened.
 
 ### The shirt
 

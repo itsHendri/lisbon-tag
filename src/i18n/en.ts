@@ -18,6 +18,7 @@ export const en = {
     language: 'Language',
     film: 'How to play tag',
     filmSub: 'The rules in 4 minutes',
+    filmShort: 'How to play',
     closeFilm: 'Close video',
   },
 
@@ -45,8 +46,8 @@ export const en = {
   hero: {
     sub: 'Every Thursday. Beginners welcome.',
     join: 'How to join',
-    pause: 'Pause background video',
-    play: 'Play background video',
+    pause: 'Pause the photo slideshow',
+    play: 'Play the photo slideshow',
   },
 
   about: {
@@ -62,7 +63,7 @@ export const en = {
     place: 'Belém, Lisbon',
     rows: {
       place: 'Place',
-      time: 'Time',
+      time: 'Kick-off',
       cost: 'Cost',
       bring: 'Bring',
     },
@@ -119,21 +120,19 @@ export const en = {
   kit: {
     title: 'The Lisbon Tag shirt',
     body: 'Our playing shirt is a love letter to the city: azulejo tiles like the ones on Lisbon’s walls, our name on the chest, and the castle and waves down the side. It is the shirt you see on Thursdays and on the beach.',
-    priceLabel: 'Price',
     // TODO: confirm product details.
     details: ['Light, sleeveless, made to play in', 'Full tile print, front and back', 'Ordered and shipped through Fourthwall'],
     buy: 'Buy on Fourthwall',
-    ask: 'Sizing question? Message us',
+    ask: 'Ask about sizing',
     frontAlt: 'Front of the Lisbon Tag shirt: blue and white azulejo tiles, “Lisbon Tag” and a crest on the chest',
     backAlt: 'Back of the Lisbon Tag shirt: azulejo tiles with “Lisbon Tag” across the shoulders',
   },
 
   where: {
     title: 'Where we play',
-    body: 'Every Thursday in Lisbon. Look for the group in blue and white tiles.',
+    body: 'Look for the group in blue and white tiles.',
     transport: 'Tram 15E or the Cascais line train to Belém',
     showMap: 'Show map',
-    mapNote: 'Loads Google Maps',
     openMaps: 'Open in Google Maps',
     mapTitle: 'Map of where we play on Thursdays',
     beach: {
@@ -157,7 +156,7 @@ export const en = {
       },
       {
         q: 'Do I need to sign up?',
-        a: 'No, just show up. Joining the WhatsApp group helps: that is where we share last-minute changes and the occasional cancellation.',
+        a: 'No, just show up. Message us on Instagram to join our WhatsApp group: that is where we share last-minute changes and the occasional cancellation.',
       },
       {
         // TODO: confirm.
@@ -185,12 +184,15 @@ export const en = {
     body: 'No sign-up, no experience needed. Turn up ten minutes early and say olá.',
     whatsapp: 'Join the WhatsApp group',
     instagram: 'Follow on Instagram',
-    calendar: 'Add Thursdays to my calendar',
+    // Shown while there's no WhatsApp link: Instagram becomes the main action.
+    instagramPrimary: 'Message us on Instagram',
+    instagramNote: 'Message us on Instagram and we’ll add you to the community WhatsApp group.',
+    calendar: 'Add to calendar',
   },
 
   footer: {
     made: 'Feito em Lisboa',
-    credits: 'Placeholder video from Pexels, boots photo from Unsplash.',
+    credits: 'Boots photo from Unsplash.',
     rights: 'Lisbon Tag Rugby',
   },
 

@@ -11,28 +11,36 @@ interface Props {
 }
 const { lang } = Astro.props;
 const t = useT(lang);
-const th = site.thursday;
+// Until the community group link exists, Instagram is how people get in.
+const whatsapp = site.links.whatsapp;
 ---
 
 <TileFrame as="section" id="join" class="join" aria-labelledby="join-title" data-section>
   <div class="wrap join-inner">
     <h2 id="join-title" class="display display-md" data-split>{t.join.title}</h2>
     <p class="lede" data-reveal>{t.join.body}</p>
-
-    <p class="join-when label" data-reveal>
-      <span>{t.facts.day} · {th.start}–{th.end}</span>
-      <span>{th.venue}</span>
-    </p>
+    {!whatsapp && <p class="join-note" data-reveal>{t.join.instagramNote}</p>}
 
     <div class="btn-row join-actions" data-reveal>
-      <a class="btn" href={site.links.whatsapp} target="_blank" rel="noopener">
-        <Icon name="whatsapp" />
-        {t.join.whatsapp}
-      </a>
-      <a class="btn btn--ghost" href={site.links.instagram} target="_blank" rel="noopener">
-        <Icon name="instagram" />
-        {t.join.instagram}
-      </a>
+      {
+        whatsapp ? (
+          <>
+            <a class="btn" href={whatsapp} target="_blank" rel="noopener">
+              <Icon name="whatsapp" />
+              {t.join.whatsapp}
+            </a>
+            <a class="btn btn--ghost" href={site.links.instagram} target="_blank" rel="noopener">
+              <Icon name="instagram" />
+              {t.join.instagram}
+            </a>
+          </>
+        ) : (
+          <a class="btn" href={site.links.instagram} target="_blank" rel="noopener">
+            <Icon name="instagram" />
+            {t.join.instagramPrimary}
+          </a>
+        )
+      }
       <a class="btn btn--ghost" href={withBase(`/thursdays-${lang}.ics`)} download>
         <Icon name="calendar" />
         {t.join.calendar}
@@ -61,9 +69,8 @@ const th = site.thursday;
 </TileFrame>
 
 <style>
-  /* Room under the footer for the fixed menu and video buttons. */
   .join :global(.tile-frame-card) {
-    padding-bottom: calc(6rem + var(--safe-b));
+    padding-bottom: calc(var(--section-y) * 0.6 + var(--safe-b));
   }
 
   .join-inner {
@@ -72,10 +79,9 @@ const th = site.thursday;
     justify-items: start;
   }
 
-  .join-when {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.25rem 1.5rem;
+  .join-note {
+    color: var(--fg-muted);
+    max-width: 36ch;
   }
 
   .join-actions {

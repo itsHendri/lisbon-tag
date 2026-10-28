@@ -19,16 +19,16 @@ const t = useT(lang);
     </div>
 
     <div class="collage">
-      <figure class="collage-item c1 frame" data-parallax="0.06">
+      <figure class="collage-item c1 frame" data-tone="dark" data-parallax="0.06">
         <Photo photo={photos.intro1} lang={lang} sizes="(min-width: 900px) 30vw, 60vw" class="cover" />
       </figure>
-      <figure class="collage-item c2 frame" data-parallax="0.14">
+      <figure class="collage-item c2 frame" data-tone="dark" data-parallax="0.14">
         <Photo photo={photos.intro2} lang={lang} sizes="(min-width: 900px) 20vw, 42vw" class="cover" />
       </figure>
-      <figure class="collage-item c3 frame" data-parallax="0.1">
+      <figure class="collage-item c3 frame" data-tone="dark" data-parallax="0.1">
         <Photo photo={photos.intro3} lang={lang} sizes="(min-width: 900px) 24vw, 50vw" class="cover" />
       </figure>
-      <figure class="collage-item c4 frame" data-parallax="0.18">
+      <figure class="collage-item c4 frame" data-tone="dark" data-parallax="0.18">
         <Photo photo={photos.intro4} lang={lang} sizes="(min-width: 900px) 18vw, 40vw" class="cover" />
       </figure>
     </div>
@@ -61,7 +61,7 @@ const t = useT(lang);
 
   .collage-item {
     margin: 0;
-    box-shadow: 0 20px 50px -24px rgb(2 31 66 / 0.45);
+    box-shadow: var(--shadow-lg);
   }
 
   .c1 {

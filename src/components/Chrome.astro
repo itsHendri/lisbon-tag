@@ -1,10 +1,11 @@
 ---
 /**
  * The fixed UI that floats over every section:
- * castle top-left, Menu top-right (sections + language inside),
- * how-to-play video banner bottom-right, plus the menu and video dialogs.
+ * castle top-left, the how-to-play video pill in the middle, Menu top-right
+ * (sections, the video again, and the language switch inside), plus the menu
+ * and video dialogs.
  */
-import { Image, getImage } from 'astro:assets';
+import { getImage } from 'astro:assets';
 import Icon from './Icon.astro';
 import { useT, homeHref, langs, htmlLang, sectionIds, type Lang } from '../i18n';
 import { site } from '../data/site';
@@ -17,27 +18,32 @@ const { lang } = Astro.props;
 const t = useT(lang);
 const yt = site.howToPlay.youtubeId;
 const castle = await getImage({ src: castleMask, width: 128, format: 'png' });
+const thumb = await getImage({ src: `https://i.ytimg.com/vi/${yt}/mqdefault.jpg`, inferSize: true, width: 240, format: 'webp' });
 const langNames = { en: 'English', pt: 'Português' } as const;
 ---
 
 <header class="chrome-top">
-  <a class="chrome-logo" href="#home" aria-label={t.nav.home} style={`--castle: url(${castle.src})`}></a>
+  <a class="chrome-logo-wrap" href="#home" aria-label={t.nav.home}>
+    <span class="chrome-logo" style={`--castle: url(${castle.src})`}></span>
+  </a>
+
+  <!-- How-to-play video, always one tap away and never over the content. -->
+  <button class="film-pill" type="button" aria-haspopup="dialog" aria-controls="film" data-film-open>
+    <span class="film-pill-thumb">
+      <img src={thumb.src} alt="" width="64" height="36" />
+      <span class="film-pill-play"><Icon name="play" /></span>
+    </span>
+    <span class="film-pill-text">
+      <span class="film-pill-short">{t.nav.filmShort}</span>
+      <span class="film-pill-long">{t.nav.film} · 4 min</span>
+    </span>
+  </button>
+
   <button class="chrome-menu" type="button" aria-haspopup="dialog" aria-controls="sheet" data-sheet-open>
     <span>{t.nav.menu}</span>
     <Icon name="grid" />
   </button>
 </header>
-
-<button class="chrome-film" type="button" aria-haspopup="dialog" aria-controls="film" data-film-open>
-  <span class="chrome-film-thumb">
-    <Image src={`https://i.ytimg.com/vi/${yt}/mqdefault.jpg`} inferSize alt="" width={240} format="webp" loading="eager" />
-    <span class="chrome-film-play"><Icon name="play" /></span>
-  </span>
-  <span class="chrome-film-text">
-    <span class="chrome-film-title display">{t.nav.film}</span>
-    <span class="chrome-film-sub">{t.nav.filmSub}</span>
-  </span>
-</button>
 
 <!-- Full-screen menu. data-lenis-prevent lets it scroll natively while the page is locked. -->
 <dialog id="sheet" class="sheet theme-navy" aria-label={t.nav.menu} data-lenis-prevent>
@@ -50,6 +56,16 @@ const langNames = { en: 'English', pt: 'Português' } as const;
   </div>
 
   <nav class="sheet-nav" aria-label={t.nav.sections}>
+    <button class="sheet-film" type="button" aria-haspopup="dialog" aria-controls="film" data-film-open>
+      <span class="sheet-film-thumb">
+        <img src={thumb.src} alt="" width="240" height="135" />
+        <span class="chrome-film-play"><Icon name="play" /></span>
+      </span>
+      <span class="chrome-film-text">
+        <span class="chrome-film-title display">{t.nav.film}</span>
+        <span class="chrome-film-sub">{t.nav.filmSub}</span>
+      </span>
+    </button>
     <ol class="sheet-list">
       {
         sectionIds.map((id, i) => (
@@ -127,13 +143,23 @@ const langNames = { en: 'English', pt: 'Português' } as const;
     transition: color 0.3s;
   }
 
+  /* A soft halo in the opposite colour keeps it readable over photos and tiles. */
+  .chrome-logo-wrap {
+    display: block;
+    filter: drop-shadow(0 0 6px var(--ink-a));
+    transition: filter 0.3s;
+  }
+
+  :global(html[data-chrome-tone='light']) .chrome-logo-wrap {
+    filter: drop-shadow(0 0 5px color-mix(in srgb, var(--limestone) 90%, transparent));
+  }
+
   :global(html[data-chrome-tone='light']) .chrome-logo {
     color: var(--navy);
   }
 
-  .chrome-logo:focus-visible {
-    outline: none;
-    filter: drop-shadow(0 0 2px currentColor);
+  .chrome-logo-wrap:focus-visible {
+    outline-offset: 2px;
   }
 
   /* ---------- Menu button ---------- */
@@ -152,8 +178,8 @@ const langNames = { en: 'English', pt: 'Português' } as const;
     font-weight: 700;
     letter-spacing: 0.04em;
     box-shadow:
-      inset 0 0 0 1px rgb(246 240 231 / 0.28),
-      0 6px 24px -8px rgb(2 31 66 / 0.45);
+      inset 0 0 0 1px color-mix(in srgb, var(--limestone) 28%, transparent),
+      var(--shadow-sm);
     transition: background-color 0.25s;
   }
 
@@ -167,56 +193,79 @@ const langNames = { en: 'English', pt: 'Português' } as const;
   }
 
   /* ---------- How-to-play banner (Quechua's "Discover full video") ---------- */
-  .chrome-film {
-    position: fixed;
-    right: max(var(--gutter), env(safe-area-inset-right));
-    bottom: calc(var(--safe-b) + 0.875rem);
-    z-index: 50;
+  /* ---------- How-to-play pill ---------- */
+  .film-pill {
     display: flex;
     align-items: center;
-    gap: 0.875rem;
-    padding: 0.4rem 1.1rem 0.4rem 0.4rem;
+    gap: 0.6rem;
+    min-height: var(--chrome-h);
+    margin-inline: auto 0.75rem;
+    padding: 0.25rem 0.9rem 0.25rem 0.25rem;
+    border-radius: var(--radius-pill);
     background: var(--limestone);
     color: var(--navy);
-    border-radius: var(--radius);
+    font-size: var(--text-sm);
+    font-weight: 700;
     box-shadow:
       inset 0 0 0 2px var(--navy),
-      0 12px 32px -10px rgb(2 31 66 / 0.55);
-    text-align: left;
-    transition: transform 0.25s var(--ease-out);
+      var(--shadow-sm);
   }
 
-  .chrome-film:hover {
-    transform: translateY(-2px);
-  }
-
-  .chrome-film-thumb {
+  .film-pill-thumb {
     position: relative;
-    flex: none;
-    width: 6rem;
+    width: 3.6rem;
     aspect-ratio: 16 / 9;
     overflow: hidden;
     border-radius: var(--radius-sm);
-    background: var(--navy);
   }
 
-  .chrome-film-thumb :global(img) {
+  .film-pill-thumb img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.6s var(--ease-out);
   }
 
-  .chrome-film:hover .chrome-film-thumb :global(img) {
-    transform: scale(1.08);
+  .film-pill-play {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    background: color-mix(in srgb, var(--navy-deep) 35%, transparent);
+    color: var(--limestone);
   }
 
+  .film-pill-play :global(svg) {
+    width: 0.75rem;
+    height: 0.75rem;
+  }
+
+  .film-pill-text {
+    white-space: nowrap;
+  }
+
+  .film-pill-long {
+    display: none;
+  }
+
+  @media (min-width: 768px) {
+    .film-pill {
+      margin-inline: auto;
+    }
+    .film-pill-long {
+      display: inline;
+    }
+    .film-pill-short {
+      display: none;
+    }
+  }
+
+  /* Menu row: thumbnail + title. */
   .chrome-film-play {
     position: absolute;
     inset: 0;
     display: grid;
     place-items: center;
-    background: rgb(3 45 94 / 0.35);
+    background: color-mix(in srgb, var(--navy-deep) 35%, transparent);
     color: var(--limestone);
   }
 
@@ -224,7 +273,7 @@ const langNames = { en: 'English', pt: 'Português' } as const;
     width: 1.1rem;
     height: 1.1rem;
     transform: translateX(1px);
-    filter: drop-shadow(0 1px 3px rgb(0 0 0 / 0.4));
+    filter: drop-shadow(0 1px 3px color-mix(in srgb, var(--navy-ink) 40%, transparent));
   }
 
   .chrome-film-text {
@@ -233,29 +282,16 @@ const langNames = { en: 'English', pt: 'Português' } as const;
   }
 
   .chrome-film-title {
-    font-size: 1.35rem;
+    font-size: var(--display-xs);
     line-height: 1;
     white-space: nowrap;
   }
 
   .chrome-film-sub {
-    font-size: var(--text-xs);
+    font-size: var(--text-sm);
     font-weight: 700;
     line-height: 1.2;
-    opacity: 0.75;
     white-space: nowrap;
-  }
-
-  @media (min-width: 768px) {
-    .chrome-film-thumb {
-      width: 7.5rem;
-    }
-    .chrome-film-title {
-      font-size: 1.6rem;
-    }
-    .chrome-film-sub {
-      font-size: var(--text-sm);
-    }
   }
 
   /* ---------- Full-screen menu ---------- */
@@ -313,7 +349,7 @@ const langNames = { en: 'English', pt: 'Português' } as const;
     font-size: var(--text-sm);
     font-weight: 700;
     letter-spacing: 0.04em;
-    box-shadow: inset 0 0 0 1px rgb(246 240 231 / 0.45);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--limestone) 45%, transparent);
   }
 
   .sheet-close :global(svg) {
@@ -356,8 +392,35 @@ const langNames = { en: 'English', pt: 'Português' } as const;
     min-width: 1.6rem;
   }
 
+  .sheet-film {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    border-radius: var(--radius);
+    box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--limestone) 45%, transparent);
+    text-align: left;
+  }
+
+  .sheet-film-thumb {
+    position: relative;
+    flex: none;
+    width: 6.5rem;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border-radius: var(--radius-sm);
+  }
+
+  .sheet-film-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
   .sheet-name {
-    font-size: clamp(2rem, 1.5rem + 2.4vw, 3.25rem);
+    font-size: var(--display-sm);
     line-height: 1.05;
   }
 
@@ -434,7 +497,7 @@ const langNames = { en: 'English', pt: 'Português' } as const;
     width: var(--chrome-h);
     height: var(--chrome-h);
     border-radius: var(--radius);
-    background: rgb(246 240 231 / 0.18);
+    background: color-mix(in srgb, var(--limestone) 18%, transparent);
   }
 
   .film-close :global(svg) {

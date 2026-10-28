@@ -104,7 +104,6 @@ p {
 :focus-visible {
   outline: 3px solid currentColor;
   outline-offset: 3px;
-  border-radius: 4px;
 }
 
 ::selection {
@@ -345,6 +344,7 @@ p {
   color: var(--limestone);
   border-radius: var(--radius-sm);
   transform: translateY(-200%);
+  border-radius: var(--radius-sm);
 }
 
 .skip-link:focus {

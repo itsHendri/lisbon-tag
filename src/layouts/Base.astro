@@ -39,7 +39,7 @@ const jsonLd = {
       repeatFrequency: 'P1W',
       byDay: 'https://schema.org/Thursday',
       startTime: site.thursday.start,
-      endTime: site.thursday.end,
+      duration: `PT${site.thursday.durationHours}H`,
       scheduleTimezone: 'Europe/Lisbon',
     },
     location: { '@type': 'Place', name: site.thursday.venue },

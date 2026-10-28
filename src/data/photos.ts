@@ -16,14 +16,18 @@ import p04 from '../assets/photos/p04.jpg';
 import p05 from '../assets/photos/p05.jpg';
 import p06 from '../assets/photos/p06.jpg';
 import p07 from '../assets/photos/p07.jpg';
-import p08 from '../assets/photos/p08.jpg';
+import p09 from '../assets/photos/p09.jpg';
 import p10 from '../assets/photos/p10.jpg';
+import p11 from '../assets/photos/p11.jpg';
 import p12 from '../assets/photos/p12.jpg';
 import p13 from '../assets/photos/p13.jpg';
 import p15 from '../assets/photos/p15.jpg';
 import p17 from '../assets/photos/p17.jpg';
 import p18 from '../assets/photos/p18.jpg';
 import p20 from '../assets/photos/p20.jpg';
+import p21 from '../assets/photos/p21.jpg';
+import p23 from '../assets/photos/p23.jpg';
+import p25 from '../assets/photos/p25.jpg';
 import p26 from '../assets/photos/p26.jpg';
 import p29 from '../assets/photos/p29.jpg';
 
@@ -39,10 +43,32 @@ export type Photo = {
 const u = (id: string) => `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=2400&q=80`;
 
 export const photos = {
-  heroPoster: {
-    src: p01,
-    alt: { en: 'The Lisbon Tag Rugby group on a park pitch', pt: 'O grupo do Lisbon Tag Rugby num relvado' },
-  },
+  // Hero slideshow, in order. The first one is also the still for reduced motion.
+  hero: [
+    {
+      src: p01,
+      alt: { en: 'The Lisbon Tag Rugby group on a park pitch', pt: 'O grupo do Lisbon Tag Rugby num relvado' },
+      position: '50% 60%',
+    },
+    {
+      src: p09,
+      alt: { en: 'A game of beach tag in Lisbon Tag shirts', pt: 'Um jogo de tag na praia com camisolas Lisbon Tag' },
+    },
+    {
+      src: p11,
+      alt: { en: 'Players celebrating on the beach', pt: 'Jogadores a celebrar na praia' },
+    },
+    {
+      src: p21,
+      alt: { en: 'The group together on the sand', pt: 'O grupo junto na areia' },
+      position: '50% 70%',
+    },
+    {
+      src: p23,
+      alt: { en: 'The group on the beach at sunset', pt: 'O grupo na praia ao pôr do sol' },
+      position: '50% 70%',
+    },
+  ],
 
   // Who we are — collage
   intro1: {
@@ -86,9 +112,9 @@ export const photos = {
 
   // Where — beach Sundays
   beach: {
-    src: p08,
-    alt: { en: 'A game of beach tag under a blue sky', pt: 'Um jogo de tag na praia debaixo de céu azul' },
-    position: '50% 70%',
+    src: p25,
+    alt: { en: 'A game of beach tag on the sand', pt: 'Um jogo de tag na areia' },
+    position: '50% 80%',
   },
 
   // The 3rd half — gallery (8 frames; the layout repeats every 8)

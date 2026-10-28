@@ -27,7 +27,7 @@ const sizes = '(min-width: 900px) 30vw, 92vw';
       {
         items.map((item) => (
           <li class="item">
-            <div class="item-media frame sketch">
+            <div class="item-media frame sketch" data-tone="dark">
               <Photo photo={item.photo} lang={lang} sizes={sizes} widths={[480, 800, 1100]} class="cover" />
             </div>
             <h3 class="item-title">{item.title}</h3>

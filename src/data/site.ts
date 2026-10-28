@@ -16,24 +16,24 @@ export const site = {
     mapsUrl: 'https://share.google/HlnjTt3IXVK4JJ5hd',
     // Works without an API key; searching the club's name drops the pin on its listing.
     mapsEmbed: 'https://www.google.com/maps?q=Lisbon+Tag+Rugby&ll=38.6964753,-9.2022543&z=16&output=embed',
-    // TODO: confirm kick-off and finish times (24h, Lisbon time).
-    start: '19:30',
-    end: '21:00',
+    // Kick-off (24h, Lisbon time). It shifts with the seasons, so the site only
+    // ever shows this one time; change it here and it updates everywhere.
+    start: '18:30',
+    // Used for the calendar file only.
+    durationHours: 2,
     // Price is copy (facts.cost in src/i18n), so it can read naturally in each language.
   },
 
   links: {
-    // TODO: WhatsApp group invite link.
-    whatsapp: 'https://chat.whatsapp.com/TODO',
-    // TODO: Instagram handle.
+    // TODO: community WhatsApp group invite link. While it's null the WhatsApp
+    // buttons are hidden and Instagram is the way to get in touch.
+    whatsapp: null as string | null,
     instagram: 'https://www.instagram.com/lisbontagrugby/',
     instagramHandle: '@lisbontagrugby',
   },
 
   kit: {
-    // TODO: Fourthwall product URL and price.
-    fourthwallUrl: 'https://lisbontagrugby.fourthwall.com/',
-    price: '€35',
+    fourthwallUrl: 'https://hendri-shop.fourthwall.com/en-eur/products/lisbon-tag-shirt',
   },
 
   howToPlay: {
