@@ -37,7 +37,6 @@ export const en = {
 
   facts: {
     day: 'Every Thursday',
-    // TODO: confirm.
     cost: 'Free, just turn up',
     bring: 'Water & trainers',
     level: 'Beginners welcome',
@@ -159,7 +158,6 @@ export const en = {
         a: 'No, just show up. Do join our WhatsApp group (the button is at the bottom of the page): that is where we share last-minute changes and the occasional cancellation.',
       },
       {
-        // TODO: confirm.
         q: 'How much does it cost?',
         a: 'Thursdays are free. Just bring water and good vibes.',
       },

@@ -8,9 +8,8 @@ export const site = {
   shortName: 'Lisbon Tag',
 
   thursday: {
-    // The "Lisbon Tag Rugby" listing on Google Maps (plus code MQWX+H3).
-    // TODO: confirm the name people should look for, e.g. the park.
-    venue: 'Belém, Lisbon',
+    // The park; the pin is the "Lisbon Tag Rugby" listing on Google Maps (plus code MQWX+H3).
+    venue: 'Jardim Vasco da Gama, Belém',
     lat: 38.6964753,
     lng: -9.2022543,
     mapsUrl: 'https://share.google/HlnjTt3IXVK4JJ5hd',
