@@ -3,9 +3,9 @@ import { Image } from 'astro:assets';
 import Icon from './Icon.astro';
 import CalendarButton from './CalendarButton.astro';
 import TileFrame from './TileFrame.astro';
-import { useT, homeHref, langs, htmlLang, type Lang } from '../i18n';
+import { useT, type Lang } from '../i18n';
 import { site } from '../data/site';
-import logoWhite from '../assets/brand/lisbon_tag_rugby_logo_white.png';
+import castleWhite from '../assets/brand/icon_castle_white.png';
 
 interface Props {
   lang: Lang;
@@ -46,32 +46,15 @@ const whatsapp = site.links.whatsapp;
     </div>
   </div>
 
-  <!-- The language links land on this footer in the other language, so you stay put. -->
-  <footer id="footer" class="wrap">
+  <!-- The language switch lives in the header now, always in view. -->
+  <footer class="wrap">
     <div class="footer">
-      <div class="footer-brand">
-        <Image src={logoWhite} alt={site.name} width={200} format="webp" class="footer-logo" />
-        <p class="footer-small">© {new Date().getFullYear()} {t.footer.rights}</p>
-      </div>
+      <Image src={castleWhite} alt={site.name} width={160} format="webp" class="footer-logo" />
       <div class="footer-made-wrap">
         <p class="display footer-made">{t.footer.made}</p>
         <p class="footer-small">{t.footer.tagline}</p>
       </div>
-      <nav class="footer-langs" aria-label={t.nav.language}>
-        {
-          langs.map((l) =>
-            l === lang ? (
-              <span class="footer-lang is-current" aria-current="page" lang={htmlLang[l]}>
-                {l.toUpperCase()}
-              </span>
-            ) : (
-              <a class="footer-lang" href={`${homeHref(l)}#footer`} hreflang={htmlLang[l]} lang={htmlLang[l]}>
-                {l.toUpperCase()}
-              </a>
-            ),
-          )
-        }
-      </nav>
+      <p class="footer-small footer-rights">© {new Date().getFullYear()} {t.footer.rights}</p>
     </div>
   </footer>
 </TileFrame>
@@ -84,7 +67,12 @@ const whatsapp = site.links.whatsapp;
   .join-inner {
     display: grid;
     gap: 1.5rem;
-    justify-items: start;
+    justify-items: center;
+    text-align: center;
+  }
+
+  .join-inner .lede {
+    max-width: 36ch;
   }
 
   .join-note {
@@ -94,6 +82,7 @@ const whatsapp = site.links.whatsapp;
 
   .join-actions {
     margin-top: 0.5rem;
+    justify-content: center;
   }
 
   .footer {
@@ -101,8 +90,10 @@ const whatsapp = site.links.whatsapp;
     margin-top: clamp(4rem, 8vw, 7rem);
     padding-top: 2rem;
     display: grid;
-    gap: 2rem;
+    gap: 1.25rem;
+    justify-items: center;
     align-items: end;
+    text-align: center;
   }
 
   /* Hand-drawn rule above the footer. */
@@ -120,11 +111,10 @@ const whatsapp = site.links.whatsapp;
   }
 
   :global(.footer-logo) {
-    width: 6.5rem;
+    width: 5rem;
     height: auto;
   }
 
-  .footer-brand,
   .footer-made-wrap {
     display: grid;
     gap: 0.75rem;
@@ -140,47 +130,16 @@ const whatsapp = site.links.whatsapp;
     color: var(--fg-muted);
   }
 
-  /* Same EN/PT toggle as the menu. */
-  .footer-langs {
-    display: flex;
-    gap: 3px;
-    padding: 3px;
-    justify-self: start;
-    border-radius: var(--radius-pill);
-    box-shadow: inset 0 0 0 2px var(--limestone);
-  }
-
-  .footer-lang {
-    display: grid;
-    place-items: center;
-    min-width: 3.5rem;
-    min-height: 2.75rem;
-    border-radius: var(--radius-sm);
-    font-size: var(--text-sm);
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-decoration: none;
-  }
-
-  .footer-lang.is-current {
-    background: var(--limestone);
-    color: var(--navy);
-    font-weight: 900;
-  }
-
-  a.footer-lang:hover {
-    background: color-mix(in srgb, var(--limestone) 14%, transparent);
-  }
-
+  /* Wider screens: castle left, "Made in Lisbon" centred, © right. */
   @media (min-width: 900px) {
     .footer {
       grid-template-columns: 1fr auto 1fr;
       gap: 3rem;
     }
-    .footer-made-wrap {
-      text-align: center;
+    :global(.footer-logo) {
+      justify-self: start;
     }
-    .footer-langs {
+    .footer-rights {
       justify-self: end;
     }
   }

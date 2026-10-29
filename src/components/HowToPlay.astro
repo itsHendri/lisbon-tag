@@ -2,7 +2,6 @@
 import { Image } from 'astro:assets';
 import TileFrame from './TileFrame.astro';
 import { useT, type Lang } from '../i18n';
-import { site } from '../data/site';
 import ball from '../assets/brand/icon_rugby_ball_white.png';
 
 // Rule icons from Phosphor (MIT, phosphoricons.com), bold weight.
@@ -28,10 +27,7 @@ const t = useT(lang);
 const rough = (svg: string) => svg.replace(/(<svg[^>]*>)/, '$1<g filter="url(#rough-icon)">').replace('</svg>', '</g></svg>');
 const icons = [seven, tag, pass, defence, turnover, backwards, kick, noContact, tryLine].map(rough);
 
-// First-timer steps: arrive ten minutes before kick-off, then play at kick-off.
-const [h, m] = site.thursday.start.split(':').map(Number);
-const arrive = `${String(Math.floor((h * 60 + m - 10) / 60)).padStart(2, '0')}:${String((h * 60 + m - 10) % 60).padStart(2, '0')}`;
-const steps = t.how.first.steps.map((s, i) => ({ ...s, meta: i === 0 ? arrive : i === 2 ? site.thursday.start : s.meta }));
+const steps = t.how.first.steps;
 ---
 
 <section id="how" class="section theme-light how" data-section aria-labelledby="how-title">
@@ -69,10 +65,6 @@ const steps = t.how.first.steps.map((s, i) => ({ ...s, meta: i === 0 ? arrive : 
       {
         steps.map((s, i) => (
           <li class:list={['step sketch', i === steps.length - 1 && 'step--go']}>
-            <span class="step-top label">
-              <span>{s.label}</span>
-              <span>{s.meta}</span>
-            </span>
             <h3 class="step-title">{s.title}</h3>
             <p>{s.body}</p>
           </li>
@@ -210,12 +202,6 @@ const steps = t.how.first.steps.map((s, i) => ({ ...s, meta: i === 0 ? arrive : 
     background: var(--limestone);
     color: var(--navy);
     --sketch-color: var(--limestone);
-  }
-
-  .step-top {
-    display: flex;
-    justify-content: space-between;
-    gap: 1rem;
   }
 
   .step-title {

@@ -5,7 +5,7 @@ const langLinks = document.querySelectorAll<HTMLAnchorElement>('[data-lang-link]
 const sheetLinks = document.querySelectorAll<HTMLAnchorElement>('[data-section-link]');
 
 function setCurrent(id: string) {
-  // The language switches (menu and footer) land on the same section in the other language.
+  // The language switches (header and menu) land on the same section in the other language.
   langLinks.forEach((a) => (a.href = `${a.dataset.base}${id === 'home' ? '' : `#${id}`}`));
   sheetLinks.forEach((a) => a.setAttribute('aria-current', String(a.dataset.sectionLink === id)));
 }

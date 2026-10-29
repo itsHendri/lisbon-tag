@@ -74,7 +74,7 @@ export const pt: Dict = {
     rules: [
       'Sete contra sete',
       'Tag = placagem',
-      'Passa em 3 segundos',
+      'Apanhado? Pára e passa',
       'Defesa a 5\u00a0m',
       'Seis tags e troca',
       'Só passes para trás',
@@ -86,9 +86,9 @@ export const pt: Dict = {
       title: 'Nunca jogaste?',
       intro: 'A tua primeira quinta, em três passos.',
       steps: [
-        { label: 'Passo 1', meta: '', title: 'Aparece', body: 'Chega dez minutos mais cedo e diz olá. Emprestamos-te um cinto.' },
-        { label: 'Passo 2', meta: 'Roupa', title: 'Veste-te para correr', body: 'Vem com roupa de desporto confortável e ténis ou chuteiras.' },
-        { label: 'Passo 3', meta: '', title: 'Joga', body: 'Explicamos à medida que avançamos, e ninguém se importa com um passe para a frente na primeira noite.' },
+        { title: 'Aparece', body: 'Chega dez minutos mais cedo e diz olá. Emprestamos-te um cinto.' },
+        { title: 'Veste-te para correr', body: 'Vem com roupa de desporto confortável e ténis ou chuteiras.' },
+        { title: 'Joga', body: 'Explicamos à medida que avançamos, e ninguém se importa com um passe para a frente na primeira noite.' },
       ],
     },
   },
@@ -129,10 +129,6 @@ export const pt: Dict = {
     mapStation: 'Estação de Belém',
     mapRiver: 'Rio Tejo',
     mapCredit: '© contribuidores do OpenStreetMap',
-    beach: {
-      title: 'Domingos de Beach Tag',
-      body: 'Algumas vezes por época levamos o jogo para a areia da Praia de Carcavelos, a 20 minutos de comboio do Cais do Sodré. As datas saem primeiro no WhatsApp e no Instagram.',
-    },
   },
 
   social: {

@@ -75,7 +75,7 @@ export const en = {
     rules: [
       'Seven a side',
       'Tag = tackle',
-      'Pass within 3 seconds',
+      'Tagged? Stop and pass',
       'Defence back 5\u00a0m',
       'Six tags, then turnover',
       'Pass backwards only',
@@ -86,11 +86,10 @@ export const en = {
     first: {
       title: 'Never played?',
       intro: 'Your first Thursday, in three steps.',
-      // `meta` for steps 1 and 3 is the arrival and kick-off time, worked out from site.ts.
       steps: [
-        { label: 'Step 1', meta: '', title: 'Turn up', body: 'Arrive ten minutes early and say olá. We will lend you a belt.' },
-        { label: 'Step 2', meta: 'Kit', title: 'Dress to run', body: 'Wear comfortable sportswear and trainers or boots.' },
-        { label: 'Step 3', meta: '', title: 'Play', body: 'We explain as we go, and nobody minds a forward pass on your first night.' },
+        { title: 'Turn up', body: 'Arrive ten minutes early and say olá. We will lend you a belt.' },
+        { title: 'Dress to run', body: 'Wear comfortable sportswear and trainers or boots.' },
+        { title: 'Play', body: 'We explain as we go, and nobody minds a forward pass on your first night.' },
       ],
     },
   },
@@ -131,10 +130,6 @@ export const en = {
     mapStation: 'Belém station',
     mapRiver: 'Rio Tejo',
     mapCredit: '© OpenStreetMap contributors',
-    beach: {
-      title: 'Beach Tag Sundays',
-      body: 'A few times a season we take it to the sand at Praia de Carcavelos, 20 minutes by train from Cais do Sodré. Dates go up on WhatsApp and Instagram first.',
-    },
   },
 
   social: {

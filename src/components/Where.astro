@@ -1,5 +1,4 @@
 ---
-import BeachTag from './BeachTag.astro';
 import Icon from './Icon.astro';
 import MapArt from './MapArt.astro';
 import { useT, type Lang } from '../i18n';
@@ -33,10 +32,6 @@ const th = site.thursday;
       </a>
       <p class="map-credit">{t.where.mapCredit}</p>
     </div>
-  </div>
-
-  <div class="wrap where-beach">
-    <BeachTag lang={lang} />
   </div>
 </section>
 
@@ -105,10 +100,6 @@ const th = site.thursday;
     bottom: 0.5rem;
     font-size: 0.6875rem;
     color: var(--limestone);
-  }
-
-  .where-beach {
-    margin-top: clamp(3rem, 6vw, 5rem);
   }
 
   @media (min-width: 960px) {

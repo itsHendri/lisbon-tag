@@ -26,7 +26,6 @@ import p18 from '../assets/photos/p18.jpg';
 import p20 from '../assets/photos/p20.jpg';
 import p21 from '../assets/photos/p21.jpg';
 import p23 from '../assets/photos/p23.jpg';
-import p25 from '../assets/photos/p25.jpg';
 import p26 from '../assets/photos/p26.jpg';
 import p29 from '../assets/photos/p29.jpg';
 import trainers from '../assets/photos/p22-trainers.jpg';
@@ -98,13 +97,6 @@ export const photos = {
     src: p13,
     alt: { en: 'Three players in caps and sunglasses on the beach', pt: 'Três jogadoras de boné e óculos de sol na praia' },
     position: '50% 40%',
-  },
-
-  // Where — beach Sundays
-  beach: {
-    src: p25,
-    alt: { en: 'A game of beach tag on the sand', pt: 'Um jogo de tag na areia' },
-    position: '50% 80%',
   },
 
   // The 3rd half — gallery (8 frames; the layout repeats every 8)

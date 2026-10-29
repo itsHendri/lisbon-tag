@@ -10,7 +10,6 @@
  *   data-reveal-stagger    fade up its children, one after another
  *   data-split             reveal text line by line
  *   data-parallax="0.15"   drift vertically while scrolling (fraction of height)
- *   data-zoom              image inside settles from 1.15 to 1 while its section scrolls in
  */
 import Lenis from 'lenis';
 import { gsap } from 'gsap';
@@ -87,21 +86,6 @@ if (!prefersReducedMotion()) {
         yPercent: -amount * 100,
         ease: 'none',
         scrollTrigger: { trigger: el, start: 'top bottom', end: 'bottom top', scrub: true },
-      },
-    );
-  });
-
-  /* Full-bleed images (the Beach Tag banner) settle into place */
-  gsap.utils.toArray<HTMLElement>('[data-zoom]').forEach((wrap) => {
-    const media = wrap.querySelector('img, video');
-    if (!media) return;
-    gsap.fromTo(
-      media,
-      { scale: 1.18 },
-      {
-        scale: 1,
-        ease: 'none',
-        scrollTrigger: { trigger: wrap, start: 'top bottom', end: 'bottom top', scrub: true },
       },
     );
   });

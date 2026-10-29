@@ -226,10 +226,11 @@ p {
   --sketch-w: 2px;
 }
 
+/* A solid fill would hide the hand-drawn stroke, so hover tints the inside
+   and the stroke gets a little heavier. */
 .btn--ghost:hover {
-  background: var(--accent);
-  color: var(--on-accent);
-  border-color: var(--accent);
+  background: color-mix(in srgb, currentColor 12%, transparent);
+  --sketch-w: 3px;
 }
 
 .btn svg:not(.sketch-svg) {
