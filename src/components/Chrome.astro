@@ -154,7 +154,7 @@ const other = langs.find((l) => l !== lang)!;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding-inline: max(var(--gutter), env(safe-area-inset-left));
+    padding-inline: max(var(--gutter), env(safe-area-inset-left)) max(var(--gutter), env(safe-area-inset-right));
     pointer-events: none;
   }
 
@@ -246,30 +246,6 @@ const other = langs.find((l) => l !== lang)!;
     height: 1.1rem;
   }
 
-  /* Phones: castle, video pill, language and menu all fit on one line. */
-  @media (max-width: 419px) {
-    .chrome-logo {
-      width: 2.75rem;
-    }
-    .film-pill {
-      margin-inline: auto 0.5rem;
-    }
-    .film-pill-thumb {
-      width: 2.8rem;
-    }
-  }
-
-  @media (max-width: 389px) {
-    .chrome-menu {
-      gap: 0.6rem;
-      padding: 0 0.75rem;
-    }
-    .chrome-lang {
-      min-width: 2.6rem;
-      padding: 0 0.6rem;
-    }
-  }
-
   /* ---------- How-to-play banner (Quechua's "Discover full video") ---------- */
   /* ---------- How-to-play pill ---------- */
   .film-pill {
@@ -344,6 +320,52 @@ const other = langs.find((l) => l !== lang)!;
     }
     .film-pill-short {
       display: none;
+    }
+  }
+
+  /* Phones: castle, video pill, language and menu all fit on one line, with even
+     side padding. These come after the pill rules so they win. */
+  @media (max-width: 419px) {
+    .chrome-logo {
+      width: 2.75rem;
+    }
+    .film-pill {
+      margin-inline: auto 0.5rem;
+    }
+    .film-pill-thumb {
+      width: 2.8rem;
+    }
+  }
+
+  @media (max-width: 389px) {
+    .film-pill {
+      gap: 0.45rem;
+      margin-inline: auto 0.4rem;
+      padding-right: 0.7rem;
+    }
+    .chrome-menu {
+      gap: 0.6rem;
+      padding: 0 0.75rem;
+    }
+    .chrome-lang {
+      min-width: 2.6rem;
+      padding: 0 0.6rem;
+    }
+  }
+
+  /* The smallest phones: Menu is icon-only, the word stays for screen readers. */
+  @media (max-width: 349px) {
+    .chrome-menu {
+      min-width: var(--chrome-h);
+      justify-content: center;
+    }
+    .chrome-menu span {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
     }
   }
 
