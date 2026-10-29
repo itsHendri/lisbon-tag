@@ -17,7 +17,7 @@ const t = useT(lang);
 const google = googleCalendarUrl(t.calendar.summary, `${t.calendar.description}\n${new URL(homeHref(lang), Astro.site).href}`);
 ---
 
-<a class:list={['btn', ghost && 'btn--ghost sketch', className]} href={google} target="_blank" rel="noopener">
+<a class:list={['btn', ghost && 'btn--ghost', className]} href={google} target="_blank" rel="noopener">
   <Icon name="calendar" />
   {t.thursdays.calendar}
 </a>
