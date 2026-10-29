@@ -1,18 +1,15 @@
-/**
- * The weekly Thursday event, shared by the .ics file and the Google Calendar
- * link so both always agree.
- */
+/** The weekly Thursday event, as a Google Calendar link. */
 import { site } from './site';
 
 /** The first Thursday on or after the build date, as YYYYMMDD. */
-export function nextThursday() {
+function nextThursday() {
   const d = new Date();
   d.setUTCDate(d.getUTCDate() + ((4 - d.getUTCDay() + 7) % 7));
   return d.toISOString().slice(0, 10).replaceAll('-', '');
 }
 
 /** "18:30" → "183000" */
-export const hhmmss = (t: string) => t.replace(':', '') + '00';
+const hhmmss = (t: string) => t.replace(':', '') + '00';
 
 function endTime() {
   const [h, m] = site.thursday.start.split(':').map(Number);

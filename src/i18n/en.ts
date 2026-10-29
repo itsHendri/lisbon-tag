@@ -181,8 +181,6 @@ export const en = {
   },
 
   calendar: {
-    google: 'Google Calendar',
-    ics: 'Apple, Outlook and others (.ics)',
     summary: 'Lisbon Tag Rugby',
     description: 'Tag rugby every Thursday. Beginners welcome. Bring water and trainers.',
   },

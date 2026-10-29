@@ -103,7 +103,7 @@ const other = langs.find((l) => l !== lang)!;
       {
         menuIds.map((id) => (
           <li>
-            <a href={`#${id}`} data-sheet-link data-section-link={id}>
+            <a href={`#${id}`} data-sheet-link data-section-link={id} data-rule="bottom">
               {t.sections[id]}
             </a>
           </li>
@@ -543,28 +543,15 @@ const other = langs.find((l) => l !== lang)!;
     padding: 0;
   }
 
+  /* A hand-drawn line under each section (data-rule), like the FAQ. */
   .sheet-list a {
-    position: relative;
+    --rule-opacity: 0.45;
     display: block;
     padding: 0.7rem 0;
     font-size: var(--text-xl);
     font-weight: 900;
     line-height: 1.15;
     text-decoration: none;
-  }
-
-  /* Hand-drawn rule under each section, like the FAQ. */
-  .sheet-list a::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: -3px;
-    height: 6px;
-    background: currentColor;
-    opacity: 0.45;
-    -webkit-mask: var(--rule-mask) center / 100% 100% no-repeat;
-    mask: var(--rule-mask) center / 100% 100% no-repeat;
   }
 
   .sheet-list a:hover,

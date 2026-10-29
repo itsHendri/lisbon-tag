@@ -178,8 +178,6 @@ export const pt: Dict = {
   },
 
   calendar: {
-    google: 'Google Calendar',
-    ics: 'Apple, Outlook e outros (.ics)',
     summary: 'Lisbon Tag Rugby',
     description: 'Tag rugby todas as quintas. Principiantes bem-vindos. Traz água e ténis.',
   },

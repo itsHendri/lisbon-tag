@@ -1,12 +1,10 @@
 ---
 /**
- * "Add to calendar" with a choice, because a bare .ics download does nothing
- * visible on most laptops: Google Calendar opens a pre-filled weekly event,
- * the .ics file covers Apple Calendar, Outlook and the rest (phones open it
- * straight into their calendar).
+ * "Add to calendar" opens Google Calendar with the weekly Thursday event
+ * filled in (time, place and repeat), ready to save.
  */
 import Icon from './Icon.astro';
-import { useT, withBase, homeHref, type Lang } from '../i18n';
+import { useT, homeHref, type Lang } from '../i18n';
 import { googleCalendarUrl } from '../data/calendar';
 
 interface Props {
@@ -19,109 +17,7 @@ const t = useT(lang);
 const google = googleCalendarUrl(t.calendar.summary, `${t.calendar.description}\n${new URL(homeHref(lang), Astro.site).href}`);
 ---
 
-<details class:list={['cal', className]} data-cal>
-  <summary class:list={['btn', ghost && 'btn--ghost sketch']}>
-    <Icon name="calendar" />
-    {t.thursdays.calendar}
-  </summary>
-  <ul class="cal-menu theme-navy">
-    <li>
-      <a href={google} target="_blank" rel="noopener">
-        {t.calendar.google}
-        <Icon name="external" />
-      </a>
-    </li>
-    <li>
-      <a href={withBase(`/thursdays-${lang}.ics`)} download>
-        {t.calendar.ics}
-        <Icon name="arrow-down" />
-      </a>
-    </li>
-  </ul>
-</details>
-
-<script>
-  // Close on a pick, on Escape and on a click anywhere else.
-  const all = [...document.querySelectorAll<HTMLDetailsElement>('[data-cal]')];
-  for (const d of all) {
-    d.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => d.removeAttribute('open')));
-    d.addEventListener('toggle', () => {
-      if (d.open) all.filter((o) => o !== d).forEach((o) => o.removeAttribute('open'));
-    });
-  }
-  document.addEventListener('click', (e) => {
-    for (const d of all) if (d.open && !d.contains(e.target as Node)) d.removeAttribute('open');
-  });
-  document.addEventListener('keydown', (e) => {
-    if (e.key !== 'Escape') return;
-    for (const d of all)
-      if (d.open) {
-        d.removeAttribute('open');
-        d.querySelector('summary')?.focus();
-      }
-  });
-</script>
-
-<style>
-  .cal {
-    position: relative;
-  }
-
-  .cal summary {
-    list-style: none;
-    cursor: pointer;
-  }
-
-  .cal summary::-webkit-details-marker {
-    display: none;
-  }
-
-  .cal-menu {
-    position: absolute;
-    z-index: 5;
-    top: calc(100% + 0.5rem);
-    left: 0;
-    min-width: 100%;
-    width: max-content;
-    max-width: min(22rem, calc(100vw - 2 * var(--gutter)));
-    margin: 0;
-    padding: 0.35rem;
-    list-style: none;
-    background: var(--navy);
-    color: var(--limestone);
-    border-radius: var(--radius);
-    box-shadow:
-      inset 0 0 0 1px color-mix(in srgb, var(--limestone) 35%, transparent),
-      var(--shadow-md);
-  }
-
-  .cal-menu a {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    min-height: 3rem;
-    padding: 0 0.9rem;
-    font-weight: 700;
-    text-decoration: none;
-    border-radius: var(--radius-sm);
-  }
-
-  .cal-menu a:hover,
-  .cal-menu a:focus-visible {
-    background: color-mix(in srgb, var(--limestone) 14%, transparent);
-  }
-
-  .cal-menu :global(svg) {
-    width: 1rem;
-    height: 1rem;
-    flex: none;
-  }
-
-  @media (max-width: 639px) {
-    .cal-menu {
-      width: 100%;
-      max-width: none;
-    }
-  }
-</style>
+<a class:list={['btn', ghost && 'btn--ghost sketch', className]} href={google} target="_blank" rel="noopener">
+  <Icon name="calendar" />
+  {t.thursdays.calendar}
+</a>

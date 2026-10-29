@@ -77,5 +77,5 @@ pyftsubset "Lisbon Tag.ttf" --text="àáâãçéêíóôõúüÀÁÂÃÇÉÊÍÓ
 - Every dark section sits in `TileFrame.astro`: an azulejo border with a navy (or granite) card inside, like the Figma posts.
 - `.sketch` (in `global.css`) draws the hand-drawn stroke on cards and frames: four hand-drawn edges (`--edge-*` in `tokens.css`) used as masks, so it renders the same in Safari. The rule icons get their wobble from the `#rough-icon` SVG filter in `Base.astro`, applied inside each icon.
 - The castle top-left changes colour with what's behind it. Mark anything dark with `data-tone="dark"`.
-- `/thursdays-en.ics` and `/thursdays-pt.ics` are weekly calendar events generated from `site.ts`.
+- Add to calendar opens Google Calendar with the weekly event filled in from `site.ts`.
 

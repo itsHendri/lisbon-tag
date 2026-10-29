@@ -166,15 +166,71 @@ p {
   letter-spacing: -0.01em;
 }
 
-/* ---------- Hand-drawn rule ---------- */
+/* ---------- Hand-drawn lines ----------
+ * scripts/sketch.ts draws them with the same rough pen as the outlines: a
+ * `.rule` element is a line, `data-rule="top|bottom"` puts one on an edge.
+ * The masks below are the fallback when the script hasn't run.
+ */
 .rule {
   display: block;
-  height: 6px;
+  height: 8px;
   width: 100%;
+  border: 0;
+}
+
+.rule:not(.has-rule-svg) {
   background: currentColor;
+  -webkit-mask: var(--rule-mask) center / 100% 75% no-repeat;
+  mask: var(--rule-mask) center / 100% 75% no-repeat;
+}
+
+[data-rule] {
+  position: relative;
+}
+
+[data-rule~='top']:not(.has-rule-svg)::before,
+[data-rule~='bottom']:not(.has-rule-svg)::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 6px;
+  background: currentColor;
+  opacity: var(--rule-opacity, 1);
   -webkit-mask: var(--rule-mask) center / 100% 100% no-repeat;
   mask: var(--rule-mask) center / 100% 100% no-repeat;
-  border: 0;
+}
+
+[data-rule~='top']:not(.has-rule-svg)::before {
+  top: -3px;
+}
+
+[data-rule~='bottom']:not(.has-rule-svg)::after {
+  bottom: -3px;
+}
+
+.rule-svg {
+  display: block;
+  width: 100%;
+  height: 8px;
+  overflow: visible;
+  pointer-events: none;
+  fill: currentColor;
+}
+
+.rule-svg--top,
+.rule-svg--bottom {
+  position: absolute;
+  left: 0;
+  opacity: var(--rule-opacity, 1);
+}
+
+.rule-svg--top {
+  top: -4px;
+}
+
+.rule-svg--bottom {
+  bottom: -4px;
 }
 
 /* ---------- Buttons ---------- */

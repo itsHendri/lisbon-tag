@@ -26,11 +26,12 @@ const whatsapp = site.links.whatsapp;
       {
         whatsapp ? (
           <>
-            <a class="btn" href={whatsapp} target="_blank" rel="noopener">
+            <a class="btn btn--ghost sketch" href={whatsapp} target="_blank" rel="noopener">
               <Icon name="whatsapp" />
               {t.join.whatsapp}
             </a>
-            <a class="btn btn--ghost sketch" href={site.links.instagram} target="_blank" rel="noopener">
+            <!-- Instagram is the main action, in the middle. -->
+            <a class="btn" href={site.links.instagram} target="_blank" rel="noopener">
               <Icon name="instagram" />
               {t.join.instagram}
             </a>
@@ -48,7 +49,7 @@ const whatsapp = site.links.whatsapp;
 
   <!-- The language switch lives in the header now, always in view. -->
   <footer class="wrap">
-    <div class="footer">
+    <div class="footer" data-rule="top">
       <Image src={castleWhite} alt={site.name} width={160} format="webp" class="footer-logo" />
       <div class="footer-made-wrap">
         <p class="footer-small">{t.footer.tagline}</p>
@@ -85,8 +86,9 @@ const whatsapp = site.links.whatsapp;
     justify-content: center;
   }
 
+  /* The hand-drawn line above comes from data-rule (sketch.ts). */
   .footer {
-    position: relative;
+    --rule-opacity: 0.6;
     margin-top: clamp(4rem, 8vw, 7rem);
     padding-top: 2rem;
     display: grid;
@@ -96,19 +98,6 @@ const whatsapp = site.links.whatsapp;
     text-align: center;
   }
 
-  /* Hand-drawn rule above the footer. */
-  .footer::before {
-    content: '';
-    position: absolute;
-    top: -3px;
-    left: 0;
-    right: 0;
-    height: 6px;
-    background: currentColor;
-    opacity: 0.6;
-    -webkit-mask: var(--rule-mask) center / 100% 100% no-repeat;
-    mask: var(--rule-mask) center / 100% 100% no-repeat;
-  }
 
   :global(.footer-logo) {
     width: 5rem;

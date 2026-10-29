@@ -17,14 +17,16 @@ const t = useT(lang);
 
     <div class="faq-list" data-reveal>
       {
-        t.faq.items.map((item) => (
-          <details class="faq-item" name="faq">
-            <summary>
-              <span>{item.q}</span>
-              <Icon name="plus" class="faq-icon" />
-            </summary>
-            <p>{item.a}</p>
-          </details>
+        t.faq.items.map((item, i) => (
+          <div class="faq-item" data-rule={i === 0 ? 'top bottom' : 'bottom'}>
+            <details name="faq">
+              <summary>
+                <span>{item.q}</span>
+                <Icon name="plus" class="faq-icon" />
+              </summary>
+              <p>{item.a}</p>
+            </details>
+          </div>
         ))
       }
     </div>
@@ -50,33 +52,9 @@ const t = useT(lang);
     }
   }
 
+  /* Hand-drawn lines between the questions come from data-rule (sketch.ts). */
   .faq-item {
-    position: relative;
     padding-block: 0.25rem;
-  }
-
-  .faq-item::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: -3px;
-    height: 6px;
-    background: currentColor;
-    -webkit-mask: var(--rule-mask) center / 100% 100% no-repeat;
-    mask: var(--rule-mask) center / 100% 100% no-repeat;
-  }
-
-  .faq-item:first-child::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: -3px;
-    height: 6px;
-    background: currentColor;
-    -webkit-mask: var(--rule-mask) center / 100% 100% no-repeat;
-    mask: var(--rule-mask) center / 100% 100% no-repeat;
   }
 
   summary {
@@ -104,7 +82,7 @@ const t = useT(lang);
     transition: transform 0.3s var(--ease-out);
   }
 
-  .faq-item[open] :global(.faq-icon) {
+  .faq-item details[open] :global(.faq-icon) {
     transform: rotate(45deg);
   }
 

@@ -79,6 +79,7 @@ const jsonLd = {
     <!-- Hand-drawn texture, applied inside SVG (Safari renders that reliably).
          #rough: the card and frame outlines, in pixels (see scripts/sketch.ts).
          #rough-icon: the rule icons, in their 256-unit grid.
+         #rough-line: the hand-drawn lines, sized to their own SVG so a flat bar has room to wobble.
          sRGB interpolation avoids the dark specks Safari can leave at the edges. -->
     <svg width="0" height="0" style="position: absolute" aria-hidden="true" focusable="false">
       <filter id="rough" x="-5%" y="-5%" width="110%" height="110%" color-interpolation-filters="sRGB">
@@ -88,6 +89,10 @@ const jsonLd = {
       <filter id="rough-icon" color-interpolation-filters="sRGB" x="-10%" y="-10%" width="120%" height="120%">
         <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="3" result="noise" />
         <feDisplacementMap in="SourceGraphic" in2="noise" scale="12" xChannelSelector="R" yChannelSelector="G" />
+      </filter>
+      <filter id="rough-line" filterUnits="userSpaceOnUse" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">
+        <feTurbulence type="fractalNoise" baseFrequency="0.045" numOctaves="2" seed="7" result="noise" />
+        <feDisplacementMap in="SourceGraphic" in2="noise" scale="3.5" xChannelSelector="R" yChannelSelector="G" />
       </filter>
     </svg>
     <a class="skip-link" href="#about">{t.nav.skip}</a>
