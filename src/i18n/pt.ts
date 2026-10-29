@@ -15,6 +15,7 @@ export const pt: Dict = {
     skip: 'Saltar para o conteúdo',
     home: 'Lisbon Tag Rugby, voltar ao início',
     menu: 'Menu',
+    otherLang: 'View in English',
     sections: 'Secções',
     close: 'Fechar',
     language: 'Idioma',
@@ -181,6 +182,7 @@ export const pt: Dict = {
 
   footer: {
     made: 'Feito em Lisboa',
+    tagline: 'Pelo amor ao jogo.',
     rights: 'Lisbon Tag Rugby',
   },
 

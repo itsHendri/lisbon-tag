@@ -24,6 +24,7 @@ const thumb = await getImage({ src: `https://i.ytimg.com/vi/${yt}/mqdefault.jpg`
 const menuIds: SectionId[] = ['how', 'outfit', 'social', 'faq'];
 const th = site.thursday;
 const join = site.links.whatsapp ?? site.links.instagram;
+const other = langs.find((l) => l !== lang)!;
 ---
 
 <header class="chrome-top">
@@ -43,10 +44,23 @@ const join = site.links.whatsapp ?? site.links.instagram;
     </span>
   </button>
 
-  <button class="chrome-menu" type="button" aria-haspopup="dialog" aria-controls="sheet" data-sheet-open>
-    <span>{t.nav.menu}</span>
-    <Icon name="grid" />
-  </button>
+  <!-- One control, two halves: the other language on the left, the menu on the right. -->
+  <div class="chrome-actions">
+    <a
+      class="chrome-lang"
+      href={homeHref(other)}
+      hreflang={htmlLang[other]}
+      lang={htmlLang[other]}
+      aria-label={t.nav.otherLang}
+      data-lang-link
+      data-base={homeHref(other)}>
+      {other.toUpperCase()}
+    </a>
+    <button class="chrome-menu" type="button" aria-haspopup="dialog" aria-controls="sheet" data-sheet-open>
+      <span>{t.nav.menu}</span>
+      <Icon name="grid" />
+    </button>
+  </div>
 </header>
 
 <!-- Menu: a side panel on wider screens, full screen on phones. data-lenis-prevent lets it scroll natively. -->
@@ -179,34 +193,81 @@ const join = site.links.whatsapp ?? site.links.instagram;
     outline-offset: 2px;
   }
 
-  /* ---------- Menu button ---------- */
-  .chrome-menu {
-    display: inline-flex;
-    align-items: center;
-    gap: 1rem;
+  /* ---------- Language + Menu, one joined control ---------- */
+  .chrome-actions {
+    flex: none;
+    display: flex;
+    align-items: stretch;
     min-height: var(--chrome-h);
-    padding: 0 1rem;
     border-radius: var(--radius-pill);
+    overflow: hidden;
     background: color-mix(in srgb, var(--navy) 90%, transparent);
     color: var(--limestone);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    font-size: var(--text-sm);
-    font-weight: 700;
-    letter-spacing: 0.04em;
     box-shadow:
       inset 0 0 0 1px color-mix(in srgb, var(--limestone) 28%, transparent),
       var(--shadow-sm);
+  }
+
+  .chrome-lang,
+  .chrome-menu {
+    display: inline-flex;
+    align-items: center;
+    font-size: var(--text-sm);
+    letter-spacing: 0.04em;
     transition: background-color 0.25s;
   }
 
+  .chrome-lang:hover,
   .chrome-menu:hover {
     background: var(--navy);
   }
 
+  .chrome-lang {
+    justify-content: center;
+    min-width: 2.9rem;
+    padding: 0 0.75rem;
+    font-weight: 900;
+    letter-spacing: 0.06em;
+    text-decoration: none;
+    border-right: 1px solid color-mix(in srgb, var(--limestone) 35%, transparent);
+  }
+
+  .chrome-menu {
+    gap: 1rem;
+    padding: 0 1rem;
+    font-weight: 700;
+  }
+
   .chrome-menu :global(svg) {
+    flex: none;
     width: 1.1rem;
     height: 1.1rem;
+  }
+
+  /* Phones: castle, video pill, language and menu all fit on one line. */
+  @media (max-width: 419px) {
+    .chrome-logo {
+      width: 2.75rem;
+    }
+    .film-pill {
+      margin-inline: auto 0.5rem;
+    }
+    .film-pill-thumb {
+      width: 2.8rem;
+    }
+  }
+
+  @media (max-width: 389px) {
+    .chrome-menu {
+      gap: 0.6rem;
+      padding: 0 0.75rem;
+    }
+    .chrome-lang {
+      min-width: 2.6rem;
+      padding: 0 0.6rem;
+    }
   }
 
   /* ---------- How-to-play banner (Quechua's "Discover full video") ---------- */

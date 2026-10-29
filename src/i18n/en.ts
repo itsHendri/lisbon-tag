@@ -13,6 +13,8 @@ export const en = {
     skip: 'Skip to content',
     home: 'Lisbon Tag Rugby, back to top',
     menu: 'Menu',
+    // The header's language half names the other language, in that language.
+    otherLang: 'Ver em português',
     sections: 'Sections',
     close: 'Close',
     language: 'Language',
@@ -184,6 +186,7 @@ export const en = {
 
   footer: {
     made: 'Made in Lisbon',
+    tagline: 'For the love of the game.',
     rights: 'Lisbon Tag Rugby',
   },
 
