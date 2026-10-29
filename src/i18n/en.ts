@@ -27,7 +27,6 @@ export const en = {
   sections: {
     home: 'Lisbon Tag',
     about: 'Who we are',
-    thursdays: 'Thursdays',
     how: 'The basics',
     outfit: 'What to bring',
     kit: 'The kit',
@@ -45,7 +44,7 @@ export const en = {
   },
 
   hero: {
-    sub: 'Every Thursday. Beginners welcome.',
+    free: 'Free, beginners welcome',
   },
 
   about: {
@@ -55,14 +54,7 @@ export const en = {
     body: 'No tackles, no experience needed, no pressure. Some of us played rugby for years, some had never held the ball before their first session. Tag is fun, social and easy to pick up: come once and you will know half the team by the end of the night.',
   },
 
-  thursdays: {
-    title: 'Tag Rugby Thursdays',
-    rows: {
-      place: 'Place',
-      time: 'Kick-off',
-      cost: 'Cost',
-      bring: 'Bring',
-    },
+  actions: {
     calendar: 'Add to calendar',
     directions: 'Get directions',
   },
@@ -122,6 +114,12 @@ export const en = {
   where: {
     title: 'Where we play',
     transport: 'Tram 15E or the Cascais line train to Belém',
+    rows: {
+      time: 'Kick-off',
+      cost: 'Cost',
+      bring: 'Bring',
+      level: 'Level',
+    },
     mapAlt: 'Hand-drawn map of Belém. Jardim Vasco da Gama sits between Rua de Belém and the railway, by the river.',
     mapStation: 'Belém station',
     mapCredit: '© OpenStreetMap contributors',

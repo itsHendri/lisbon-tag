@@ -1,7 +1,7 @@
 ---
 /** Small line icons, drawn on a 24px grid. Decorative unless a label is given. */
 interface Props {
-  name: 'play' | 'pause' | 'grid' | 'close' | 'arrow' | 'arrow-down' | 'whatsapp' | 'instagram' | 'calendar' | 'pin' | 'external' | 'plus' | 'bag';
+  name: 'play' | 'pause' | 'grid' | 'close' | 'arrow' | 'arrow-down' | 'whatsapp' | 'instagram' | 'calendar' | 'pin' | 'external' | 'plus' | 'bag' | 'heart';
   label?: string;
   class?: string;
 }
@@ -54,6 +54,7 @@ const { name, label, class: className } = Astro.props;
       <path d="M3.5 10h17M8 3v4M16 3v4" />
     </>
   )}
+  {name === 'heart' && <path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z" />}
   {name === 'bag' && (
     <>
       <path d="M5 8h14l-1 12.5H6z" />

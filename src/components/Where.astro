@@ -1,6 +1,12 @@
 ---
+/**
+ * Where we play: the venue, the Thursday details (time, cost, what to bring,
+ * level) and the hand-drawn map, in one section.
+ */
 import Icon from './Icon.astro';
 import MapArt from './MapArt.astro';
+import DetailsTable from './DetailsTable.astro';
+import CalendarButton from './CalendarButton.astro';
 import { useT, type Lang } from '../i18n';
 import { site } from '../data/site';
 
@@ -14,30 +20,52 @@ const th = site.thursday;
 
 <section id="where" class="section theme-light where" data-section aria-labelledby="where-title">
   <div class="wrap where-grid">
-    <header class="where-head">
-      <p class="where-meta" data-reveal>
-        <span><Icon name="pin" /> {t.where.transport}</span>
-      </p>
-      <h2 id="where-title" class="display display-md" data-split>{t.where.title}</h2>
-      <p class="where-venue">{th.venue}</p>
-    </header>
+    <div class="where-info">
+      <header class="where-head">
+        <p class="where-meta" data-reveal>
+          <Icon name="pin" />
+          {t.where.transport}
+        </p>
+        <h2 id="where-title" class="display display-md" data-split>{t.where.title}</h2>
+        <p class="where-venue" data-reveal>{th.venue}</p>
+      </header>
 
-    <!-- Hand-drawn map; directions go to the club's Google Maps listing. -->
-    <div class="map frame sketch" data-reveal>
-      <MapArt lang={lang} crop />
-      <a class="btn map-directions" href={th.mapsUrl} target="_blank" rel="noopener">
-        <Icon name="pin" />
-        {t.thursdays.directions}
-      </a>
-      <p class="map-credit">{t.where.mapCredit}</p>
+      <DetailsTable
+        rows={[
+          { label: t.where.rows.time, value: `${t.facts.day}, ${th.start}` },
+          { label: t.where.rows.cost, value: t.facts.cost },
+          { label: t.where.rows.bring, value: t.facts.bring },
+          { label: t.where.rows.level, value: t.facts.level },
+        ]}
+      />
+
+      <!-- Directions is the main action, so it sits right (top on phones). -->
+      <div class="where-actions" data-reveal>
+        <CalendarButton lang={lang} ghost />
+        <a class="btn" href={th.mapsUrl} target="_blank" rel="noopener">
+          <Icon name="pin" />
+          {t.actions.directions}
+        </a>
+      </div>
     </div>
+
+    <!-- Hand-drawn map; the whole map opens the venue in Google Maps. -->
+    <a class="map frame sketch" href={th.mapsUrl} target="_blank" rel="noopener" tabindex="-1" aria-hidden="true" data-reveal>
+      <MapArt lang={lang} crop />
+      <span class="map-credit">{t.where.mapCredit}</span>
+    </a>
   </div>
 </section>
 
 <style>
   .where-grid {
     display: grid;
-    gap: clamp(2rem, 4vw, 3rem);
+    gap: clamp(2.5rem, 5vw, 3.5rem);
+  }
+
+  .where-info {
+    display: grid;
+    gap: 1.5rem;
   }
 
   .where-head {
@@ -53,27 +81,42 @@ const th = site.thursday;
   }
 
   .where-meta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem 1.5rem;
-    font-weight: 700;
-  }
-
-  .where-meta span {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
+    font-weight: 700;
   }
 
   .where-meta :global(svg) {
     width: 1.15rem;
     height: 1.15rem;
+    flex: none;
+  }
+
+  .where-actions {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 0.75rem;
+    margin-top: 0.75rem;
+  }
+
+  .where-actions :global(.btn) {
+    width: 100%;
+  }
+
+  @media (min-width: 640px) {
+    .where-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
   }
 
   /* ---------- Map ---------- */
   .map {
     position: relative;
+    display: block;
     aspect-ratio: 4 / 5;
+    container-type: size;
     background: var(--limestone);
     --sketch-color: var(--navy);
   }
@@ -82,14 +125,6 @@ const th = site.thursday;
     .map {
       aspect-ratio: 3 / 2;
     }
-  }
-
-  .map-directions {
-    position: absolute;
-    z-index: 2;
-    top: 1rem;
-    right: 1rem;
-    width: auto;
   }
 
   .map-credit {
@@ -101,10 +136,15 @@ const th = site.thursday;
     color: var(--limestone);
   }
 
+  /* Details beside the map; the map is taller than 3:2 here, so it crops. */
   @media (min-width: 960px) {
     .where-grid {
-      grid-template-columns: 1fr 1.25fr;
+      grid-template-columns: 1fr 1.1fr;
       align-items: center;
+      gap: clamp(3rem, 5vw, 4.5rem);
+    }
+    .map {
+      aspect-ratio: 1;
     }
   }
 </style>

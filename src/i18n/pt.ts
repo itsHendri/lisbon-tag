@@ -28,7 +28,6 @@ export const pt: Dict = {
   sections: {
     home: 'Lisbon Tag',
     about: 'Quem somos',
-    thursdays: 'Quintas',
     how: 'O básico',
     outfit: 'O que trazer',
     kit: 'A camisola',
@@ -46,7 +45,7 @@ export const pt: Dict = {
   },
 
   hero: {
-    sub: 'Todas as quintas. Principiantes bem-vindos.',
+    free: 'Grátis, principiantes bem-vindos',
   },
 
   about: {
@@ -55,14 +54,7 @@ export const pt: Dict = {
     body: 'Sem placagens, sem experiência necessária, sem pressão. Alguns de nós jogaram rugby durante anos, outros nunca tinham pegado numa bola antes da primeira sessão. O tag é divertido, social e fácil de aprender: vem uma vez e no fim da noite já conheces meia equipa.',
   },
 
-  thursdays: {
-    title: 'Tag Rugby às Quintas',
-    rows: {
-      place: 'Local',
-      time: 'Início',
-      cost: 'Preço',
-      bring: 'Traz',
-    },
+  actions: {
     calendar: 'Adicionar ao calendário',
     directions: 'Como chegar',
   },
@@ -121,6 +113,12 @@ export const pt: Dict = {
   where: {
     title: 'Onde jogamos',
     transport: 'Elétrico 15E ou comboio da linha de Cascais até Belém',
+    rows: {
+      time: 'Início',
+      cost: 'Preço',
+      bring: 'Traz',
+      level: 'Nível',
+    },
     mapAlt: 'Mapa de Belém desenhado à mão. O Jardim Vasco da Gama fica entre a Rua de Belém e a linha do comboio, junto ao rio.',
     mapStation: 'Estação de Belém',
     mapCredit: '© contribuidores do OpenStreetMap',

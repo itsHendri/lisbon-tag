@@ -3,9 +3,11 @@
  * The hand-drawn map of Belém (scripts/build-map.mjs draws it from
  * OpenStreetMap) with the castle pinned on Jardim Vasco da Gama.
  *
- * It fills a 3:2 frame. Add `crop` for a taller frame: the drawing keeps its
- * shape, centred on the park, and the edges are cut off instead of squashed.
- * The labels sit on the drawing, so they move with it.
+ * It fills a 3:2 frame. Add `crop` when the frame can be taller than that
+ * (the frame needs `container-type: size`): the drawing keeps its shape,
+ * centred on the park, and the sides are cut off instead of squashed.
+ * `compact` (the menu) does the same for a frame wider than 3:2, cutting off
+ * the top and bottom. The labels sit on the drawing, so they move with it.
  */
 import { getImage } from 'astro:assets';
 import { useT, type Lang } from '../i18n';
@@ -18,7 +20,7 @@ interface Props {
   lang: Lang;
   /** Small version for the menu: pin only, no street names. */
   compact?: boolean;
-  /** Centre on the park and crop the sides on phones (frames taller than 3:2). */
+  /** Centre on the park and crop the sides when the frame is taller than 3:2. */
   crop?: boolean;
 }
 const { lang, compact = false, crop = false } = Astro.props;
@@ -56,7 +58,7 @@ const venueBottom = map.venue.y + (map.venue.y - map.venueTop.y);
     font-family: var(--font-body);
   }
 
-  @media (max-width: 639px) {
+  @container (max-aspect-ratio: 3 / 2) {
     .map-art--crop {
       inset: 0 auto;
       left: 50%;
@@ -88,8 +90,8 @@ const venueBottom = map.venue.y + (map.venue.y - map.venueTop.y);
     letter-spacing: 0.04em;
   }
 
-  /* The cropped phone view cuts through it; the pin says enough. */
-  @media (max-width: 639px) {
+  /* The cropped view cuts through it; the pin says enough. */
+  @container (max-aspect-ratio: 3 / 2) {
     .map-art--crop .map-label--station {
       display: none;
     }
@@ -148,6 +150,13 @@ const venueBottom = map.venue.y + (map.venue.y - map.venueTop.y);
   .map-venue-time {
     font-weight: 700;
     font-size: var(--text-xs);
+  }
+
+  .map-art--compact {
+    inset: auto 0;
+    top: 50%;
+    aspect-ratio: 3 / 2;
+    transform: translateY(calc(var(--vy) * -1));
   }
 
   .map-art--compact .map-pin {
