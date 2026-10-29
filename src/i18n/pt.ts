@@ -52,7 +52,7 @@ export const pt: Dict = {
   about: {
     heading: 'Quem somos',
     statement: 'Locais, estrangeiros e gente de passagem a jogar tag rugby todas as quintas, quase sempre com um copo no fim.',
-    body: 'Sem placagens, sem experiência necessária, sem pressão. Alguns de nós jogaram rugby durante anos, outros nunca tinham pegado numa bola antes da primeira quinta. O tag é rápido, social e fácil de aprender: vem uma vez e no fim da noite já conheces meia equipa.',
+    body: 'Sem placagens, sem experiência necessária, sem pressão. Alguns de nós jogaram rugby durante anos, outros nunca tinham pegado numa bola antes da primeira sessão. O tag é divertido, social e fácil de aprender: vem uma vez e no fim da noite já conheces meia equipa.',
   },
 
   thursdays: {
@@ -74,7 +74,7 @@ export const pt: Dict = {
     rules: [
       'Sete contra sete',
       'Tag = placagem',
-      'Apanhado? Pára e passa',
+      'Apanhado? Pára e pousa',
       'Defesa a 5\u00a0m',
       'Seis tags e troca',
       'Só passes para trás',
@@ -84,7 +84,6 @@ export const pt: Dict = {
     ],
     first: {
       title: 'Nunca jogaste?',
-      intro: 'A tua primeira quinta, em três passos.',
       steps: [
         { title: 'Aparece', body: 'Chega dez minutos mais cedo e diz olá. Emprestamos-te um cinto.' },
         { title: 'Veste-te para correr', body: 'Vem com roupa de desporto confortável e ténis ou chuteiras.' },
@@ -95,7 +94,6 @@ export const pt: Dict = {
 
   outfit: {
     title: 'O que vestir',
-    intro: 'Não precisas de muito.',
     items: {
       sportswear: {
         title: 'Roupa de desporto confortável',
@@ -122,12 +120,9 @@ export const pt: Dict = {
 
   where: {
     title: 'Onde jogamos',
-    body: 'Procura o grupo de azulejos azuis e brancos.',
     transport: 'Elétrico 15E ou comboio da linha de Cascais até Belém',
     mapAlt: 'Mapa de Belém desenhado à mão. O Jardim Vasco da Gama fica entre a Rua de Belém e a linha do comboio, junto ao rio.',
-    mapRoad: 'Rua de Belém',
     mapStation: 'Estação de Belém',
-    mapRiver: 'Rio Tejo',
     mapCredit: '© contribuidores do OpenStreetMap',
   },
 

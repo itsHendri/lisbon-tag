@@ -52,7 +52,7 @@ export const en = {
     // Not shown: names the section for screen readers.
     heading: 'Who we are',
     statement: 'Locals, expats and passers-through playing tag rugby every Thursday, usually with a drink after.',
-    body: 'No tackles, no experience needed, no pressure. Some of us played rugby for years, some had never held the ball before their first Thursday. Tag is fast, social and easy to pick up: come once and you will know half the team by the end of the night.',
+    body: 'No tackles, no experience needed, no pressure. Some of us played rugby for years, some had never held the ball before their first session. Tag is fun, social and easy to pick up: come once and you will know half the team by the end of the night.',
   },
 
   thursdays: {
@@ -75,7 +75,7 @@ export const en = {
     rules: [
       'Seven a side',
       'Tag = tackle',
-      'Tagged? Stop and pass',
+      'Tagged? Stop and place',
       'Defence back 5\u00a0m',
       'Six tags, then turnover',
       'Pass backwards only',
@@ -85,7 +85,6 @@ export const en = {
     ],
     first: {
       title: 'Never played?',
-      intro: 'Your first Thursday, in three steps.',
       steps: [
         { title: 'Turn up', body: 'Arrive ten minutes early and say olá. We will lend you a belt.' },
         { title: 'Dress to run', body: 'Wear comfortable sportswear and trainers or boots.' },
@@ -96,7 +95,6 @@ export const en = {
 
   outfit: {
     title: 'What to wear',
-    intro: 'You don’t need much.',
     items: {
       sportswear: {
         title: 'Comfortable sportswear',
@@ -123,12 +121,9 @@ export const en = {
 
   where: {
     title: 'Where we play',
-    body: 'Look for the group in blue and white tiles.',
     transport: 'Tram 15E or the Cascais line train to Belém',
     mapAlt: 'Hand-drawn map of Belém. Jardim Vasco da Gama sits between Rua de Belém and the railway, by the river.',
-    mapRoad: 'Rua de Belém',
     mapStation: 'Belém station',
-    mapRiver: 'Rio Tejo',
     mapCredit: '© OpenStreetMap contributors',
   },
 

@@ -33,14 +33,8 @@ const venueBottom = map.venue.y + (map.venue.y - map.venueTop.y);
   {
     !compact && (
       <>
-        <span class="map-label map-label--road" style="left: 66%; top: 31.5%" aria-hidden="true">
-          {t.where.mapRoad}
-        </span>
         <span class="map-label map-label--station" style="left: 82%; top: 58.5%" aria-hidden="true">
           {t.where.mapStation}
-        </span>
-        <span class="map-label map-label--river display" style="left: 64%; top: 80%" aria-hidden="true">
-          {t.where.mapRiver}
         </span>
       </>
     )
@@ -94,21 +88,11 @@ const venueBottom = map.venue.y + (map.venue.y - map.venueTop.y);
     letter-spacing: 0.04em;
   }
 
-  /* The cropped phone view cuts through both; the pin and river say enough. */
+  /* The cropped phone view cuts through it; the pin says enough. */
   @media (max-width: 639px) {
-    .map-art--crop .map-label--road,
     .map-art--crop .map-label--station {
       display: none;
     }
-  }
-
-  .map-label--river {
-    padding: 0.25rem 0.8rem;
-    background: var(--navy);
-    color: var(--limestone);
-    font-size: clamp(1.5rem, 1rem + 2vw, 3rem);
-    letter-spacing: 0;
-    text-transform: none;
   }
 
   /* A square castle tile with a point, standing on the park. */

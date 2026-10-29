@@ -55,11 +55,8 @@ const steps = t.how.first.steps;
 <TileFrame as="section" class="first" aria-labelledby="first-title">
   <div class="wrap first-inner">
     <header class="first-head">
-      <div class="first-title">
-        <Image src={ball} alt="" width={160} format="webp" class="first-ball" />
-        <h2 id="first-title" class="display display-md" data-split>{t.how.first.title}</h2>
-      </div>
-      <p class="first-intro" data-reveal>{t.how.first.intro}</p>
+      <h2 id="first-title" class="display display-md" data-split>{t.how.first.title}</h2>
+      <Image src={ball} alt="" width={160} format="webp" class="first-ball" />
     </header>
     <ol class="first-steps" data-reveal-stagger>
       {
@@ -157,13 +154,9 @@ const steps = t.how.first.steps;
   }
 
   .first-head {
-    display: grid;
-    gap: 1rem;
-  }
-
-  .first-title {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: clamp(0.75rem, 2vw, 1.25rem);
   }
 
@@ -171,12 +164,6 @@ const steps = t.how.first.steps;
     width: clamp(3.25rem, 7vw, 5.5rem);
     height: auto;
     flex: none;
-  }
-
-  .first-intro {
-    font-size: var(--text-lg);
-    font-weight: 700;
-    line-height: 1.3;
   }
 
   .first-steps {
@@ -216,14 +203,6 @@ const steps = t.how.first.steps;
   }
 
   @media (min-width: 900px) {
-    .first-head {
-      grid-template-columns: 1fr auto;
-      align-items: end;
-    }
-    .first-intro {
-      max-width: 22ch;
-      text-align: right;
-    }
     .first-steps {
       grid-template-columns: repeat(3, 1fr);
     }

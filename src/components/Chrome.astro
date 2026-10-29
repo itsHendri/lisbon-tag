@@ -21,7 +21,7 @@ const yt = site.howToPlay.youtubeId;
 const castle = await getImage({ src: castleMask, width: 128, format: 'png' });
 const thumb = await getImage({ src: `https://i.ytimg.com/vi/${yt}/mqdefault.jpg`, inferSize: true, width: 240, format: 'webp' });
 // The menu only lists the sections people jump to; the map card covers "where".
-const menuIds: SectionId[] = ['how', 'outfit', 'social', 'faq'];
+const menuIds: SectionId[] = ['how', 'outfit', 'faq'];
 const th = site.thursday;
 const join = site.links.whatsapp ?? site.links.instagram;
 const other = langs.find((l) => l !== lang)!;
