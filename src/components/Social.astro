@@ -46,9 +46,9 @@ const tile = await getImage({ src: tileBlue, width: 240, format: 'webp' });
 </TileFrame>
 
 <style>
-  /* Same space on all four sides of the panel. */
+  /* Same space on all four sides of the panel, at every screen width. */
   :global(#social > .tile-frame-card) {
-    padding-block: calc(var(--gutter) + clamp(0.5rem, 2vw, 1.5rem));
+    padding-block: var(--side);
   }
 
   .social-head {

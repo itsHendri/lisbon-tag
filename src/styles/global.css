@@ -379,6 +379,22 @@ p {
   stroke-width: var(--w);
 }
 
+/* Solid boxes: the fill is drawn with the same pen, behind the content, so it
+   never pokes out past the line. --sketch-fill is the fill colour. */
+.sketch.sketch--fill.has-sketch-svg {
+  isolation: isolate;
+  background: transparent;
+  box-shadow: none;
+}
+
+.sketch--fill > .sketch-svg {
+  z-index: -1;
+}
+
+.sketch--fill > .sketch-svg rect {
+  fill: var(--sketch-fill);
+}
+
 .sketch.has-sketch-svg::before {
   display: none;
 }

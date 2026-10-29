@@ -40,6 +40,11 @@ const tile = await getImage({ src: tone === 'navy' ? tileBlue : tileBlack, width
     outline: 4px solid var(--navy);
     outline-offset: 0;
     padding: var(--section-y) 0;
+    /* Content padding inside the inset line, and the real space from the
+       card's side edge to the content: once the card is wider than the
+       content column, the column's centring margin adds to it. */
+    --pad-x: calc(var(--gutter) + clamp(0.5rem, 2vw, 1.5rem));
+    --side: max(var(--pad-x), calc((100% - var(--max)) / 2 + var(--pad-x)));
     --sketch-inset: clamp(0.6rem, 1.6vw, 1rem);
     --sketch-w: 2px;
     --sketch-color: color-mix(in srgb, var(--limestone) 85%, transparent);
@@ -47,7 +52,7 @@ const tile = await getImage({ src: tone === 'navy' ? tileBlue : tileBlack, width
 
   /* Keep content clear of the inset line. */
   .tile-frame-card > :global(.wrap) {
-    padding-inline: calc(var(--gutter) + clamp(0.5rem, 2vw, 1.5rem));
+    padding-inline: var(--pad-x);
   }
 
   .tile-frame-card.theme-granite {

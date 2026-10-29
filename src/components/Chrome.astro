@@ -33,7 +33,7 @@ const other = langs.find((l) => l !== lang)!;
   </a>
 
   <!-- How-to-play video, always one tap away and never over the content. -->
-  <button class="film-pill" type="button" aria-haspopup="dialog" aria-controls="film" data-film-open>
+  <button class="film-pill sketch sketch--fill" type="button" aria-haspopup="dialog" aria-controls="film" data-film-open>
     <span class="film-pill-thumb">
       <img src={thumb.src} alt="" width="64" height="36" />
       <span class="film-pill-play"><Icon name="play" /></span>
@@ -45,7 +45,7 @@ const other = langs.find((l) => l !== lang)!;
   </button>
 
   <!-- One control, two halves: the other language on the left, the menu on the right. -->
-  <div class="chrome-actions">
+  <div class="chrome-actions sketch sketch--fill">
     <a
       class="chrome-lang"
       href={homeHref(other)}
@@ -66,11 +66,11 @@ const other = langs.find((l) => l !== lang)!;
 <!-- Menu: a side panel on wider screens, full screen on phones. data-lenis-prevent lets it scroll natively. -->
 <dialog id="sheet" class="sheet theme-navy" aria-label={t.nav.menu} data-lenis-prevent>
   <div class="sheet-head">
-    <div class="sheet-langs" role="group" aria-label={t.nav.language}>
+    <div class="sheet-langs sketch" role="group" aria-label={t.nav.language}>
       {
         langs.map((l) =>
           l === lang ? (
-            <span class="sheet-lang is-current" aria-current="page" lang={htmlLang[l]}>
+            <span class="sheet-lang is-current sketch sketch--fill" aria-current="page" lang={htmlLang[l]}>
               {l.toUpperCase()}
             </span>
           ) : (
@@ -81,7 +81,7 @@ const other = langs.find((l) => l !== lang)!;
         )
       }
     </div>
-    <button class="sheet-close" type="button" data-sheet-close>
+    <button class="sheet-close sketch" type="button" data-sheet-close>
       <span>{t.nav.close}</span>
       <Icon name="close" />
     </button>
@@ -113,16 +113,13 @@ const other = langs.find((l) => l !== lang)!;
   </nav>
 
   <div class="sheet-map">
-    <a class="sheet-map-head" href="#where" data-sheet-link>
-      <span>{t.where.title}</span>
+    <!-- Both open the venue in Google Maps. -->
+    <a class="sheet-map-head" href={th.mapsUrl} target="_blank" rel="noopener">
+      <span>{t.sections.where}: {th.venue}</span>
       <Icon name="arrow" />
     </a>
-    <a class="sheet-map-frame sketch" href="#where" data-sheet-link tabindex="-1" aria-hidden="true">
+    <a class="sheet-map-frame sketch" href={th.mapsUrl} target="_blank" rel="noopener" tabindex="-1" aria-hidden="true">
       <MapArt lang={lang} compact />
-    </a>
-    <a class="sheet-map-foot" href={th.mapsUrl} target="_blank" rel="noopener">
-      <span>{th.venue}</span>
-      <span class="sheet-map-dir">{t.thursdays.directions} <Icon name="external" /></span>
     </a>
   </div>
 
@@ -200,7 +197,6 @@ const other = langs.find((l) => l !== lang)!;
     align-items: stretch;
     min-height: var(--chrome-h);
     border-radius: var(--radius-pill);
-    overflow: hidden;
     background: color-mix(in srgb, var(--navy) 90%, transparent);
     color: var(--limestone);
     backdrop-filter: blur(10px);
@@ -208,6 +204,11 @@ const other = langs.find((l) => l !== lang)!;
     box-shadow:
       inset 0 0 0 1px color-mix(in srgb, var(--limestone) 28%, transparent),
       var(--shadow-sm);
+    /* Drawn: navy fill, a faint limestone line (sketch--fill). */
+    --sketch-inset: 0px;
+    --sketch-w: 1.5px;
+    --sketch-fill: color-mix(in srgb, var(--navy) 92%, transparent);
+    --sketch-color: color-mix(in srgb, var(--limestone) 40%, transparent);
   }
 
   .chrome-lang,
@@ -263,6 +264,11 @@ const other = langs.find((l) => l !== lang)!;
     box-shadow:
       inset 0 0 0 2px var(--navy),
       var(--shadow-sm);
+    /* Drawn: limestone fill, navy line (sketch--fill). */
+    --sketch-inset: 0px;
+    --sketch-w: 2px;
+    --sketch-fill: var(--limestone);
+    --sketch-color: var(--navy);
   }
 
   .film-pill-thumb {
@@ -473,10 +479,12 @@ const other = langs.find((l) => l !== lang)!;
     font-size: var(--text-sm);
     font-weight: 700;
     letter-spacing: 0.04em;
-    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--limestone) 45%, transparent);
+    --sketch-inset: 0px;
+    --sketch-w: 1.5px;
+    --sketch-color: color-mix(in srgb, var(--limestone) 70%, transparent);
   }
 
-  .sheet-close :global(svg) {
+  .sheet-close > :global(svg:not(.sketch-svg)) {
     width: 1.1rem;
     height: 1.1rem;
   }
@@ -486,7 +494,9 @@ const other = langs.find((l) => l !== lang)!;
     gap: 3px;
     padding: 3px;
     border-radius: var(--radius-pill);
-    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--limestone) 45%, transparent);
+    --sketch-inset: 0px;
+    --sketch-w: 1.5px;
+    --sketch-color: color-mix(in srgb, var(--limestone) 70%, transparent);
   }
 
   .sheet-lang {
@@ -505,6 +515,10 @@ const other = langs.find((l) => l !== lang)!;
     background: var(--limestone);
     color: var(--navy);
     font-weight: 900;
+    --sketch-inset: 0px;
+    --sketch-w: 1.5px;
+    --sketch-fill: var(--limestone);
+    --sketch-color: var(--limestone);
   }
 
   .sheet-lang:not(.is-current):hover {
@@ -567,37 +581,18 @@ const other = langs.find((l) => l !== lang)!;
     gap: 0.6rem;
   }
 
-  .sheet-map-head,
-  .sheet-map-foot {
+  .sheet-map-head {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 1rem;
     min-height: 2.75rem;
-    font-weight: 700;
+    font-size: var(--text-lg);
+    font-weight: 900;
     text-decoration: none;
   }
 
-  .sheet-map-head {
-    font-size: var(--text-lg);
-    font-weight: 900;
-  }
-
-  .sheet-map-foot {
-    font-size: var(--text-sm);
-  }
-
-  .sheet-map-dir {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem;
-    text-decoration: underline;
-    text-underline-offset: 0.2em;
-    white-space: nowrap;
-  }
-
-  .sheet-map-head :global(svg),
-  .sheet-map-dir :global(svg) {
+  .sheet-map-head :global(svg) {
     width: 1em;
     height: 1em;
   }

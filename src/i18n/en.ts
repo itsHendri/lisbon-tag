@@ -28,8 +28,8 @@ export const en = {
     home: 'Lisbon Tag',
     about: 'Who we are',
     thursdays: 'Thursdays',
-    how: 'How to play',
-    outfit: 'What to wear',
+    how: 'The basics',
+    outfit: 'What to bring',
     kit: 'The kit',
     where: 'Where',
     social: '3rd half',
@@ -167,7 +167,7 @@ export const en = {
   join: {
     title: 'See you Thursday.',
     body: 'No sign-up, no experience needed. Turn up ten minutes early and say olá.',
-    whatsapp: 'Join the WhatsApp group',
+    whatsapp: 'Join on WhatsApp',
     instagram: 'Follow on Instagram',
     // Shown while there's no WhatsApp link: Instagram becomes the main action.
     instagramPrimary: 'Message us on Instagram',
