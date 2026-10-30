@@ -46,9 +46,8 @@ export const pt: Dict = {
 
   hero: {
     sub: 'Tag rugby em Belém. Sem placagens, sem inscrição, sem experiência.',
-    labels: { when: 'Quando', where: 'Onde', cost: 'Preço', level: 'Nível' },
+    labels: { when: 'Quando', where: 'Onde', level: 'Nível' },
     day: 'Quintas',
-    cost: 'Grátis',
   },
 
   about: {

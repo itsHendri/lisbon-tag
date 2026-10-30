@@ -21,7 +21,7 @@ const { tone = 'navy', as: Tag = 'div', class: className, ...rest } = Astro.prop
 const tile = await getImage({ src: tone === 'navy' ? tileBlue : tileBlack, width: 240, format: 'webp' });
 ---
 
-<Tag class:list={['tile-frame tiles', className]} style={`--tile-url: url(${tile.src})`} {...rest}>
+<Tag class:list={['tile-frame tiles theme-light', className]} style={`--tile-url: url(${tile.src})`} {...rest}>
   <div class:list={['tile-frame-card sketch', tone === 'navy' ? 'theme-navy' : 'theme-granite']} data-tone="dark">
     <slot />
   </div>

@@ -32,7 +32,7 @@ const tile = await getImage({ src: tileBlue, width: 240, format: 'webp' });
         ))
       }
       <!-- Instagram is the last tile in the grid, framed in azulejos like the dark panels. -->
-      <li class="gallery-item gallery-insta tiles" style={`--tile-url: url(${tile.src})`}>
+      <li class="gallery-item gallery-insta tiles theme-light" style={`--tile-url: url(${tile.src})`}>
         <a class="insta-card sketch theme-navy" data-tone="dark" href={site.links.instagram} target="_blank" rel="noopener">
           <Icon name="instagram" />
           <span class="insta-text">

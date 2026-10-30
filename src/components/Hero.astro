@@ -59,10 +59,6 @@ const th = site.thursday;
           <dd><a href={th.mapsUrl} target="_blank" rel="noopener">{th.venue.split(',')[0]}</a></dd>
         </div>
         <div>
-          <dt class="label">{t.hero.labels.cost}</dt>
-          <dd>{t.hero.cost}</dd>
-        </div>
-        <div>
           <dt class="label">{t.hero.labels.level}</dt>
           <dd>{t.facts.level}</dd>
         </div>
@@ -263,7 +259,7 @@ const th = site.thursday;
       font-size: var(--text-xl);
     }
     .hero-facts {
-      grid-template-columns: 1fr 1.5fr 0.7fr 1.2fr;
+      grid-template-columns: 1fr 1.5fr 1.2fr;
       gap: 0 2rem;
     }
     .hero-facts > div {

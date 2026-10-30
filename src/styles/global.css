@@ -505,7 +505,9 @@ p {
   background: var(--card);
 }
 
-/* ---------- Azulejo tile background ---------- */
+/* ---------- Azulejo tile background ----------
+ * The tile image has see-through grout, so it needs the limestone behind it:
+ * put .theme-light on the same element, even inside a dark section. */
 .tiles {
   background-color: var(--background);
   background-image: var(--tile-url);

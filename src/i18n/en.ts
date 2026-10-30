@@ -27,7 +27,7 @@ export const en = {
   sections: {
     home: 'Lisbon Tag',
     about: 'Who we are',
-    how: 'The basics',
+    how: 'Some basics',
     outfit: 'What to bring',
     kit: 'The kit',
     where: 'Where',
@@ -46,9 +46,8 @@ export const en = {
   hero: {
     sub: 'Tag rugby in Belém. No tackles, no sign-up, no experience needed.',
     // The facts along the bottom of the photo; the level is facts.level.
-    labels: { when: 'When', where: 'Where', cost: 'Cost', level: 'Level' },
+    labels: { when: 'When', where: 'Where', level: 'Level' },
     day: 'Thursdays',
-    cost: 'Free',
   },
 
   about: {
@@ -64,7 +63,7 @@ export const en = {
   },
 
   how: {
-    title: 'The basics',
+    title: 'Some basics',
     intro:
       'Tag is rugby without the tackles. Everyone wears a belt with two tags, one on each hip. Instead of bringing the ball carrier down, you pull one off. That is the tackle.',
     // Titles only: each one has an icon in HowToPlay.astro, in this order.

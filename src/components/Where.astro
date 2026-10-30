@@ -136,14 +136,16 @@ const th = site.thursday;
     color: var(--background);
   }
 
-  /* Details beside the map; the map is taller than 3:2 here, so it crops. */
+  /* Map on the left, details on the right (details stay first on phones).
+     The map is taller than 3:2 here, so it crops. */
   @media (min-width: 960px) {
     .where-grid {
-      grid-template-columns: 1fr 1.1fr;
+      grid-template-columns: 1.1fr 1fr;
       align-items: center;
       gap: clamp(3rem, 5vw, 4.5rem);
     }
     .map {
+      order: -1;
       aspect-ratio: 1;
     }
   }
