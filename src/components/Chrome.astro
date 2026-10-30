@@ -48,7 +48,7 @@ const other = langs.find((l) => l !== lang)!;
   <!-- One control, two halves: the other language on the left, the menu on the right. -->
   <div class="chrome-actions sketch sketch--fill">
     <a
-      class="chrome-lang"
+      class="chrome-lang sketch sketch--fill"
       href={homeHref(other)}
       hreflang={htmlLang[other]}
       lang={htmlLang[other]}
@@ -57,7 +57,7 @@ const other = langs.find((l) => l !== lang)!;
       data-base={homeHref(other)}>
       {other.toUpperCase()}
     </a>
-    <button class="chrome-menu" type="button" aria-haspopup="dialog" aria-controls="sheet" data-sheet-open>
+    <button class="chrome-menu sketch sketch--fill" type="button" aria-haspopup="dialog" aria-controls="sheet" data-sheet-open>
       <span>{t.nav.menu}</span>
       <Icon name="grid" />
     </button>
@@ -226,18 +226,42 @@ const other = langs.find((l) => l !== lang)!;
     --sketch-color: var(--limestone);
   }
 
+  /* Each half has its own drawn shape, empty until you point at it: then it
+     fills in limestone a little inside the line, with navy text. */
   .chrome-lang,
   .chrome-menu {
     display: inline-flex;
     align-items: center;
     font-size: var(--text-sm);
     letter-spacing: 0.04em;
-    transition: background-color 0.25s;
+    transition: color 0.2s;
+    --sketch-inset: 4px;
+    --sketch-w: 1.5px;
+    --sketch-fill: transparent;
+    --sketch-color: transparent;
   }
 
-  .chrome-lang:hover,
-  .chrome-menu:hover {
-    background: var(--navy);
+  .chrome-lang > :global(.sketch-svg rect),
+  .chrome-menu > :global(.sketch-svg rect) {
+    transition:
+      fill 0.2s,
+      stroke 0.2s;
+  }
+
+  @media (hover: hover) {
+    .chrome-lang:hover,
+    .chrome-menu:hover {
+      color: var(--navy);
+      --sketch-fill: var(--limestone);
+      --sketch-color: var(--limestone);
+    }
+  }
+
+  .chrome-lang:focus-visible,
+  .chrome-menu:focus-visible {
+    color: var(--navy);
+    --sketch-fill: var(--limestone);
+    --sketch-color: var(--limestone);
   }
 
   .chrome-lang {
@@ -256,7 +280,7 @@ const other = langs.find((l) => l !== lang)!;
     font-weight: 700;
   }
 
-  .chrome-menu :global(svg) {
+  .chrome-menu > :global(svg:not(.sketch-svg)) {
     flex: none;
     width: 1.1rem;
     height: 1.1rem;
