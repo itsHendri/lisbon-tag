@@ -45,7 +45,10 @@ export const pt: Dict = {
   },
 
   hero: {
-    free: 'Grátis, principiantes bem-vindos',
+    sub: 'Tag rugby em Belém. Sem placagens, sem inscrição, sem experiência.',
+    labels: { when: 'Quando', where: 'Onde', cost: 'Preço', level: 'Nível' },
+    day: 'Quintas',
+    cost: 'Grátis',
   },
 
   about: {

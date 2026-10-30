@@ -44,7 +44,11 @@ export const en = {
   },
 
   hero: {
-    free: 'Free, beginners welcome',
+    sub: 'Tag rugby in Belém. No tackles, no sign-up, no experience needed.',
+    // The facts along the bottom of the photo; the level is facts.level.
+    labels: { when: 'When', where: 'Where', cost: 'Cost', level: 'Level' },
+    day: 'Thursdays',
+    cost: 'Free',
   },
 
   about: {
