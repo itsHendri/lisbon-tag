@@ -219,11 +219,11 @@ const other = langs.find((l) => l !== lang)!;
     box-shadow:
       inset 0 0 0 1px color-mix(in srgb, var(--limestone) 28%, transparent),
       var(--shadow-sm);
-    /* Drawn: navy fill, a faint limestone line (sketch--fill). */
+    /* Drawn: solid navy fill, solid limestone line (sketch--fill). */
     --sketch-inset: 0px;
     --sketch-w: 1.5px;
-    --sketch-fill: color-mix(in srgb, var(--navy) 92%, transparent);
-    --sketch-color: color-mix(in srgb, var(--limestone) 40%, transparent);
+    --sketch-fill: var(--navy);
+    --sketch-color: var(--limestone);
   }
 
   .chrome-lang,
@@ -247,7 +247,7 @@ const other = langs.find((l) => l !== lang)!;
     font-weight: 900;
     letter-spacing: 0.06em;
     text-decoration: none;
-    border-right: 1px solid color-mix(in srgb, var(--limestone) 35%, transparent);
+    border-right: 1px solid color-mix(in srgb, var(--limestone) 70%, transparent);
   }
 
   .chrome-menu {
