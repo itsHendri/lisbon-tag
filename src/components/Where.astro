@@ -50,7 +50,7 @@ const th = site.thursday;
     </div>
 
     <!-- Hand-drawn map; the whole map opens the venue in Google Maps. -->
-    <a class="map frame sketch" href={th.mapsUrl} target="_blank" rel="noopener" tabindex="-1" aria-hidden="true" data-reveal>
+    <a class="map frame sketch theme-light" href={th.mapsUrl} target="_blank" rel="noopener" tabindex="-1" aria-hidden="true" data-reveal>
       <MapArt lang={lang} crop />
       <span class="map-credit">{t.where.mapCredit}</span>
     </a>
@@ -117,8 +117,8 @@ const th = site.thursday;
     display: block;
     aspect-ratio: 4 / 5;
     container-type: size;
-    background: var(--limestone);
-    --sketch-color: var(--navy);
+    background: var(--background);
+    --sketch-color: var(--foreground);
   }
 
   @media (min-width: 640px) {
@@ -133,7 +133,7 @@ const th = site.thursday;
     right: 0.75rem;
     bottom: 0.5rem;
     font-size: 0.6875rem;
-    color: var(--limestone);
+    color: var(--background);
   }
 
   /* Details beside the map; the map is taller than 3:2 here, so it crops. */

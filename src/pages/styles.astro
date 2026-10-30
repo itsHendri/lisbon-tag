@@ -1,0 +1,644 @@
+---
+/**
+ * The styles reference: every token and shared pattern the site is built from,
+ * rendered with the real classes and components, so it can't drift from the
+ * site. Not linked from the site and kept out of search (noindex).
+ *
+ * Add a pattern here when you add it to global.css.
+ */
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import DetailsTable from '../components/DetailsTable.astro';
+import TileFrame from '../components/TileFrame.astro';
+
+const themes = [
+  { cls: 'theme-light', name: 'Light', note: 'The default. Most sections, the map.' },
+  { cls: 'theme-navy', name: 'Navy', note: 'Tiled panels, the hero, the menu, the header control.' },
+  { cls: 'theme-granite', name: 'Granite', note: 'The 3rd half and the video player.' },
+];
+
+const roles = [
+  ['--background', 'The section or panel itself'],
+  ['--card', 'A quieter surface inside it: image wells, hover'],
+  ['--foreground', 'Text, icons and drawn lines'],
+  ['--foreground-secondary', 'Supporting text: ledes, answers'],
+  ['--stroke', 'Dividers, control outlines'],
+  ['--stroke-secondary', 'The quietest lines'],
+  ['--brand', 'Solid buttons; anything filled in'],
+  ['--brand-foreground', 'Text on --brand'],
+  ['--focus', 'The keyboard focus ring'],
+];
+
+const palette = ['navy', 'navy-deep', 'navy-ink', 'limestone', 'limestone-dim', 'granite', 'granite-raised'];
+
+const type = [
+  ['--display-xl', 'display', 'Lisbon Tag'],
+  ['--display-md', 'display', 'Where we play'],
+  ['--display-sm', 'display', 'Beginners welcome'],
+  ['--display-xs', 'display', 'Follow along on Instagram'],
+  ['--text-statement', 'statement', 'Locals, expats and passers-through.'],
+  ['--text-xl', 'body', 'Jardim Vasco da Gama, Belém'],
+  ['--text-lg', 'body', 'Tag rugby in Belém. No tackles, no sign-up.'],
+  ['--text-base', 'body', 'Arrive ten minutes early and say olá.'],
+  ['--text-sm', 'body', 'The rules in 4 minutes'],
+  ['--text-xs', 'body', '© OpenStreetMap contributors'],
+];
+
+const spaces = [1, 2, 3, 4, 5, 6, 7, 8];
+const icons = ['play', 'pause', 'grid', 'close', 'arrow', 'arrow-down', 'whatsapp', 'instagram', 'calendar', 'pin', 'external', 'plus', 'bag', 'heart'] as const;
+---
+
+<Base lang="en" title="Styles · Lisbon Tag Rugby" noindex skipTo="#tokens">
+  <main class="styles">
+    <header class="wrap st-intro">
+      <p class="label">Lisbon Tag Rugby</p>
+      <h1 class="display display-md">Styles</h1>
+      <p class="lede">
+        Everything the site is built from. Tokens live in <code>src/styles/tokens.css</code>, shared patterns in{' '}
+        <code>src/styles/global.css</code>. This page uses the real classes, so what you see here is what the site does.
+      </p>
+      <nav class="st-toc" aria-label="On this page">
+        <a class="ink ink--outline" href="#tokens">Colour</a>
+        <a class="ink ink--outline" href="#type">Type</a>
+        <a class="ink ink--outline" href="#rhythm">Space &amp; shape</a>
+        <a class="ink ink--outline" href="#buttons">Buttons</a>
+        <a class="ink ink--outline" href="#ink">Ink</a>
+        <a class="ink ink--outline" href="#lines">Lines &amp; outlines</a>
+        <a class="ink ink--outline" href="#components">Components</a>
+      </nav>
+    </header>
+
+    <!-- ---------- Colour ---------- -->
+    <section id="tokens" class="wrap st-block" aria-labelledby="tokens-title">
+      <h2 id="tokens-title" class="display display-sm">Colour</h2>
+      <div class="st-rules">
+        <p>
+          Two tiers. The <strong>palette</strong> is the brand colours from the style guide, and only tokens.css uses it. The{' '}
+          <strong>roles</strong> are named for what they are for, and are what everything else uses.
+        </p>
+        <p>
+          A theme class (<code>.theme-light</code>, <code>.theme-navy</code>, <code>.theme-granite</code>) redefines the same
+          role names, so a component written once works in every section.
+        </p>
+        <p class="st-do"><strong>Do</strong> <code>color: var(--foreground)</code></p>
+        <p class="st-dont"><strong>Don’t</strong> <code>color: var(--palette-navy)</code> or <code>#054895</code> in a component</p>
+      </div>
+
+      <div class="st-themes">
+        {
+          themes.map((th) => (
+            <div class:list={['st-theme sketch', th.cls]}>
+              <p class="st-theme-name">
+                <code>.{th.cls}</code> · {th.name}
+              </p>
+              <p class="st-theme-note">{th.note}</p>
+              <ul class="st-swatches">
+                {roles.map(([name, use]) => (
+                  <li>
+                    <span class="st-swatch" style={`background: var(${name})`} />
+                    <code>{name}</code>
+                    <span class="st-use">{use}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))
+        }
+      </div>
+
+      <h3 class="st-h3">Palette</h3>
+      <ul class="st-palette">
+        {
+          palette.map((p) => (
+            <li>
+              <span class="st-swatch st-swatch--lg" style={`background: var(--palette-${p})`} />
+              <code>--palette-{p}</code>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="st-note">
+        <code>--overlay</code> and <code>--overlay-strong</code> darken photos, backdrops and shadows.{' '}
+        <code>--scrim-photo</code> is the hero’s gradient.
+      </p>
+    </section>
+
+    <!-- ---------- Type ---------- -->
+    <section id="type" class="wrap st-block" aria-labelledby="type-title">
+      <h2 id="type-title" class="display display-sm">Type</h2>
+      <div class="st-rules">
+        <p>
+          <code>--font-display</code> (Lisbon Tag) for titles only. <code>--font-sans</code> (Lato) for everything else. Sizes are
+          fluid: they grow with the screen between a phone and a laptop.
+        </p>
+      </div>
+      <ul class="st-type">
+        {
+          type.map(([token, kind, sample]) => (
+            <li data-rule="bottom">
+              <code>{token}</code>
+              <span class:list={['st-type-sample', kind === 'display' && 'display', kind === 'statement' && 'statement']} style={`font-size: var(${token})`}>
+                {sample}
+              </span>
+            </li>
+          ))
+        }
+        <li data-rule="bottom">
+          <code>.label</code>
+          <span class="label">Kick-off</span>
+        </li>
+        <li data-rule="bottom">
+          <code>.lede</code>
+          <span class="lede">Tag is the excuse. Afterwards there is usually a drink.</span>
+        </li>
+      </ul>
+    </section>
+
+    <!-- ---------- Space and shape ---------- -->
+    <section id="rhythm" class="wrap st-block" aria-labelledby="rhythm-title">
+      <h2 id="rhythm-title" class="display display-sm">Space &amp; shape</h2>
+      <div class="st-rules">
+        <p>
+          A 4px grid: <code>--space-1</code> to <code>--space-8</code> for gaps and padding. <code>--gutter</code> (page edges) and{' '}
+          <code>--section-y</code> (space above and below a section) are fluid.
+        </p>
+        <p>The brand is square: corners only soften enough not to look broken.</p>
+      </div>
+      <ul class="st-space">
+        {
+          spaces.map((n) => (
+            <li>
+              <code>--space-{n}</code>
+              <span class="st-bar" style={`width: var(--space-${n})`} />
+            </li>
+          ))
+        }
+      </ul>
+      <ul class="st-shapes">
+        <li><span class="st-shape" style="border-radius: var(--radius-sm)" /><code>--radius-sm</code></li>
+        <li><span class="st-shape" style="border-radius: var(--radius)" /><code>--radius</code></li>
+        <li><span class="st-shape" style="border-radius: var(--radius-lg)" /><code>--radius-lg</code></li>
+        <li><span class="st-shape st-shape--card" style="box-shadow: var(--shadow-card)" /><code>--shadow-card</code></li>
+        <li><span class="st-shape st-shape--card" style="box-shadow: var(--shadow-overlay)" /><code>--shadow-overlay</code></li>
+      </ul>
+    </section>
+
+    <!-- ---------- Buttons ---------- -->
+    <section id="buttons" class="wrap st-block" aria-labelledby="buttons-title">
+      <h2 id="buttons-title" class="display display-sm">Buttons</h2>
+      <div class="st-rules">
+        <p>
+          <code>.btn</code> is the primary button: solid <code>--brand</code>. <code>.btn .btn--ghost</code> is the secondary: a drawn
+          line, filled with the section’s own colour. Both are drawn with the pen (scripts/sketch.ts) and lift on hover, with an
+          offset copy sliding out behind (“offset ink”). On phones they go full width.
+        </p>
+        <p class="st-do"><strong>Do</strong> one primary per group; put it where the eye lands last (the middle of three, or the right).</p>
+        <p class="st-dont"><strong>Don’t</strong> give a button a see-through fill: the offset copy shows through it.</p>
+      </div>
+      <div class="st-themes">
+        {
+          themes.map((th) => (
+            <div class:list={['st-demo', th.cls]}>
+              <p class="st-theme-name">
+                <code>.{th.cls}</code>
+              </p>
+              <div class="btn-row">
+                <a class="btn" href="#buttons"><Icon name="instagram" />Follow on Instagram</a>
+                <a class="btn btn--ghost" href="#buttons"><Icon name="calendar" />Add to calendar</a>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <!-- ---------- Ink ---------- -->
+    <section id="ink" class="wrap st-block" aria-labelledby="ink-title">
+      <h2 id="ink-title" class="display display-sm">Ink</h2>
+      <div class="st-rules">
+        <p>
+          <code>.ink</code> is for any control that isn’t a button: a menu item, a toggle, a link row. It’s an empty drawn shape
+          until you point at it or tab to it; then it fills with <code>--brand</code> a little inside its line, and the text
+          turns <code>--brand-foreground</code>. The fill is also the focus indicator.
+        </p>
+        <ul class="st-list">
+          <li><code>.ink--outline</code> shows the line at rest (Close, the video row).</li>
+          <li><code>.is-current</code> or <code>aria-current="page"</code> keeps it filled (the selected language).</li>
+          <li><code>--ink-inset</code> moves the fill in from the edge; <code>0px</code> fills right to the line.</li>
+          <li><code>.segmented</code> groups ink items in one drawn outline (the EN | PT switch).</li>
+        </ul>
+        <p class="st-do"><strong>Do</strong> use it for every menu item, so they all answer the pointer the same way.</p>
+        <p class="st-dont"><strong>Don’t</strong> hand-roll a <code>:hover {'{'} background {'}'}</code>: a straight-edged box pokes out past the drawn line.</p>
+      </div>
+      <div class="st-themes">
+        {
+          themes.map((th) => (
+            <div class:list={['st-demo', th.cls]}>
+              <p class="st-theme-name">
+                <code>.{th.cls}</code>
+              </p>
+              <div class="st-ink-row">
+                <div class="segmented sketch" role="group" aria-label="Language (example)">
+                  <span class="st-seg ink is-current">EN</span>
+                  <a class="st-seg ink" href="#ink">PT</a>
+                </div>
+                <a class="st-ink-btn ink ink--outline" href="#ink">
+                  Close <Icon name="close" />
+                </a>
+              </div>
+              <ul class="st-ink-list">
+                <li><a class="ink" href="#ink" data-rule="bottom">The basics</a></li>
+                <li><a class="ink" href="#ink" data-rule="bottom">What to bring</a></li>
+              </ul>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <!-- ---------- Lines and outlines ---------- -->
+    <section id="lines" class="wrap st-block" aria-labelledby="lines-title">
+      <h2 id="lines-title" class="display display-sm">Lines &amp; outlines</h2>
+      <div class="st-rules">
+        <p>
+          Every line on the site is drawn with the same pen (the <code>#rough</code> filters in Base.astro). Use the classes, never
+          a CSS border, for anything the eye should read as drawn.
+        </p>
+        <ul class="st-list">
+          <li><code>.rule</code> a line on its own. <code>data-rule="top|bottom|top bottom"</code> a line along an edge; <code>--rule-w</code> sets its weight.</li>
+          <li><code>.sketch</code> a drawn outline. <code>--sketch-color</code>, <code>--sketch-w</code>, <code>--sketch-inset</code> tune it.</li>
+          <li><code>.sketch--fill</code> a drawn solid box: <code>--sketch-fill</code> is the fill, so it never pokes past the line.</li>
+        </ul>
+        <p class="st-note">Those custom properties are settings of the pattern; always set them to a role, e.g. <code>--sketch-color: var(--stroke)</code>.</p>
+      </div>
+      <div class="st-lines">
+        <span class="rule"></span>
+        <div class="st-box sketch">.sketch</div>
+        <div class="st-box sketch sketch--fill theme-navy st-box--fill">.sketch--fill</div>
+      </div>
+    </section>
+
+    <!-- ---------- Components ---------- -->
+    <section id="components" class="wrap st-block" aria-labelledby="components-title">
+      <h2 id="components-title" class="display display-sm">Components</h2>
+      <div class="st-rules">
+        <p>
+          Astro components in <code>src/components</code>. These are the shared ones; sections (Hero, Where…) are built from them.
+        </p>
+      </div>
+
+      <h3 class="st-h3"><code>&lt;Icon name&gt;</code></h3>
+      <ul class="st-icons">
+        {
+          icons.map((n) => (
+            <li>
+              <Icon name={n} />
+              <code>{n}</code>
+            </li>
+          ))
+        }
+      </ul>
+
+      <h3 class="st-h3"><code>&lt;DetailsTable rows&gt;</code></h3>
+      <div class="st-narrow">
+        <DetailsTable
+          rows={[
+            { label: 'Kick-off', value: 'Every Thursday, 18:30' },
+            { label: 'Cost', value: 'Free, just turn up' },
+          ]}
+        />
+      </div>
+
+      <h3 class="st-h3"><code>&lt;TileFrame tone="navy" | "granite"&gt;</code></h3>
+      <p class="st-note">An azulejo border around a navy or granite panel with a drawn inset line. Two in a row look like one doubled pattern, so put a plain section between them.</p>
+    </section>
+
+    <TileFrame>
+      <div class="wrap st-tile">
+        <p class="display display-sm">Never played?</p>
+        <a class="btn btn--ghost" href="#components">Add to calendar</a>
+      </div>
+    </TileFrame>
+  </main>
+</Base>
+
+<script>
+  import '../scripts/sketch';
+</script>
+
+<style>
+  .styles {
+    padding-block: var(--space-8) 0;
+  }
+
+  code {
+    font-family: var(--font-mono);
+    font-size: 0.85em;
+  }
+
+  .st-intro {
+    display: grid;
+    gap: var(--space-4);
+    padding-bottom: var(--space-7);
+  }
+
+  .st-toc {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    padding-top: var(--space-2);
+  }
+
+  .st-toc a {
+    padding: var(--space-2) var(--space-3);
+    font-size: var(--text-sm);
+    font-weight: 700;
+    text-decoration: none;
+    --ink-inset: 0px;
+  }
+
+  .st-block {
+    display: grid;
+    gap: var(--space-5);
+    padding-block: var(--space-7);
+  }
+
+  .st-rules {
+    display: grid;
+    gap: var(--space-3);
+    max-width: var(--max-text);
+    color: var(--foreground-secondary);
+  }
+
+  .st-rules strong {
+    color: var(--foreground);
+  }
+
+  .st-do,
+  .st-dont {
+    padding-left: var(--space-3);
+    border-left: 3px solid var(--foreground);
+  }
+
+  .st-dont {
+    border-left-style: dashed;
+  }
+
+  .st-list {
+    display: grid;
+    gap: var(--space-2);
+    padding-left: 1.1em;
+  }
+
+  .st-note {
+    max-width: var(--max-text);
+    font-size: var(--text-sm);
+    color: var(--foreground-secondary);
+  }
+
+  .st-h3 {
+    padding-top: var(--space-4);
+    font-size: var(--text-lg);
+    font-weight: 900;
+  }
+
+  .st-themes {
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  @media (min-width: 900px) {
+    .st-themes {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .st-theme,
+  .st-demo {
+    display: grid;
+    align-content: start;
+    gap: var(--space-4);
+    padding: var(--space-5);
+    background: var(--background);
+    color: var(--foreground);
+    --sketch-color: var(--stroke);
+    --sketch-w: 2px;
+  }
+
+  .st-theme-name {
+    font-weight: 900;
+  }
+
+  .st-theme-note {
+    margin-top: calc(var(--space-3) * -1);
+    font-size: var(--text-sm);
+    color: var(--foreground-secondary);
+  }
+
+  .st-swatches {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: var(--space-3);
+  }
+
+  .st-swatches li {
+    display: grid;
+    grid-template-columns: 2.25rem 1fr;
+    column-gap: var(--space-3);
+    align-items: center;
+  }
+
+  .st-swatch {
+    grid-row: span 2;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: var(--radius);
+    box-shadow: inset 0 0 0 1px var(--stroke-secondary);
+  }
+
+  .st-use {
+    font-size: var(--text-xs);
+    color: var(--foreground-secondary);
+  }
+
+  .st-palette {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+  }
+
+  .st-palette li {
+    display: grid;
+    gap: var(--space-2);
+    font-size: var(--text-sm);
+  }
+
+  .st-swatch--lg {
+    width: 7rem;
+    height: 4rem;
+  }
+
+  .st-type,
+  .st-space,
+  .st-shapes,
+  .st-icons,
+  .st-ink-list {
+    list-style: none;
+    padding: 0;
+  }
+
+  .st-type li {
+    display: grid;
+    gap: var(--space-2);
+    padding-block: var(--space-4);
+    --rule-opacity: 0.3;
+  }
+
+  @media (min-width: 900px) {
+    .st-type li {
+      grid-template-columns: 12rem 1fr;
+      align-items: baseline;
+    }
+  }
+
+  .st-type-sample {
+    line-height: 1.05;
+  }
+
+  .st-space {
+    display: grid;
+    gap: var(--space-2);
+  }
+
+  .st-space li {
+    display: grid;
+    grid-template-columns: 7rem 1fr;
+    align-items: center;
+  }
+
+  .st-bar {
+    height: var(--space-4);
+    background: var(--brand);
+  }
+
+  .st-shapes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-6);
+    padding-top: var(--space-4);
+  }
+
+  .st-shapes li {
+    display: grid;
+    justify-items: start;
+    gap: var(--space-2);
+    font-size: var(--text-sm);
+  }
+
+  .st-shape {
+    width: 5rem;
+    height: 3.5rem;
+    background: var(--brand);
+  }
+
+  .st-shape--card {
+    background: var(--card);
+  }
+
+  .st-ink-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+  }
+
+  .st-seg {
+    display: grid;
+    place-items: center;
+    min-width: 2.75rem;
+    min-height: calc(var(--chrome-h) - 6px);
+    font-size: var(--text-sm);
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .st-ink-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-3);
+    min-height: var(--chrome-h);
+    padding: 0 var(--space-4);
+    font-size: var(--text-sm);
+    font-weight: 700;
+    text-decoration: none;
+    --ink-inset: 0px;
+  }
+
+  .st-ink-btn > :global(svg:not(.sketch-svg)) {
+    width: 1.1rem;
+    height: 1.1rem;
+  }
+
+  .st-ink-list a {
+    display: block;
+    padding: var(--space-3);
+    font-size: var(--text-lg);
+    font-weight: 900;
+    text-decoration: none;
+    --rule-opacity: 0.45;
+  }
+
+  .st-lines {
+    display: grid;
+    gap: var(--space-5);
+    max-width: 40rem;
+  }
+
+  .st-box {
+    display: grid;
+    place-items: center;
+    min-height: 6rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    --sketch-w: 2.5px;
+  }
+
+  .st-box--fill {
+    color: var(--foreground);
+    --sketch-fill: var(--background);
+    --sketch-color: var(--foreground);
+  }
+
+  .st-icons {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(6.5rem, 1fr));
+    gap: var(--space-4);
+  }
+
+  .st-icons li {
+    display: grid;
+    justify-items: start;
+    gap: var(--space-2);
+    font-size: var(--text-xs);
+  }
+
+  .st-icons :global(svg) {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  .st-narrow {
+    max-width: 36rem;
+  }
+
+  .st-tile {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-5);
+  }
+</style>

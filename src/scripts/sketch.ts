@@ -1,7 +1,7 @@
 /**
  * Hand-drawn outlines and lines.
  *
- * Every `.sketch` element gets a small SVG with a rectangle roughened by the
+ * Every `.sketch` (and `.ink`, the pen-drawn hover) gets a small SVG with a rectangle roughened by the
  * #rough filter (Base.astro). Filters applied inside SVG render reliably in
  * Safari, unlike a CSS `filter: url(#…)` on an HTML element. The CSS mask
  * outline in global.css stays as the fallback if this script doesn't run.
@@ -32,7 +32,7 @@ function roughRect(className?: string) {
   return rect;
 }
 
-document.querySelectorAll<HTMLElement>('.sketch').forEach((el) => {
+document.querySelectorAll<HTMLElement>('.sketch, .ink').forEach((el) => {
   el.append(svgWith('sketch-svg', roughRect()));
   el.classList.add('has-sketch-svg');
 });

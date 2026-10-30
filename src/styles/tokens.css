@@ -1,8 +1,9 @@
 /*
- * Lisbon Tag Rugby — design tokens.
- * Brand colours come from the mini style guide (Navy, Limestone, Granite).
- * Components bind to the roles (--bg, --fg, --accent…), never to a literal,
- * so a section can flip theme with one class.
+ * Lisbon Tag Rugby — design tokens. Documented, with every pattern, at /styles.
+ *
+ * Two tiers: the palette (brand colours, this file only) and the roles named
+ * for what they are for. Components and global.css use roles, never the
+ * palette or a raw colour.
  */
 
 @font-face {
@@ -21,28 +22,90 @@
     U+00E0-00E3, U+00E7, U+00E9-00EA, U+00ED, U+00F3-00F5, U+00FA, U+00FC, U+20AC;
 }
 
+/* ---------- Palette ----------
+ * The brand colours from the style guide. Only this file uses them: everything
+ * else uses the roles below, so a section can change theme with one class.
+ */
 :root {
-  /* Brand */
-  --navy: #054895;
-  --navy-deep: #032d5e;
-  --navy-ink: #021f42;
-  --limestone: #f6f0e7;
-  --limestone-dim: #ebe2d4;
-  --granite: #1b1b1b;
-  --tile-white: #f4f7fb;
+  --palette-navy: #054895;
+  --palette-navy-deep: #032d5e;
+  --palette-navy-ink: #021f42;
+  --palette-limestone: #f6f0e7;
+  --palette-limestone-dim: #ebe2d4;
+  --palette-granite: #1b1b1b;
+  --palette-granite-raised: #262626;
+}
 
-  /* Roles (light / limestone is the default surface) */
-  --bg: var(--limestone);
-  --fg: var(--navy);
-  --fg-muted: color-mix(in srgb, var(--navy) 85%, var(--limestone));
-  --line: color-mix(in srgb, var(--navy) 85%, transparent);
-  --surface: var(--limestone-dim);
-  --accent: var(--navy);
-  --on-accent: var(--limestone);
+/* ---------- Roles ----------
+ * Named for what they are for (see /styles). Limestone is the default theme;
+ * .theme-navy and .theme-granite redefine the same names for a section.
+ *
+ * --background             the section or panel itself
+ * --card                   a quieter surface inside it (image wells, hover)
+ * --foreground             text, icons and drawn lines
+ * --foreground-secondary   supporting text
+ * --stroke                 dividers and outlines of controls
+ * --stroke-secondary       the quietest lines (menu list)
+ * --brand                  solid buttons and anything filled in (hover, current)
+ * --brand-foreground       text on --brand
+ * --brand-secondary        outline buttons: the section's own colour inside the line
+ * --brand-secondary-foreground
+ * --focus                  the keyboard focus ring
+ * --overlay                photo scrims, backdrops and shadows
+ */
+:root,
+.theme-light {
+  --background: var(--palette-limestone);
+  --card: var(--palette-limestone-dim);
+  --foreground: var(--palette-navy);
+  --foreground-secondary: color-mix(in srgb, var(--palette-navy) 85%, var(--palette-limestone));
+  --stroke: color-mix(in srgb, var(--palette-navy) 85%, var(--palette-limestone));
+  --stroke-secondary: color-mix(in srgb, var(--palette-navy) 45%, var(--palette-limestone));
+  --brand: var(--palette-navy);
+  --brand-foreground: var(--palette-limestone);
+  --brand-secondary: var(--background);
+  --brand-secondary-foreground: var(--foreground);
+  --focus: var(--foreground);
+}
 
+:root {
+  --overlay: color-mix(in srgb, var(--palette-navy-ink) 45%, transparent);
+  --overlay-strong: color-mix(in srgb, var(--palette-navy-ink) 60%, transparent);
+}
+
+.theme-navy {
+  --background: var(--palette-navy);
+  --card: var(--palette-navy-deep);
+  --foreground: var(--palette-limestone);
+  --foreground-secondary: color-mix(in srgb, var(--palette-limestone) 80%, var(--palette-navy));
+  --stroke: color-mix(in srgb, var(--palette-limestone) 80%, var(--palette-navy));
+  --stroke-secondary: color-mix(in srgb, var(--palette-limestone) 45%, var(--palette-navy));
+  --brand: var(--palette-limestone);
+  --brand-foreground: var(--palette-navy);
+  --brand-secondary: var(--background);
+  --brand-secondary-foreground: var(--foreground);
+  --focus: var(--foreground);
+}
+
+.theme-granite {
+  --background: var(--palette-granite);
+  --card: var(--palette-granite-raised);
+  --foreground: var(--palette-limestone);
+  --foreground-secondary: color-mix(in srgb, var(--palette-limestone) 72%, var(--palette-granite));
+  --stroke: color-mix(in srgb, var(--palette-limestone) 80%, var(--palette-granite));
+  --stroke-secondary: color-mix(in srgb, var(--palette-limestone) 45%, var(--palette-granite));
+  --brand: var(--palette-limestone);
+  --brand-foreground: var(--palette-granite);
+  --brand-secondary: var(--background);
+  --brand-secondary-foreground: var(--foreground);
+  --focus: var(--foreground);
+}
+
+:root {
   /* Type */
   --font-display: 'Lisbon Tag', 'Iowan Old Style', Georgia, serif;
-  --font-body: 'Lato', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-sans: 'Lato', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: ui-monospace, 'SF Mono', Menlo, monospace;
 
   --text-xs: 0.75rem;
   --text-sm: 0.875rem;
@@ -57,7 +120,15 @@
 
   --label-tracking: 0.14em;
 
-  /* Space */
+  /* Space: a 4px grid for gaps and padding; gutter and section-y are fluid. */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
   --gutter: clamp(1rem, 0.6rem + 2vw, 2.5rem);
   --section-y: clamp(4.5rem, 3rem + 7vw, 10rem);
   --max: 82rem;
@@ -67,25 +138,24 @@
   --radius-sm: 1px;
   --radius: 2px;
   --radius-lg: 3px;
-  --radius-pill: 3px;
-  --stroke: 3px;
+  /* Weight of the hand-drawn outlines (.sketch). */
+  --line-weight: 3px;
 
   /* Motion */
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --dur: 0.5s;
 
-  /* Depth and photo scrims, so components don't hard-code colours */
-  --ink-a: color-mix(in srgb, var(--navy-ink) 45%, transparent);
-  --shadow-sm: 0 6px 24px -8px var(--ink-a);
-  --shadow-md: 0 12px 32px -10px color-mix(in srgb, var(--navy-ink) 55%, transparent);
-  --shadow-lg: 0 20px 50px -24px var(--ink-a);
+  /* Elevation: a raised surface is a card with a shadow. */
+  --shadow-card: 0 6px 24px -8px var(--overlay);
+  --shadow-overlay: 0 12px 32px -10px var(--overlay-strong);
+  /* Over photos: dark at the top for the title, at the bottom for the facts. */
   --scrim-photo: linear-gradient(
-    0deg,
-    color-mix(in srgb, var(--navy-deep) 92%, transparent) 0%,
-    color-mix(in srgb, var(--navy) 45%, transparent) 45%,
-    color-mix(in srgb, var(--navy) 5%, transparent) 80%
+    180deg,
+    color-mix(in srgb, var(--palette-navy-ink) 85%, transparent) 0%,
+    color-mix(in srgb, var(--palette-navy-ink) 35%, transparent) 40%,
+    color-mix(in srgb, var(--palette-navy-ink) 25%, transparent) 60%,
+    color-mix(in srgb, var(--palette-navy-ink) 88%, transparent) 100%
   );
-  --scrim-top: linear-gradient(180deg, color-mix(in srgb, var(--navy-ink) 45%, transparent) 0%, transparent 28%);
 
   /* Chrome */
   --chrome-h: 2.75rem;
@@ -100,34 +170,4 @@
 
   /* Hand-drawn rule, as in the Figma posts. Used as a mask so it takes currentColor. */
   --rule-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 6' preserveAspectRatio='none'%3E%3Cpath d='M0 3.2 C40 2.1 70 4.1 112 3 S190 2.2 236 3.4 S318 4.2 352 2.8 S392 3.3 400 3' stroke='black' stroke-width='2.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
-}
-
-.theme-light {
-  --bg: var(--limestone);
-  --fg: var(--navy);
-  --fg-muted: color-mix(in srgb, var(--navy) 85%, var(--limestone));
-  --line: color-mix(in srgb, var(--navy) 85%, transparent);
-  --surface: var(--limestone-dim);
-  --accent: var(--navy);
-  --on-accent: var(--limestone);
-}
-
-.theme-navy {
-  --bg: var(--navy);
-  --fg: var(--limestone);
-  --fg-muted: color-mix(in srgb, var(--limestone) 80%, var(--navy));
-  --line: color-mix(in srgb, var(--limestone) 80%, transparent);
-  --surface: var(--navy-deep);
-  --accent: var(--limestone);
-  --on-accent: var(--navy);
-}
-
-.theme-granite {
-  --bg: var(--granite);
-  --fg: var(--limestone);
-  --fg-muted: color-mix(in srgb, var(--limestone) 72%, var(--granite));
-  --line: color-mix(in srgb, var(--limestone) 60%, transparent);
-  --surface: #262626;
-  --accent: var(--limestone);
-  --on-accent: var(--granite);
 }

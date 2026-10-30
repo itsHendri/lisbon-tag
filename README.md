@@ -73,7 +73,7 @@ pyftsubset "Lisbon Tag.ttf" --text="àáâãçéêíóôõúüÀÁÂÃÇÉÊÍÓ
 
 - `src/components/Home.astro` puts the page together in order. Each section has an `id` that matches `sectionIds` in `src/i18n/index.ts`, which drives the section pill and its sheet.
 - `src/scripts/motion.ts` contains every scroll animation, applied through `data-` attributes (`data-reveal`, `data-split`, `data-parallax`, `data-zoom`). With *Reduce motion* turned on, it does nothing and the page is still complete: no content is hidden waiting for an animation.
-- `src/styles/tokens.css` holds the colours, type and spacing. Sections switch theme with `.theme-light`, `.theme-navy` or `.theme-granite`.
+- `src/styles/tokens.css` holds the colours, type and spacing: brand colours as `--palette-*`, and the roles everything uses (`--background`, `--foreground`, `--brand`…). Sections switch theme with `.theme-light`, `.theme-navy` or `.theme-granite`. Every token and shared pattern (buttons, `.ink`, lines, outlines) is shown at **/styles**, which isn't linked from the site and is kept out of search.
 - Every dark section sits in `TileFrame.astro`: an azulejo border with a navy (or granite) card inside, like the Figma posts.
 - `.sketch` (in `global.css`) draws the hand-drawn stroke on cards and frames: four hand-drawn edges (`--edge-*` in `tokens.css`) used as masks, so it renders the same in Safari. The rule icons get their wobble from the `#rough-icon` SVG filter in `Base.astro`, applied inside each icon.
 - The castle top-left changes colour with what's behind it. Mark anything dark with `data-tone="dark"`.

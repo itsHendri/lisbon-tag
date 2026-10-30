@@ -76,6 +76,9 @@ const filmFrame = film.querySelector<HTMLElement>('[data-film-frame]')!;
 
 function openDialog(d: HTMLDialogElement) {
   d.showModal();
+  // Start on the panel, not its first link: Tab then goes to the first item,
+  // and nothing shows as highlighted for someone who opened it with a tap.
+  if (d.tabIndex === -1) d.focus({ preventScroll: true });
   lockScroll(true);
 }
 

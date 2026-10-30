@@ -114,8 +114,8 @@ const th = site.thursday;
     display: flex;
     align-items: flex-end;
     overflow: clip;
-    background: var(--navy-ink);
-    color: var(--limestone);
+    background: var(--card);
+    color: var(--foreground);
     isolation: isolate;
   }
 
@@ -154,13 +154,7 @@ const th = site.thursday;
   .hero-scrim {
     position: absolute;
     inset: 0;
-    background: linear-gradient(
-      180deg,
-      color-mix(in srgb, var(--navy-ink) 85%, transparent) 0%,
-      color-mix(in srgb, var(--navy-ink) 35%, transparent) 40%,
-      color-mix(in srgb, var(--navy-ink) 25%, transparent) 60%,
-      color-mix(in srgb, var(--navy-ink) 88%, transparent) 100%
-    );
+    background: var(--scrim-photo);
   }
 
   .hero-content {
@@ -184,7 +178,7 @@ const th = site.thursday;
     font-size: clamp(4.75rem, 2.7rem + 8.3vw, 11rem);
     display: flex;
     flex-direction: column;
-    text-shadow: 0 4px 40px var(--ink-a);
+    text-shadow: 0 4px 40px var(--overlay);
   }
 
   .hero-sub {
@@ -192,7 +186,7 @@ const th = site.thursday;
     font-size: var(--text-lg);
     font-weight: 700;
     line-height: 1.35;
-    text-shadow: 0 2px 16px var(--ink-a);
+    text-shadow: 0 2px 16px var(--overlay);
   }
 
   .hero-actions {

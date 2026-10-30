@@ -29,12 +29,12 @@ const other = langs.find((l) => l !== lang)!;
 ---
 
 <header class="chrome-top">
-  <a class="chrome-logo-wrap" href="#home" aria-label={t.nav.home}>
+  <a class="chrome-logo-wrap theme-navy" href="#home" aria-label={t.nav.home}>
     <span class="chrome-logo" style={`--castle: url(${castle.src})`}></span>
   </a>
 
   <!-- How-to-play video, always one tap away and never over the content. -->
-  <button class="film-pill sketch sketch--fill" type="button" aria-haspopup="dialog" aria-controls="film" data-film-open>
+  <button class="film-pill sketch sketch--fill theme-light" type="button" aria-haspopup="dialog" aria-controls="film" data-film-open>
     <span class="film-pill-thumb">
       <img src={thumb.src} alt="" width="64" height="36" />
       <span class="film-pill-play"><Icon name="play" /></span>
@@ -46,9 +46,9 @@ const other = langs.find((l) => l !== lang)!;
   </button>
 
   <!-- One control, two halves: the other language on the left, the menu on the right. -->
-  <div class="chrome-actions sketch sketch--fill">
+  <div class="chrome-actions sketch sketch--fill theme-navy">
     <a
-      class="chrome-lang sketch sketch--fill"
+      class="chrome-lang ink"
       href={homeHref(other)}
       hreflang={htmlLang[other]}
       lang={htmlLang[other]}
@@ -57,38 +57,39 @@ const other = langs.find((l) => l !== lang)!;
       data-base={homeHref(other)}>
       {other.toUpperCase()}
     </a>
-    <button class="chrome-menu sketch sketch--fill" type="button" aria-haspopup="dialog" aria-controls="sheet" data-sheet-open>
+    <button class="chrome-menu ink" type="button" aria-haspopup="dialog" aria-controls="sheet" data-sheet-open>
       <span>{t.nav.menu}</span>
       <Icon name="grid" />
     </button>
   </div>
 </header>
 
-<!-- Menu: a side panel on wider screens, full screen on phones. data-lenis-prevent lets it scroll natively. -->
-<dialog id="sheet" class="sheet theme-navy" aria-label={t.nav.menu} data-lenis-prevent>
+<!-- Menu: a side panel on wider screens, full screen on phones. data-lenis-prevent lets it scroll natively.
+     tabindex lets the panel itself take focus on open (scripts/chrome.ts), so no item starts out highlighted. -->
+<dialog id="sheet" class="sheet theme-navy" aria-label={t.nav.menu} data-lenis-prevent tabindex="-1">
   <div class="sheet-head">
-    <div class="sheet-langs sketch" role="group" aria-label={t.nav.language}>
+    <div class="sheet-langs segmented sketch" role="group" aria-label={t.nav.language}>
       {
         langs.map((l) =>
           l === lang ? (
-            <span class="sheet-lang is-current sketch sketch--fill" aria-current="page" lang={htmlLang[l]}>
+            <span class="sheet-lang ink is-current" aria-current="page" lang={htmlLang[l]}>
               {l.toUpperCase()}
             </span>
           ) : (
-            <a class="sheet-lang" href={homeHref(l)} hreflang={htmlLang[l]} lang={htmlLang[l]} data-lang-link data-base={homeHref(l)}>
+            <a class="sheet-lang ink" href={homeHref(l)} hreflang={htmlLang[l]} lang={htmlLang[l]} data-lang-link data-base={homeHref(l)}>
               {l.toUpperCase()}
             </a>
           ),
         )
       }
     </div>
-    <button class="sheet-close sketch" type="button" data-sheet-close>
+    <button class="sheet-close ink ink--outline" type="button" data-sheet-close>
       <span>{t.nav.close}</span>
       <Icon name="close" />
     </button>
   </div>
 
-  <button class="sheet-film sketch" type="button" aria-haspopup="dialog" aria-controls="film" data-film-open>
+  <button class="sheet-film ink ink--outline" type="button" aria-haspopup="dialog" aria-controls="film" data-film-open>
     <span class="sheet-film-thumb">
       <img src={thumb.src} alt="" width="240" height="135" />
       <span class="chrome-film-play"><Icon name="play" /></span>
@@ -104,7 +105,7 @@ const other = langs.find((l) => l !== lang)!;
       {
         menuIds.map((id) => (
           <li>
-            <a href={`#${id}`} data-sheet-link data-section-link={id} data-rule="bottom">
+            <a class="ink" href={`#${id}`} data-sheet-link data-section-link={id} data-rule="bottom">
               {t.sections[id]}
             </a>
           </li>
@@ -115,11 +116,11 @@ const other = langs.find((l) => l !== lang)!;
 
   <div class="sheet-map">
     <!-- Both open the venue in Google Maps. -->
-    <a class="sheet-map-head" href={th.mapsUrl} target="_blank" rel="noopener">
+    <a class="sheet-map-head ink" href={th.mapsUrl} target="_blank" rel="noopener">
       <span>{t.sections.where}: {th.venue}</span>
       <Icon name="arrow" />
     </a>
-    <a class="sheet-map-frame sketch" href={th.mapsUrl} target="_blank" rel="noopener" tabindex="-1" aria-hidden="true">
+    <a class="sheet-map-frame sketch theme-light" href={th.mapsUrl} target="_blank" rel="noopener" tabindex="-1" aria-hidden="true">
       <MapArt lang={lang} compact />
     </a>
   </div>
@@ -144,8 +145,8 @@ const other = langs.find((l) => l !== lang)!;
   </div>
 </dialog>
 
-<dialog id="film" class="film" aria-label={t.nav.film}>
-  <button class="film-close" type="button" data-film-close aria-label={t.nav.closeFilm}>
+<dialog id="film" class="film theme-granite" aria-label={t.nav.film}>
+  <button class="film-close ink ink--outline" type="button" data-film-close aria-label={t.nav.closeFilm}>
     <Icon name="close" />
   </button>
   <!-- The YouTube player is only created when the dialog opens (no cookies, no weight until then). -->
@@ -174,12 +175,14 @@ const other = langs.find((l) => l !== lang)!;
     pointer-events: auto;
   }
 
-  /* ---------- Castle: no plate, its colour follows what's behind it ---------- */
+  /* ---------- Castle: no plate, its colour follows what's behind it ----------
+     The wrap is theme-navy: limestone (--foreground) over dark sections,
+     navy (--brand-foreground) over light ones. */
   .chrome-logo {
     display: block;
     width: 3.5rem;
     height: var(--chrome-h);
-    color: var(--limestone);
+    color: var(--foreground);
     background: currentColor;
     -webkit-mask: var(--castle) center / contain no-repeat;
     mask: var(--castle) center / contain no-repeat;
@@ -189,94 +192,60 @@ const other = langs.find((l) => l !== lang)!;
   /* A soft halo in the opposite colour keeps it readable over photos and tiles. */
   .chrome-logo-wrap {
     display: block;
-    filter: drop-shadow(0 0 6px var(--ink-a));
+    filter: drop-shadow(0 0 6px var(--overlay));
     transition: filter 0.3s;
   }
 
   :global(html[data-chrome-tone='light']) .chrome-logo-wrap {
-    filter: drop-shadow(0 0 5px color-mix(in srgb, var(--limestone) 90%, transparent));
+    filter: drop-shadow(0 0 5px color-mix(in srgb, var(--foreground) 90%, transparent));
   }
 
   :global(html[data-chrome-tone='light']) .chrome-logo {
-    color: var(--navy);
+    color: var(--brand-foreground);
   }
 
   .chrome-logo-wrap:focus-visible {
     outline-offset: 2px;
   }
 
-  /* ---------- Language + Menu, one joined control ---------- */
+  /* ---------- Language + Menu, one joined control ----------
+     A drawn navy box (sketch--fill, theme-navy); each half is an .ink item. */
   .chrome-actions {
     flex: none;
     display: flex;
     align-items: stretch;
     min-height: var(--chrome-h);
-    border-radius: var(--radius-pill);
-    background: color-mix(in srgb, var(--navy) 90%, transparent);
-    color: var(--limestone);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    box-shadow:
-      inset 0 0 0 1px color-mix(in srgb, var(--limestone) 28%, transparent),
-      var(--shadow-sm);
-    /* Drawn: solid navy fill, solid limestone line (sketch--fill). */
+    border-radius: var(--radius-lg);
+    background: var(--background);
+    color: var(--foreground);
+    box-shadow: var(--shadow-card);
     --sketch-inset: 0px;
     --sketch-w: 1.5px;
-    --sketch-fill: var(--navy);
-    --sketch-color: var(--limestone);
+    --sketch-fill: var(--background);
+    --sketch-color: var(--foreground);
   }
 
-  /* Each half has its own drawn shape, empty until you point at it: then it
-     fills in limestone a little inside the line, with navy text. */
   .chrome-lang,
   .chrome-menu {
     display: inline-flex;
     align-items: center;
     font-size: var(--text-sm);
     letter-spacing: 0.04em;
-    transition: color 0.2s;
-    --sketch-inset: 4px;
-    --sketch-w: 1.5px;
-    --sketch-fill: transparent;
-    --sketch-color: transparent;
-  }
-
-  .chrome-lang > :global(.sketch-svg rect),
-  .chrome-menu > :global(.sketch-svg rect) {
-    transition:
-      fill 0.2s,
-      stroke 0.2s;
-  }
-
-  @media (hover: hover) {
-    .chrome-lang:hover,
-    .chrome-menu:hover {
-      color: var(--navy);
-      --sketch-fill: var(--limestone);
-      --sketch-color: var(--limestone);
-    }
-  }
-
-  .chrome-lang:focus-visible,
-  .chrome-menu:focus-visible {
-    color: var(--navy);
-    --sketch-fill: var(--limestone);
-    --sketch-color: var(--limestone);
   }
 
   .chrome-lang {
     justify-content: center;
     min-width: 2.9rem;
-    padding: 0 0.75rem;
+    padding: 0 var(--space-3);
     font-weight: 900;
     letter-spacing: 0.06em;
     text-decoration: none;
-    border-right: 1px solid color-mix(in srgb, var(--limestone) 70%, transparent);
+    border-right: 1px solid var(--stroke);
   }
 
   .chrome-menu {
-    gap: 1rem;
-    padding: 0 1rem;
+    gap: var(--space-4);
+    padding: 0 var(--space-4);
     font-weight: 700;
   }
 
@@ -286,28 +255,26 @@ const other = langs.find((l) => l !== lang)!;
     height: 1.1rem;
   }
 
-  /* ---------- How-to-play banner (Quechua's "Discover full video") ---------- */
-  /* ---------- How-to-play pill ---------- */
+  /* ---------- How-to-play pill (theme-light: limestone box, navy line) ---------- */
   .film-pill {
     display: flex;
     align-items: center;
     gap: 0.6rem;
     min-height: var(--chrome-h);
-    margin-inline: auto 0.75rem;
-    padding: 0.25rem 0.9rem 0.25rem 0.25rem;
-    border-radius: var(--radius-pill);
-    background: var(--limestone);
-    color: var(--navy);
+    margin-inline: auto var(--space-3);
+    padding: var(--space-1) 0.9rem var(--space-1) var(--space-1);
+    border-radius: var(--radius-lg);
+    background: var(--background);
+    color: var(--foreground);
     font-size: var(--text-sm);
     font-weight: 700;
     box-shadow:
-      inset 0 0 0 2px var(--navy),
-      var(--shadow-sm);
-    /* Drawn: limestone fill, navy line (sketch--fill). */
+      inset 0 0 0 2px var(--foreground),
+      var(--shadow-card);
     --sketch-inset: 0px;
     --sketch-w: 2px;
-    --sketch-fill: var(--limestone);
-    --sketch-color: var(--navy);
+    --sketch-fill: var(--background);
+    --sketch-color: var(--foreground);
   }
 
   .film-pill-thumb {
@@ -329,8 +296,8 @@ const other = langs.find((l) => l !== lang)!;
     inset: 0;
     display: grid;
     place-items: center;
-    background: color-mix(in srgb, var(--navy-deep) 35%, transparent);
-    color: var(--limestone);
+    background: var(--overlay);
+    color: var(--brand-foreground);
   }
 
   .film-pill-play :global(svg) {
@@ -420,15 +387,15 @@ const other = langs.find((l) => l !== lang)!;
     inset: 0;
     display: grid;
     place-items: center;
-    background: color-mix(in srgb, var(--navy-deep) 35%, transparent);
-    color: var(--limestone);
+    background: var(--overlay);
+    color: var(--foreground);
   }
 
   .chrome-film-play :global(svg) {
     width: 1.1rem;
     height: 1.1rem;
     transform: translateX(1px);
-    filter: drop-shadow(0 1px 3px color-mix(in srgb, var(--navy-ink) 40%, transparent));
+    filter: drop-shadow(0 1px 3px var(--overlay));
   }
 
   .chrome-film-text {
@@ -462,8 +429,8 @@ const other = langs.find((l) => l !== lang)!;
     padding: calc(var(--safe-t) + 0.875rem) max(var(--gutter), env(safe-area-inset-right)) calc(var(--safe-b) + 1.5rem)
       max(var(--gutter), env(safe-area-inset-left));
     border: 0;
-    background: var(--bg);
-    color: var(--fg);
+    background: var(--background);
+    color: var(--foreground);
     overflow-y: auto;
     overscroll-behavior: contain;
     -webkit-overflow-scrolling: touch;
@@ -480,8 +447,13 @@ const other = langs.find((l) => l !== lang)!;
     animation: none;
   }
 
+  /* Opening focuses the panel itself; it needs no ring. */
+  .sheet:focus {
+    outline: none;
+  }
+
   .sheet::backdrop {
-    background: color-mix(in srgb, var(--navy-ink) 60%, transparent);
+    background: var(--overlay-strong);
   }
 
   @keyframes sheet-in {
@@ -495,7 +467,7 @@ const other = langs.find((l) => l !== lang)!;
     .sheet {
       width: min(30rem, 100%);
       padding-inline: 2.25rem;
-      box-shadow: -20px 0 60px var(--ink-a);
+      box-shadow: -20px 0 60px var(--overlay);
     }
   }
 
@@ -508,34 +480,24 @@ const other = langs.find((l) => l !== lang)!;
     flex: none;
   }
 
+  /* Close, the video row, the sections and the Where row are all .ink:
+     the pen-drawn fill on hover, like the header. */
   .sheet-close {
     display: inline-flex;
     align-items: center;
-    gap: 1rem;
+    gap: var(--space-4);
     min-height: var(--chrome-h);
-    padding: 0 1rem;
-    border-radius: var(--radius-pill);
+    padding: 0 var(--space-4);
+    border-radius: var(--radius-lg);
     font-size: var(--text-sm);
     font-weight: 700;
     letter-spacing: 0.04em;
-    --sketch-inset: 0px;
-    --sketch-w: 1.5px;
-    --sketch-color: color-mix(in srgb, var(--limestone) 70%, transparent);
+    --ink-inset: 0px;
   }
 
   .sheet-close > :global(svg:not(.sketch-svg)) {
     width: 1.1rem;
     height: 1.1rem;
-  }
-
-  .sheet-langs {
-    display: flex;
-    gap: 3px;
-    padding: 3px;
-    border-radius: var(--radius-pill);
-    --sketch-inset: 0px;
-    --sketch-w: 1.5px;
-    --sketch-color: color-mix(in srgb, var(--limestone) 70%, transparent);
   }
 
   .sheet-lang {
@@ -551,29 +513,18 @@ const other = langs.find((l) => l !== lang)!;
   }
 
   .sheet-lang.is-current {
-    background: var(--limestone);
-    color: var(--navy);
     font-weight: 900;
-    --sketch-inset: 0px;
-    --sketch-w: 1.5px;
-    --sketch-fill: var(--limestone);
-    --sketch-color: var(--limestone);
-  }
-
-  .sheet-lang:not(.is-current):hover {
-    background: color-mix(in srgb, var(--limestone) 14%, transparent);
   }
 
   .sheet-film {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: var(--space-4);
     width: 100%;
-    padding: 0.5rem;
+    padding: var(--space-2);
     border-radius: var(--radius);
     text-align: left;
-    --sketch-w: 2px;
-    --sketch-color: color-mix(in srgb, var(--limestone) 70%, transparent);
+    --ink-inset: 0px;
   }
 
   .sheet-film-thumb {
@@ -596,18 +547,19 @@ const other = langs.find((l) => l !== lang)!;
     padding: 0;
   }
 
-  /* A hand-drawn line under each section (data-rule), like the FAQ. */
+  /* A hand-drawn line under each section (data-rule), like the FAQ. The
+     text sits in from the edge so the hover fill has room around it. */
   .sheet-list a {
     --rule-opacity: 0.45;
     display: block;
-    padding: 0.7rem 0;
+    padding: 0.7rem var(--space-3);
     font-size: var(--text-xl);
     font-weight: 900;
     line-height: 1.15;
     text-decoration: none;
   }
 
-  .sheet-list a:hover,
+  /* The section you're reading. */
   .sheet-list a[aria-current='true'] {
     text-decoration: underline;
     text-decoration-thickness: 2px;
@@ -624,8 +576,9 @@ const other = langs.find((l) => l !== lang)!;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 1rem;
+    gap: var(--space-4);
     min-height: 2.75rem;
+    padding-inline: var(--space-3);
     font-size: 1.0625rem;
     font-weight: 900;
     text-decoration: none;
@@ -643,8 +596,8 @@ const other = langs.find((l) => l !== lang)!;
     height: 9.5rem;
     overflow: hidden;
     border-radius: var(--radius);
-    background: var(--limestone);
-    --sketch-color: var(--limestone);
+    background: var(--background);
+    --sketch-color: var(--background);
     --sketch-w: 2px;
   }
 
@@ -690,8 +643,8 @@ const other = langs.find((l) => l !== lang)!;
     margin: 0;
     padding: 0;
     border: 0;
-    background: #000;
-    color: var(--limestone);
+    background: var(--background);
+    color: var(--foreground);
   }
 
   .film[open] {
@@ -700,13 +653,13 @@ const other = langs.find((l) => l !== lang)!;
   }
 
   .film::backdrop {
-    background: #000;
+    background: var(--overlay-strong);
   }
 
   .film-frame {
     width: min(100%, calc(100svh * 16 / 9));
     aspect-ratio: 16 / 9;
-    background: #000;
+    background: var(--background);
   }
 
   .film-frame :global(iframe) {
@@ -724,8 +677,8 @@ const other = langs.find((l) => l !== lang)!;
     place-items: center;
     width: var(--chrome-h);
     height: var(--chrome-h);
-    border-radius: var(--radius);
-    background: color-mix(in srgb, var(--limestone) 18%, transparent);
+    border-radius: var(--radius-lg);
+    --ink-inset: 0px;
   }
 
   .film-close :global(svg) {

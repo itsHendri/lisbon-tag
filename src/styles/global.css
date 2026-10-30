@@ -46,9 +46,9 @@ html.lenis {
 
 body {
   min-height: 100svh;
-  background: var(--limestone);
-  color: var(--navy);
-  font-family: var(--font-body);
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
   font-size: var(--text-base);
   line-height: 1.55;
   -webkit-font-smoothing: antialiased;
@@ -102,19 +102,19 @@ p {
 }
 
 :focus-visible {
-  outline: 3px solid currentColor;
+  outline: 3px solid var(--focus);
   outline-offset: 3px;
 }
 
 ::selection {
-  background: var(--navy);
-  color: var(--limestone);
+  background: var(--brand);
+  color: var(--brand-foreground);
 }
 
 /* ---------- Layout ---------- */
 .section {
-  background: var(--bg);
-  color: var(--fg);
+  background: var(--background);
+  color: var(--foreground);
   padding-block: var(--section-y);
   position: relative;
 }
@@ -145,7 +145,7 @@ p {
 }
 
 .label {
-  font-family: var(--font-body);
+  font-family: var(--font-sans);
   font-size: var(--text-sm);
   font-weight: 700;
   letter-spacing: var(--label-tracking);
@@ -155,7 +155,7 @@ p {
 .lede {
   font-size: var(--text-lg);
   line-height: 1.5;
-  color: var(--fg-muted);
+  color: var(--foreground-secondary);
   max-width: var(--max-text);
 }
 
@@ -240,8 +240,8 @@ p {
  * and border.
  */
 .btn {
-  --btn-bg: var(--accent);
-  --btn-fg: var(--on-accent);
+  --btn-bg: var(--brand);
+  --btn-fg: var(--brand-foreground);
   /* What the drawn shape is filled and outlined with. */
   --btn-fill: var(--btn-bg);
   --btn-line: var(--btn-bg);
@@ -253,7 +253,7 @@ p {
   gap: 0.6em;
   min-height: 3rem;
   padding: 0.75rem 1.4rem;
-  border-radius: var(--radius-pill);
+  border-radius: var(--radius-lg);
   background: var(--btn-bg);
   color: var(--btn-fg);
   font-weight: 700;
@@ -267,13 +267,13 @@ p {
     color 0.25s;
 }
 
-/* Outline: drawn line, filled with the section's own background so the
-   offset ink stays behind it. */
+/* Outline (secondary): drawn line, filled with the section's own colour so
+   the offset ink stays behind it. */
 .btn--ghost {
-  --btn-fill: var(--bg);
+  --btn-fill: var(--brand-secondary);
   --btn-line: currentColor;
   background: transparent;
-  color: var(--fg);
+  color: var(--brand-secondary-foreground);
   border-color: currentColor;
 }
 
@@ -359,14 +359,16 @@ p {
  * the box (the dark posts' inset line); --sketch-w is the line weight.
  */
 .sketch-svg {
-  --w: var(--sketch-w, var(--stroke));
+  --w: var(--sketch-w, var(--line-weight));
   --in: var(--sketch-inset, 0px);
-  /* The stroke straddles the rectangle's edge, so pull it in by half its width. */
-  position: absolute;
-  top: calc(var(--in) + var(--w) / 2);
-  left: calc(var(--in) + var(--w) / 2);
-  width: calc(100% - 2 * var(--in) - var(--w));
-  height: calc(100% - 2 * var(--in) - var(--w));
+  /* The stroke straddles the rectangle's edge, so pull it in by half its width.
+     !important: it's an overlay, so a component's own icon rule
+     (`.thing svg { width: 1em }`) must never resize it. */
+  position: absolute !important;
+  top: calc(var(--in) + var(--w) / 2) !important;
+  left: calc(var(--in) + var(--w) / 2) !important;
+  width: calc(100% - 2 * var(--in) - var(--w)) !important;
+  height: calc(100% - 2 * var(--in) - var(--w)) !important;
   overflow: visible;
   pointer-events: none;
   z-index: 1;
@@ -381,18 +383,85 @@ p {
 
 /* Solid boxes: the fill is drawn with the same pen, behind the content, so it
    never pokes out past the line. --sketch-fill is the fill colour. */
-.sketch.sketch--fill.has-sketch-svg {
+.sketch--fill.has-sketch-svg,
+.ink.has-sketch-svg {
   isolation: isolate;
   background: transparent;
   box-shadow: none;
 }
 
-.sketch--fill > .sketch-svg {
+.sketch--fill > .sketch-svg,
+.ink > .sketch-svg {
   z-index: -1;
 }
 
-.sketch--fill > .sketch-svg rect {
+.sketch--fill > .sketch-svg rect,
+.ink > .sketch-svg rect {
   fill: var(--sketch-fill);
+}
+
+/* ---------- Ink: the pen-drawn hover ----------
+ * For any control that isn't a button: a menu item, a toggle, a link row.
+ * It's an empty drawn shape until you point at it or tab to it; then it fills
+ * with --brand a little inside its line and the text turns --brand-foreground.
+ * .ink--outline also shows the line at rest. .is-current (or aria-current)
+ * keeps it filled: the selected half of a toggle.
+ * --ink-inset moves the fill in from the edge (0 fills right to the line).
+ */
+.ink {
+  position: relative;
+  --sketch-inset: var(--ink-inset, 4px);
+  --sketch-w: 1.5px;
+  --sketch-fill: transparent;
+  --sketch-color: transparent;
+  transition: color 0.2s;
+}
+
+.ink--outline {
+  --sketch-color: var(--stroke);
+}
+
+.ink > .sketch-svg rect {
+  transition:
+    fill 0.2s,
+    stroke 0.2s;
+}
+
+.ink.is-current,
+.ink[aria-current='page'],
+.ink:focus-visible {
+  color: var(--brand-foreground);
+  --sketch-fill: var(--brand);
+  --sketch-color: var(--brand);
+}
+
+/* The fill is the focus indicator, so no ring on top of it. */
+.ink:focus-visible {
+  outline: none;
+}
+
+/* Only where there's a real pointer, so a tap doesn't leave it filled. */
+@media (hover: hover) {
+  .ink:hover {
+    color: var(--brand-foreground);
+    --sketch-fill: var(--brand);
+    --sketch-color: var(--brand);
+  }
+}
+
+/* A group of .ink items in one drawn outline, e.g. the EN | PT switch. */
+.segmented {
+  display: flex;
+  gap: 3px;
+  padding: 3px;
+  border-radius: var(--radius-lg);
+  --sketch-inset: 0px;
+  --sketch-w: 1.5px;
+  --sketch-color: var(--stroke);
+}
+
+.segmented > .ink {
+  --ink-inset: 0px;
 }
 
 .sketch.has-sketch-svg::before {
@@ -404,7 +473,7 @@ p {
 }
 
 .sketch::before {
-  --band: calc(var(--sketch-w, var(--stroke)) * 2);
+  --band: calc(var(--sketch-w, var(--line-weight)) * 2);
   content: '';
   position: absolute;
   inset: var(--sketch-inset, 0);
@@ -433,12 +502,12 @@ p {
 .frame {
   overflow: hidden;
   border-radius: var(--radius);
-  background: var(--surface);
+  background: var(--card);
 }
 
 /* ---------- Azulejo tile background ---------- */
 .tiles {
-  background-color: var(--limestone);
+  background-color: var(--background);
   background-image: var(--tile-url);
   background-size: var(--tile-size, 96px);
   background-repeat: repeat;
@@ -463,9 +532,8 @@ p {
   left: 0.75rem;
   z-index: 100;
   padding: 0.75rem 1rem;
-  background: var(--navy);
-  color: var(--limestone);
-  border-radius: var(--radius-sm);
+  background: var(--brand);
+  color: var(--brand-foreground);
   transform: translateY(-200%);
   border-radius: var(--radius-sm);
 }
