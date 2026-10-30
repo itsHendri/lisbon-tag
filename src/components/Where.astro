@@ -50,13 +50,11 @@ const th = site.thursday;
     </div>
 
     <!-- Hand-drawn map; the whole map opens the venue in Google Maps.
-         The OpenStreetMap licence needs the credit, so it sits just under the map. -->
-    <figure class="map-figure" data-reveal>
-      <a class="map frame sketch theme-light" href={th.mapsUrl} target="_blank" rel="noopener" tabindex="-1" aria-hidden="true">
-        <MapArt lang={lang} crop />
-      </a>
-      <figcaption class="map-credit">{t.where.mapCredit}</figcaption>
-    </figure>
+         The credit stays on it: the OpenStreetMap licence needs it shown with the map. -->
+    <a class="map frame sketch theme-light" href={th.mapsUrl} target="_blank" rel="noopener" tabindex="-1" aria-hidden="true" data-reveal>
+      <MapArt lang={lang} crop />
+      <span class="map-credit">{t.where.mapCredit}</span>
+    </a>
   </div>
 </section>
 
@@ -130,15 +128,13 @@ const th = site.thursday;
     }
   }
 
-  .map-figure {
-    display: grid;
-    gap: var(--space-2);
-  }
-
   .map-credit {
-    justify-self: end;
-    font-size: var(--text-xs);
-    color: var(--foreground-secondary);
+    position: absolute;
+    z-index: 2;
+    right: 0.75rem;
+    bottom: 0.5rem;
+    font-size: 0.6875rem;
+    color: var(--background);
   }
 
   /* Map on the left, details on the right (details stay first on phones).
@@ -149,10 +145,8 @@ const th = site.thursday;
       align-items: center;
       gap: clamp(3rem, 5vw, 4.5rem);
     }
-    .map-figure {
-      order: -1;
-    }
     .map {
+      order: -1;
       aspect-ratio: 1;
     }
   }
