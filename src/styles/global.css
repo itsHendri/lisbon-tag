@@ -382,9 +382,11 @@ p {
 }
 
 /* Solid boxes: the fill is drawn with the same pen, behind the content, so it
-   never pokes out past the line. --sketch-fill is the fill colour. */
-.sketch--fill.has-sketch-svg,
-.ink.has-sketch-svg {
+   never pokes out past the line. --sketch-fill is the fill colour.
+   A component may give the box a plain background and shadow for when the
+   script hasn't run; three classes here so that always loses once it has. */
+.sketch.sketch--fill.has-sketch-svg,
+.ink.ink.has-sketch-svg {
   isolation: isolate;
   background: transparent;
   box-shadow: none;

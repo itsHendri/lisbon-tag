@@ -35,9 +35,9 @@ const steps = t.how.first.steps;
 
 <style>
   /* ---------- Never played: three steps, the last one filled ---------- */
-  /* Much more room above and below than at the sides. */
+  /* Same space on all four sides of the panel, at every screen width. */
   :global(.first > .tile-frame-card) {
-    padding-block: max(var(--section-y), calc(var(--side) + var(--section-y) * 0.6));
+    padding-block: var(--side);
   }
 
   .first-inner {
