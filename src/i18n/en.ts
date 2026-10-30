@@ -64,7 +64,7 @@ export const en = {
   },
 
   how: {
-    title: 'How tag works',
+    title: 'The basics',
     intro:
       'Tag is rugby without the tackles. Everyone wears a belt with two tags, one on each hip. Instead of bringing the ball carrier down, you pull one off. That is the tackle.',
     // Titles only: each one has an icon in HowToPlay.astro, in this order.

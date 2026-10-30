@@ -29,5 +29,5 @@ export const otherLang = (lang: Lang): Lang => (lang === 'en' ? 'pt' : 'en');
 export const htmlLang: Record<Lang, string> = { en: 'en', pt: 'pt-PT' };
 
 /** Section ids, in page order. The section pill and the sheet read this. */
-export const sectionIds = ['home', 'about', 'where', 'how', 'outfit', 'kit', 'social', 'faq', 'join'] as const;
+export const sectionIds = ['home', 'about', 'where', 'outfit', 'social', 'how', 'kit', 'faq', 'join'] as const;
 export type SectionId = (typeof sectionIds)[number];

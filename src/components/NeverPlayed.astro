@@ -1,0 +1,106 @@
+---
+/** Never played? Three steps for a first Thursday, the last one filled in. */
+import { Image } from 'astro:assets';
+import TileFrame from './TileFrame.astro';
+import { useT, type Lang } from '../i18n';
+import ball from '../assets/brand/icon_rugby_ball_white.png';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = useT(lang);
+const steps = t.how.first.steps;
+---
+
+<!-- Full width in the azulejo frame, like the other dark sections. -->
+<TileFrame as="section" class="first" aria-labelledby="first-title">
+  <div class="wrap first-inner">
+    <header class="first-head">
+      <h2 id="first-title" class="display display-md" data-split>{t.how.first.title}</h2>
+      <Image src={ball} alt="" width={160} format="webp" class="first-ball" />
+    </header>
+    <ol class="first-steps" data-reveal-stagger>
+      {
+        steps.map((s, i) => (
+          <li class:list={['step sketch', i === steps.length - 1 && 'step--go']}>
+            <h3 class="step-title">{s.title}</h3>
+            <p>{s.body}</p>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</TileFrame>
+
+<style>
+  /* ---------- Never played: three steps, the last one filled ---------- */
+  /* Much more room above and below than at the sides. */
+  :global(.first > .tile-frame-card) {
+    padding-block: max(var(--section-y), calc(var(--side) + var(--section-y) * 0.6));
+  }
+
+  .first-inner {
+    display: grid;
+    gap: clamp(2rem, 4vw, 3rem);
+  }
+
+  .first-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: clamp(0.75rem, 2vw, 1.25rem);
+  }
+
+  :global(.first-ball) {
+    width: clamp(3.25rem, 7vw, 5.5rem);
+    height: auto;
+    flex: none;
+  }
+
+  .first-steps {
+    display: grid;
+    gap: 1rem;
+    padding: 0;
+    list-style: none;
+  }
+
+  .step {
+    display: grid;
+    align-content: start;
+    gap: 1rem;
+    padding: clamp(1.5rem, 3vw, 2rem);
+    background: var(--background);
+    color: var(--foreground);
+    --sketch-inset: 0px;
+    --sketch-w: 2.5px;
+    --sketch-color: var(--foreground);
+  }
+
+  /* The last step is filled in: the brand colour of the panel. */
+  .step--go {
+    background: var(--brand);
+    color: var(--brand-foreground);
+    --sketch-color: var(--brand);
+  }
+
+  .step-title {
+    font-size: var(--text-xl);
+    font-weight: 900;
+    line-height: 1.1;
+  }
+
+  .step p {
+    font-size: var(--text-lg);
+    line-height: 1.45;
+  }
+
+  @media (min-width: 900px) {
+    .first-steps {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .step {
+      min-height: 15rem;
+    }
+  }
+</style>

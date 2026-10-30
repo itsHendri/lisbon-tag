@@ -4,6 +4,7 @@ import Chrome from './Chrome.astro';
 import Hero from './Hero.astro';
 import Intro from './Intro.astro';
 import HowToPlay from './HowToPlay.astro';
+import NeverPlayed from './NeverPlayed.astro';
 import Outfit from './Outfit.astro';
 import Kit from './Kit.astro';
 import Where from './Where.astro';
@@ -21,13 +22,15 @@ const { lang } = Astro.props;
 <Base lang={lang}>
   <Chrome lang={lang} />
   <main>
+    <!-- Tiled panels (TileFrame) and plain sections take turns: never two tiled ones in a row. -->
     <Hero lang={lang} />
     <Intro lang={lang} />
     <Where lang={lang} />
-    <HowToPlay lang={lang} />
+    <NeverPlayed lang={lang} />
     <Outfit lang={lang} />
-    <Kit lang={lang} />
     <Social lang={lang} />
+    <HowToPlay lang={lang} />
+    <Kit lang={lang} />
     <Faq lang={lang} />
     <Join lang={lang} />
   </main>

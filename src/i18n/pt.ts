@@ -63,7 +63,7 @@ export const pt: Dict = {
   },
 
   how: {
-    title: 'Como funciona o tag',
+    title: 'O básico',
     intro:
       'O tag é rugby sem placagens. Toda a gente usa um cinto com duas fitas, uma em cada anca. Em vez de derrubar o portador da bola, tiras-lhe uma fita. É essa a placagem.',
     rules: [
