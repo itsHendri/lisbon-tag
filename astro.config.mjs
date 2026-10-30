@@ -2,8 +2,7 @@
 import { defineConfig } from 'astro/config';
 
 export default defineConfig({
-  // Set by the GitHub Pages workflow; locally the site lives at the root.
-  // TODO: swap the fallback for the real domain once it's registered.
+  // The live domain, used for canonical URLs, hreflang and the sitemap. SITE_URL/BASE_PATH override it for test builds.
   site: process.env.SITE_URL ?? 'https://lisbontagrugby.com',
   base: process.env.BASE_PATH ?? '/',
   devToolbar: { enabled: false },

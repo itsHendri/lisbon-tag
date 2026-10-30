@@ -8,7 +8,7 @@ Built with Astro, plain CSS, GSAP (ScrollTrigger + SplitText) and Lenis. No UI f
 npm install
 npm run dev        # http://localhost:4321
 npm run build      # static site in dist/
-npm run deploy     # build + Cloudflare Pages (needs wrangler login)
+npm run deploy     # build + Cloudflare Workers (needs wrangler login); pushes to main deploy on their own
 ```
 
 ## Editing content

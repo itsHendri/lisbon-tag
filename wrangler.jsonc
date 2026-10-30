@@ -1,0 +1,13 @@
+// Cloudflare Workers, static assets only: the Astro build in dist/, no Worker script.
+// Workers Builds runs on every push to main:
+//   build:  npm ci && npm run build
+//   deploy: npx wrangler deploy
+// lisbontagrugby.com and www are attached as custom domains in the dashboard; www 301s to the apex
+// through a zone redirect rule.
+{
+  "name": "lisbon-tag",
+  "compatibility_date": "2026-10-06",
+  "workers_dev": false, // only lisbontagrugby.com, no *.workers.dev address
+  "preview_urls": false,
+  "assets": { "directory": "./dist" }
+}
