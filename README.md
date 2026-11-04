@@ -61,12 +61,17 @@ The kit section shows the two 3D renders from the Figma size-chart post (`src/as
 
 ## Fonts
 
-`public/fonts/lisbon-tag-core.woff2` (basic Latin) and `lisbon-tag-ext.woff2` (Portuguese accents only, loaded only when an accented character appears in a heading) are subsets of `Lisbon Tag.ttf`. To regenerate them after a font change:
+`src/assets/fonts/lisbon-tag-core.woff2` (basic Latin) and `lisbon-tag-ext.woff2` (Portuguese accents only, loaded only when an accented character appears in a heading) are subsets of `Lisbon Tag.ttf`. Keep every layout feature: the `calt` alternates change about two-thirds of the letters and are a big part of the hand-made look. The outlines are then stored on a 512-unit grid, which makes the files 15% smaller with no visible change (under a fifth of a pixel even at hero size). To regenerate them after a font change:
 
 ```bash
 pip install fonttools brotli
-pyftsubset "Lisbon Tag.ttf" --unicodes="U+0020-007E,U+00A0,U+2013-2014,U+2018-201E,U+2022,U+2026" --layout-features='*' --flavor=woff2 --output-file=public/fonts/lisbon-tag-core.woff2
-pyftsubset "Lisbon Tag.ttf" --text="àáâãçéêíóôõúüÀÁÂÃÇÉÊÍÓÔÕÚÜªº€" --layout-features='*' --flavor=woff2 --output-file=public/fonts/lisbon-tag-ext.woff2
+pyftsubset "Lisbon Tag.ttf" --unicodes="U+0020-007E,U+00A0,U+2013-2014,U+2018-201E,U+2022,U+2026" --layout-features='*' --flavor=woff2 --output-file=src/assets/fonts/lisbon-tag-core.woff2
+pyftsubset "Lisbon Tag.ttf" --text="àáâãçéêíóôõúüÀÁÂÃÇÉÊÍÓÔÕÚÜªº€" --layout-features='*' --flavor=woff2 --output-file=src/assets/fonts/lisbon-tag-ext.woff2
+python3 -c "
+from fontTools.ttLib import TTFont
+from fontTools.ttLib.scaleUpem import scale_upem
+for n in ('core', 'ext'):
+    p = f'src/assets/fonts/lisbon-tag-{n}.woff2'; f = TTFont(p); scale_upem(f, 512); f.save(p)"
 ```
 
 ## How it fits together
