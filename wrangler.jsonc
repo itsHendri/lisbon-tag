@@ -9,5 +9,6 @@
   "compatibility_date": "2026-10-06",
   "workers_dev": false, // only lisbontagrugby.com, no *.workers.dev address
   "preview_urls": false,
-  "assets": { "directory": "./dist" }
+  // An unknown address gets dist/404.html (src/pages/404.astro) with a 404 status.
+  "assets": { "directory": "./dist", "not_found_handling": "404-page" }
 }

@@ -495,6 +495,11 @@ p {
 }
 
 /* ---------- Media ---------- */
+/* <Picture> wraps the <img>; it shouldn't take part in the layout itself. */
+picture {
+  display: contents;
+}
+
 .cover {
   width: 100%;
   height: 100%;

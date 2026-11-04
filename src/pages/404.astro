@@ -1,0 +1,91 @@
+---
+/**
+ * Shown for any address that doesn't exist (wrangler.jsonc: not_found_handling).
+ * One page for both languages, since the address doesn't say which one.
+ */
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import TileFrame from '../components/TileFrame.astro';
+import Icon from '../components/Icon.astro';
+import { useT, homeHref, htmlLang, langs } from '../i18n';
+import castleWhite from '../assets/brand/icon_castle_white.png';
+---
+
+<Base lang="en" title="Page not found · Lisbon Tag Rugby" noindex skipTo="#not-found">
+  <main id="not-found" class="not-found">
+    <TileFrame>
+      <div class="wrap nf-inner">
+        <Image src={castleWhite} alt="" width={160} format="webp" class="nf-castle" />
+        {
+          langs.map((l, i) => {
+            const t = useT(l);
+            return (
+              <section class:list={['nf-lang', i > 0 && 'nf-lang--more']} lang={htmlLang[l]} data-rule={i > 0 ? 'top' : undefined}>
+                {i === 0 ? <h1 class="display display-md">{t.notFound.title}</h1> : <h2 class="display display-sm">{t.notFound.title}</h2>}
+                <p class="lede">{t.notFound.body}</p>
+                <a class:list={['btn', i > 0 && 'btn--ghost']} href={homeHref(l)}>
+                  <Icon name="arrow" />
+                  {t.notFound.home}
+                </a>
+              </section>
+            );
+          })
+        }
+      </div>
+    </TileFrame>
+  </main>
+</Base>
+
+<script>
+  import '../scripts/sketch';
+</script>
+
+<style>
+  .not-found {
+    min-height: 100svh;
+    display: grid;
+  }
+
+  .not-found > :global(.tile-frame) {
+    display: grid;
+  }
+
+  .not-found :global(.tile-frame-card) {
+    display: grid;
+    align-content: center;
+    padding-block: var(--side);
+  }
+
+  .nf-inner {
+    display: grid;
+    justify-items: center;
+    gap: var(--space-6);
+    text-align: center;
+  }
+
+  :global(.nf-castle) {
+    width: clamp(4rem, 10vw, 6rem);
+    height: auto;
+  }
+
+  .nf-lang {
+    display: grid;
+    justify-items: center;
+    gap: var(--space-4);
+    max-width: var(--max-text);
+  }
+
+  .nf-lang .lede {
+    color: var(--foreground-secondary);
+  }
+
+  .nf-lang--more {
+    padding-top: var(--space-6);
+    width: 100%;
+    --rule-opacity: 0.45;
+  }
+
+  .nf-lang :global(.btn) {
+    margin-top: var(--space-2);
+  }
+</style>

@@ -171,6 +171,12 @@ export const pt: Dict = {
     instagramNote: 'Manda-nos mensagem no Instagram e adicionamos-te ao grupo de WhatsApp da comunidade.',
   },
 
+  notFound: {
+    title: 'Fora de campo.',
+    body: 'Não há nenhuma página neste endereço. O jogo continua: está tudo na página inicial.',
+    home: 'Voltar à página inicial',
+  },
+
   footer: {
     made: 'Feito em Lisboa',
     tagline: 'Pelo amor ao jogo.',

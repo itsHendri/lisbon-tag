@@ -1,6 +1,9 @@
 ---
-/** One photo from src/data/photos.ts, resized and converted by Astro at build time. */
-import { Image } from 'astro:assets';
+/**
+ * One photo from src/data/photos.ts, resized and converted by Astro at build
+ * time: AVIF where the browser has it (about a third smaller), WebP otherwise.
+ */
+import { Picture } from 'astro:assets';
 import type { Photo } from '../data/photos';
 import type { Lang } from '../i18n';
 
@@ -24,10 +27,11 @@ const common = {
   class: className,
   style: photo.position ? `object-position: ${photo.position}` : undefined,
   priority,
-  format: 'webp' as const,
-  quality: 72,
+  formats: ['avif', 'webp'] as ('avif' | 'webp')[],
+  fallbackFormat: 'webp' as const,
+  quality: 52,
   ...rest,
 };
 ---
 
-{typeof photo.src === 'string' ? <Image src={photo.src} inferSize {...common} /> : <Image src={photo.src} {...common} />}
+{typeof photo.src === 'string' ? <Picture src={photo.src} inferSize {...common} /> : <Picture src={photo.src} {...common} />}

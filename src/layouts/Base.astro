@@ -19,7 +19,8 @@ interface Props {
 const { lang, title, noindex = false, skipTo = '#about' } = Astro.props;
 const t = useT(lang);
 const canonical = new URL(homeHref(lang), Astro.site);
-const og = await getImage({ src: logoFramed, width: 1200, height: 1200, format: 'png' });
+// JPEG: the framed logo is opaque, so it looks the same at a third of the PNG's size.
+const og = await getImage({ src: logoFramed, width: 1200, height: 1200, format: 'jpg', quality: 85 });
 const icon = await getImage({ src: castle, width: 192, format: 'png' });
 
 const jsonLd = {

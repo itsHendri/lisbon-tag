@@ -175,6 +175,13 @@ export const en = {
     instagramNote: 'Message us on Instagram and we’ll add you to the community WhatsApp group.',
   },
 
+  // The page for an address that doesn't exist (src/pages/404.astro).
+  notFound: {
+    title: 'Out of bounds.',
+    body: 'There’s no page at this address. The game’s still on: everything is on the home page.',
+    home: 'Back to the home page',
+  },
+
   footer: {
     made: 'Made in Lisbon',
     tagline: 'For the love of the game.',
