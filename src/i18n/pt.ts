@@ -153,7 +153,7 @@ export const pt: Dict = {
       },
       {
         q: 'E se chover?',
-        a: 'Com chuva fraca, jogamos. Se o tempo estiver mesmo mau, cancelamos no grupo de WhatsApp durante a tarde.',
+        a: 'Com chuva fraca, jogamos. Se o tempo estiver mesmo mau, cancelamos no grupo de WhatsApp, por isso vê lá antes de saíres.',
       },
       {
         q: 'Só estou em Lisboa uma semana. Posso ir na mesma?',

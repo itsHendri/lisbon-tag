@@ -154,9 +154,8 @@ export const en = {
         a: 'Yes. Men and women play together, and everyone gets the ball.',
       },
       {
-        // TODO: confirm cut-off time.
         q: 'What if it rains?',
-        a: 'Light rain, we play. If the weather is properly bad we call it off in the WhatsApp group in the afternoon.',
+        a: 'Light rain, we play. If the weather is properly bad, we call it off in the WhatsApp group, so check there before you head out.',
       },
       {
         q: 'I’m only in Lisbon for a week. Can I still come?',
