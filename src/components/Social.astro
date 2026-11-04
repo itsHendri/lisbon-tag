@@ -27,7 +27,7 @@ const tile = await getImage({ src: tileBlue, width: 240, format: 'webp' });
       {
         photos.gallery.map((p, i) => (
           <li class:list={['gallery-item frame', `g${i % 8}`]}>
-            <Photo photo={p} lang={lang} sizes="(min-width: 900px) 25vw, 50vw" widths={[400, 640, 960]} class="cover" />
+            <Photo photo={p} lang={lang} sizes="(min-width: 900px) 25vw, 50vw" widths={[240, 400, 640, 960]} class="cover" />
           </li>
         ))
       }

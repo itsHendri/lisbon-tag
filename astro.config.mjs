@@ -6,6 +6,8 @@ export default defineConfig({
   site: process.env.SITE_URL ?? 'https://lisbontagrugby.com',
   base: process.env.BASE_PATH ?? '/',
   devToolbar: { enabled: false },
+  // The CSS is small (about 20 KB); inlining it saves two blocking requests on phones.
+  build: { inlineStylesheets: 'always' },
   i18n: {
     defaultLocale: 'en',
     locales: ['en', 'pt'],

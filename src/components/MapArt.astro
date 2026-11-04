@@ -42,7 +42,7 @@ const venueBottom = map.venue.y + (map.venue.y - map.venueTop.y);
     )
   }
   <span class="map-pin" style={`left: ${map.venueTop.x}%; top: ${map.venueTop.y}%`} aria-hidden="true">
-    <img src={castle.src} alt="" width="48" height="48" />
+    <img src={castle.src} alt="" width={castle.attributes.width} height={castle.attributes.height} />
   </span>
   <span class="map-venue" style={`left: ${map.venue.x}%; top: ${venueBottom}%`} aria-hidden="true">
     <span class="map-venue-name">{site.thursday.venue.split(',')[0]}</span>

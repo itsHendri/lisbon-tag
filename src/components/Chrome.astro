@@ -52,7 +52,7 @@ const other = langs.find((l) => l !== lang)!;
       href={homeHref(other)}
       hreflang={htmlLang[other]}
       lang={htmlLang[other]}
-      aria-label={t.nav.otherLang}
+      aria-label={`${other.toUpperCase()}, ${t.nav.otherLang}`}
       data-lang-link
       data-base={homeHref(other)}>
       {other.toUpperCase()}

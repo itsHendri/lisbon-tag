@@ -33,12 +33,12 @@ const th = site.thursday;
   <div class="hero-content wrap" data-hero-content>
     <!-- Name, one line and the buttons up top; the Thursday facts along the bottom of the photo. -->
     <div class="hero-top">
-      <h1 id="hero-title" class="display hero-title" data-hero-in>
+      <h1 id="hero-title" class="display hero-title" data-hero-in style="--i: 0">
         <span>Lisbon Tag</span>
         <span>Rugby</span>
       </h1>
-      <p class="hero-sub" data-hero-in>{t.hero.sub}</p>
-      <div class="hero-actions" data-hero-in>
+      <p class="hero-sub" data-hero-in style="--i: 1">{t.hero.sub}</p>
+      <div class="hero-actions" data-hero-in style="--i: 2">
         <CalendarButton lang={lang} />
         <a class="btn btn--ghost hero-directions" href={th.mapsUrl} target="_blank" rel="noopener">
           <Icon name="pin" />
@@ -47,7 +47,7 @@ const th = site.thursday;
       </div>
     </div>
 
-    <div class="hero-bottom" data-hero-in>
+    <div class="hero-bottom" data-hero-in style="--i: 3">
       <span class="rule hero-rule"></span>
       <dl class="hero-facts">
         <div>
@@ -151,6 +151,26 @@ const th = site.thursday;
     position: absolute;
     inset: 0;
     background: var(--scrim-photo);
+  }
+
+  /* Entrance: each part rises in, one after the other. Plain CSS, so it runs
+     as soon as the page paints. */
+  [data-hero-in] {
+    animation: hero-in 1.1s var(--ease-out) both;
+    animation-delay: calc(0.15s + var(--i, 0) * 0.12s);
+  }
+
+  @keyframes hero-in {
+    from {
+      opacity: 0;
+      transform: translateY(40px);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-hero-in] {
+      animation: none;
+    }
   }
 
   .hero-content {

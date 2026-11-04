@@ -62,6 +62,9 @@ if (!prefersReducedMotion()) {
         mask: 'lines',
         linesClass: 'split-line',
         autoSplit: true,
+        // Lines only, so the words stay whole and screen readers read the
+        // lines as they are: no aria-label (not allowed on a <p>), nothing hidden.
+        aria: 'none',
         onSplit(self) {
           return gsap.from(self.lines, {
             yPercent: 105,
@@ -99,13 +102,7 @@ if (!prefersReducedMotion()) {
       ease: 'none',
       scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', scrub: true },
     });
-    gsap.from(hero.querySelectorAll('[data-hero-in]'), {
-      autoAlpha: 0,
-      y: 40,
-      duration: 1.1,
-      stagger: 0.12,
-      ease,
-      delay: 0.15,
-    });
+    // The entrance itself is CSS (Hero.astro): it starts with the first paint
+    // instead of waiting for this script, so the title shows up fast on phones.
   }
 }
