@@ -2,6 +2,8 @@
 
 Astro static site, EN at `/` and PT at `/pt/`. Copy in `src/i18n/{en,pt}.ts` (same shape), facts in `src/data/site.ts`.
 
+This is the brand's `projects/website/`. Who Lisbon Tag is, how it sounds and how it looks come from the brand folder two levels up (its CLAUDE.md loads on its own): read `../../identity/voice.md` before writing copy and `../../identity/visual.md` before changing the look. Logos, icons and fonts start in `../../assets/`; the copies in `src/assets/` are the site's build copies.
+
 ## Design system
 
 Everything is documented, with live examples, at `/styles` (`src/pages/styles.astro`). Add a pattern there when you add it to `global.css`.
